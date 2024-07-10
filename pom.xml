@@ -33,7 +33,6 @@
         <url/>
     </scm>
     <properties>
-
         <!-- java版本 -->
         <java.version>17</java.version>
 
@@ -131,5 +130,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
