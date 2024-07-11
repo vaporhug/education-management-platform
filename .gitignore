@@ -33,5 +33,8 @@ build/
 .vscode/
 
 ### commit 助记文件 ###
-commit_abstract
+commit_abstract.md
 /gateway/
+
+### docker data ###
+data/
