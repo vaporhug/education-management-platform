@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: teacher-resource-sharing
+  security:
+    user:
+      name: lyj
+      password: lyj
+  datasource:
+    url: jdbc:mysql://localhost:3307/mydatabase
+    username: root
+    password: secret
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  mybatis:
+    type-aliases-package: com.fjxgwzd.teacherresourcesharing.entity
+    mapper-locations: classpath:mapper/*.xml
+  jackson:
+    default-property-inclusion: non_null  # 防止返回值为null的属性
+  debug: true
+
+server:
+  port: 8081
+
+minio:
+  endpoint: http://8.130.106.248:9000
+  access-key: minioadmin
+  secret-key: minioadmin
+  bucket-name: system
+

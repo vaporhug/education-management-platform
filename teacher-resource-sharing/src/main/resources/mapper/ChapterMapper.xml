@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fjxgwzd.teacherresourcesharing.mapper.ChapterMapper">
+    <!--    根据hash值查看是否已有该文件   -->
+    <select id="findByHash" resultType="boolean" parameterType="java.lang.String">
+        SELECT EXISTS(
+            SELECT 1
+            FROM file
+            WHERE hash = #{hash}
+        )
+    </select>
+
+    <select id="findCourseIdByChapterId" resultType="java.lang.String" parameterType="java.lang.Integer">
+        SELECT ci.course_id
+        FROM chapter c
+        JOIN course_inst ci ON c.course_inst_id = ci.id
+        WHERE c.id = #{id}
+    </select>
+    
+    <select id="getFileByChapterId" resultType="com.fjxgwzd.teacherresourcesharing.entity.File">
+        SELECT f.*
+        FROM file f
+        JOIN teaching_material tm ON f.id = tm.file_id
+        JOIN chapter ch ON tm.for_chapter = ch.id
+        WHERE ch.id = #{chapterId}
+    </select>
+    
+    <delete id="removeTeachingMaterialByChapterId">
+        DELETE FROM teaching_material
+        WHERE for_chapter = (SELECT id FROM chapter WHERE id = #{chapterId})
+    </delete>
+    
+    <delete id="removeFileByFileId">
+        DELETE FROM file
+        WHERE id = #{fileId}
+    </delete>
+
+    <select id="findCourseInstByTeacherId" resultType="com.fjxgwzd.teacherresourcesharing.vo.CourseInfoVO">
+        SELECT
+            ci.id AS course_inst_id,
+            c.name,
+            c.course_type,
+            ci.instructor_msg,
+            ci.year,
+            ci.term_part,
+            ci.grade_level,
+            c.course_cate,
+            c.course_for,
+            cis.name AS course_inst_name
+        FROM
+            course_inst ci
+        JOIN
+            course c ON ci.course_id = c.id
+        JOIN
+            teach t ON c.id = t.course_id
+        JOIN
+            course_inst_section cis ON cis.course_inst_id = ci.id
+        WHERE
+            t.teacher_id = #{teacherId} AND ci.year = #{year}
+    </select>
+    <select id="findCourseDetalByCourseInstId" resultType="com.fjxgwzd.teacherresourcesharing.vo.ChapterVO">
+        SELECT
+            ch.id AS chapter_id,
+            ch.title,
+            ch.title_level,
+            f.id AS "file.id",
+            f.url AS "file.url",
+            f.size AS "file.size",
+            f.hash AS "file.hash",
+            tm.upload_time,
+            ch.uploader_id,
+            tm.name
+        FROM
+            chapter ch
+        JOIN
+            teaching_material tm ON tm.for_chapter = ch.id
+        LEFT JOIN
+            file f ON tm.file_id = f.id
+        WHERE
+            ch.course_inst_id = #{courseInstId}
+    </select>
+    
+    <insert id="insertFileDetails" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO file(url, size, hash)
+               VALUES (#{url}, #{size}, #{hash})
+    </insert>
+    <select id="teacherMaterialId" parameterType="java.util.Map">
+        SELECT id
+        FROM teaching_material
+        WHERE file_id = #{fileId} AND for_chapter = #{chapterId}
+    </select>
+    <insert id="insertTeachingMaterial" parameterType="java.util.Map">
+        INSERT INTO teaching_material(for_chapter,upload_time,uploader_id,name,file_id)
+        VALUES (#{chapterId}, #{uploadTime}, #{uploaderTd}, #{name}, #{fileId})
+    </insert>
+</mapper>

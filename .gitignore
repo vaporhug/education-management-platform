@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### commit 助记文件 ###
+commit_abstract
+/gateway/
