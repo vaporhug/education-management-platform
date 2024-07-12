@@ -1,4 +1,4 @@
-package com.fjxgwzd.teacherresourcesharing.result;
+package com.fjxgwzd.common.result;
 
 import lombok.Data;
 

@@ -2,7 +2,7 @@ services:
   mysql:
     image: 'mysql:8.0.31'
     environment:
-      - 'MYSQL_DATABASE=mydatabase'
+      - 'MYSQL_DATABASE=fjxgwzd_eduma'
       - 'MYSQL_PASSWORD=secret'
       - 'MYSQL_ROOT_PASSWORD=verysecret'
       - 'MYSQL_USER=myuser'

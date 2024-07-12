@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fjxgwzd.undergraduateacademicadministration.mapper.StudentIdMapper">
+    <select id="getEducationPlanByMajorId" resultType="com.fjxgwzd.undergraduateacademicadministration.vo.EducationPlanVO">
+        SELECT
+            mj.name AS major_name,
+            mj.duration AS time,
+            af.id AS aaoOfficeId,
+            af.name AS aaoOfficeName,
+            sc.id AS schoolId,
+            sc.name AS schoolName,
+            mdm.degree_awarded AS degreeName,
+            mdm.standard_duration_year AS duration,
+            mdm.max_duration,
+            mdm.min_duration,
+            mdm.intro AS description,
+            mdm.target,
+            mdm.req,
+            GROUP_CONCAT(ccf.id) AS coreCourseIds,
+            GROUP_CONCAT(cs.course_name) AS courseNames,
+            GROUP_CONCAT(mcr.credit_type) AS creditReqNames,
+            GROUP_CONCAT(mcr.credit_total) AS creditReqTotals
+        FROM
+            major mj
+        JOIN 
+            major_dev_manage mdm ON mdm.major_id = mj.id
+        JOIN
+            aao_office af ON af.major_id = mj.id
+        JOIN
+            core_course_for_major ccf ON mj.id = ccf.major_id
+        JOIN
+            major_credit_req mcr ON mj.id = mcr.major_id
+        JOIN
+            school sc ON mj.school_id = sc.id
+        JOIN
+            course_struct cs ON cs.id = ccf.course_struct_id
+        WHERE
+            mj.id = #{majorId}
+        GROUP BY
+            mj.name,
+            mj.duration,
+            af.id,
+            af.name,
+            sc.id,
+            sc.name,
+            mdm.degree_awarded,
+            mdm.standard_duration_year,
+            mdm.max_duration,
+            mdm.min_duration,
+            mdm.intro,
+            mdm.target,
+            mdm.req
+    </select>
+</mapper>

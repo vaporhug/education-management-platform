@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -42,6 +43,7 @@ public class FileServiceImpl implements FileService {
         if(chapterMapper.findByHash(hash)){
             throw new Exception();
         }
+//        chapterMapper.findByHash(hash);
 
         // bucket统一使用一个名字，之后使用/进行课程之间教材的区分
         boolean bucketExists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(properties.getBucketName()).build());
@@ -50,7 +52,7 @@ public class FileServiceImpl implements FileService {
             minioClient.setBucketPolicy(SetBucketPolicyArgs.builder().bucket(properties.getBucketName()).config(createBucketPolicyConfig(properties.getBucketName())).build());
         }
 
-        String fileName = String.valueOf(chapterMapper.findCourseIdByChapterId(chapterId)) + "/" + file.getOriginalFilename();
+        String fileName = chapterMapper.findCourseIdByChapterId(chapterId) + "/" + file.getOriginalFilename();
         minioClient.putObject(PutObjectArgs.builder().bucket(properties.getBucketName()).stream(file.getInputStream(), file.getSize(), -1).object(fileName).contentType(file.getContentType()).build());
 
         String url = properties.getEndpoint()+ "/" + properties.getBucketName()+"/"+fileName;
@@ -60,19 +62,23 @@ public class FileServiceImpl implements FileService {
         params.put("size", file.getSize());
         params.put("hash", hash);
         chapterMapper.insertFileDetails(params);
-        Integer generatedId = (Integer) params.get("id");
+        BigInteger generatedId = (BigInteger) params.get("id");
         if(generatedId == null){
             throw new Exception();
         }
         Map<String, Object> paramsMap = new HashMap<>();
+        System.out.println(chapterId);
         paramsMap.put("fileId", generatedId);
         paramsMap.put("chapterId", chapterId);
+        // 好像查错了，应该查的id是文件的id，要根据chapter的id号查到对应的id
         Integer id = chapterMapper.teacherMaterialId(paramsMap);
+        System.out.println(id);
         Map<String, Object> teachingMaterial = new HashMap<>();
         teachingMaterial.put("uploaderId", uploaderId);
         teachingMaterial.put("name", file.getOriginalFilename());
-        teachingMaterial.put("fileId",id);
-        teachingMaterial.put("forChapter",chapterId);
+        teachingMaterial.put("fileId",generatedId);
+        System.out.println(chapterId);
+        teachingMaterial.put("forChapter",String.valueOf(chapterId));
         teachingMaterial.put("uploadTime", LocalDateTime.now());
         chapterMapper.insertTeachingMaterial(teachingMaterial);
         return url;

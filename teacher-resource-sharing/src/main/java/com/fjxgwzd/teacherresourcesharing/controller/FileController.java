@@ -1,6 +1,6 @@
 package com.fjxgwzd.teacherresourcesharing.controller;
 
-import com.fjxgwzd.teacherresourcesharing.result.Result;
+import com.fjxgwzd.common.result.Result;
 import com.fjxgwzd.teacherresourcesharing.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +18,7 @@ public class FileController {
             String url = fileService.upload(file, chapterId,teacherId);
             return Result.ok(url);
         }catch (Exception e){
+            e.printStackTrace();
             return Result.fail();
         }
     }

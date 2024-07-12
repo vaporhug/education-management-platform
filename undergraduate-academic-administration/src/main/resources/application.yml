@@ -1,6 +1,9 @@
+server:
+  port: 8084
+
 spring:
   application:
-    name: teacher-resource-sharing
+    name: undergraduate-academic-administration
   security:
     user:
       name: lyj
@@ -10,22 +13,13 @@ spring:
     username: root
     password: secret
     driver-class-name: com.mysql.cj.jdbc.Driver
+  debug: true
+
 mybatis:
-  type-aliases-package: com.fjxgwzd.teacherresourcesharing.entity
+  type-aliases-package: com.fjxgwzd.undergraduateacademicadministration.entity
   mapper-locations: classpath:mapper/*.xml
-#    mapper-locations: file:/Users/liangyejing/IdeaProjects/education-management-platform/teacher-resource-sharing/src/main/resources/mapper/ChapterMapper.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   jackson:
     default-property-inclusion: non_null  # 防止返回值为null的属性
   debug: true
-
-server:
-  port: 8085
-
-minio:
-  endpoint: http://8.130.106.248:9000
-  access-key: minioadmin
-  secret-key: minioadmin
-  bucket-name: system
-

@@ -34,7 +34,8 @@ build/
 
 ### commit 助记文件 ###
 commit_abstract.md
-/gateway/
+gateway/
 
 ### docker data ###
 data/
+

@@ -28,6 +28,12 @@
         </dependency>
 
 		<dependency>
+			<groupId>com.fjxgwzd</groupId>
+			<artifactId>common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
             <version>8.5.11</version>

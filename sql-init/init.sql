@@ -1,5 +1,3 @@
-create schema fjxgwzd_eduma;
-use fjxgwzd_eduma;
 CREATE TABLE `school` (
 	`id` SMALLINT NOT NULL AUTO_INCREMENT UNIQUE,
 	`name` VARCHAR(255) NOT NULL,

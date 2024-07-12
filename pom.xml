@@ -18,7 +18,9 @@
         <module>academic-management</module>
         <module>teacher-resource-sharing</module>
         <module>undergraduate-transition</module>
-        <module>gateway</module>
+
+        <module>undergraduate-academic-administration</module>
+        <module>common</module>
     </modules>
     <url/>
     <licenses>

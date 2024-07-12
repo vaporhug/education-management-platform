@@ -1,6 +1,5 @@
 package com.fjxgwzd.teacherresourcesharing.service;
 
-import com.fjxgwzd.teacherresourcesharing.result.Result;
 import io.minio.errors.*;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;

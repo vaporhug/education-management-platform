@@ -29,7 +29,9 @@ public class CourseServiceImpl implements CourseService {
         List<CourseInfoVO> courseInstsInfo = chapterMapper.findCourseInstByTeacherId(teacherId, Year.now().getValue());
         // 将其转化为json格式的String文本
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(courseInstsInfo);
+        String result = objectMapper.writeValueAsString(courseInstsInfo);
+        System.out.println(result);
+        return result;
     }
 
     @Override

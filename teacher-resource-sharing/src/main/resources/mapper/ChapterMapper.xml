@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fjxgwzd.teacherresourcesharing.mapper.ChapterMapper">
     <!--    根据hash值查看是否已有该文件   -->
-    <select id="findByHash" resultType="boolean" parameterType="java.lang.String">
+    <select id="findByHash"  resultType="boolean" parameterType="java.lang.String">
         SELECT EXISTS(
             SELECT 1
             FROM file
@@ -43,7 +43,7 @@
             ci.instructor_msg,
             ci.year,
             ci.term_part,
-            ci.grade_level,
+            c.grade_level,
             c.course_cate,
             c.course_for,
             cis.name AS course_inst_name
@@ -56,7 +56,7 @@
         JOIN
             course_inst_section cis ON cis.course_inst_id = ci.id
         WHERE
-            t.teacher_id = #{teacherId} AND ci.year = #{year}
+            t.teacher_id = #{teacherId} AND ci.year = #{value}
     </select>
     <select id="findCourseDetalByCourseInstId" resultType="com.fjxgwzd.teacherresourcesharing.vo.ChapterVO">
         SELECT
@@ -68,7 +68,7 @@
             f.size AS "file.size",
             f.hash AS "file.hash",
             tm.upload_time,
-            ch.uploader_id,
+            tm.uploader_id,
             tm.name
         FROM
             chapter ch
@@ -91,6 +91,6 @@
     </select>
     <insert id="insertTeachingMaterial" parameterType="java.util.Map">
         INSERT INTO teaching_material(for_chapter,upload_time,uploader_id,name,file_id)
-        VALUES (#{chapterId}, #{uploadTime}, #{uploaderTd}, #{name}, #{fileId})
+        VALUES (#{forChapter}, #{uploadTime}, #{uploaderId}, #{name}, #{fileId})
     </insert>
 </mapper>
