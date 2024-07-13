@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fjxgwzd.teachersystemmanagement.mapper.TeacherMapper">
+       <select id="getTeacherDetailInfoByTeacherId" resultType="com.fjxgwzd.teachersystemmanagement.vo.TeacherDetailInfoVO">
+           SELECT t.id AS teacherId,
+                  t.name AS teacherName,
+                  t.phone,
+                  t.hire_date,
+                  t.type,
+                  t.gender,
+                  t.school_id,
+                  sc.name AS schoolName,
+                  t.major_id,
+                  mj.name AS majorName,
+                  t.title,
+                  t.bachelor,
+                  t.email,
+                  t.desc AS description,
+                  t.research_focus,
+                  f.url AS picUrl,
+                  t.address,
+                  af.id,
+                  af.name,
+                  t.identity
+           FROM teacher t
+           JOIN school sc ON sc.id = t.school_id
+           JOIN major mj ON mj.id = t.major_id
+           JOIN file f ON f.id = t.teacher_url
+           JOIN aao_office af ON af.major_id = mj.id
+           WHERE t.id = #{teacherId}
+       </select>
+       <select id="getEduExpByTeacherId">
+              SELECT ee.from_date,
+                     ee.to_date,
+                     ee.uni_name,
+                     ee.major_name,
+                     ee,bachelor
+              FROM edu_experience ee
+              WHERE ee.teacher_id = #{teacherId}
+
+       </select>
+       <select id="getTeacherResearchFindingsByTeacherId">
+              SELECT rf.index,
+                     rf.type,
+                     rf.content
+              FROM research_findings rf
+              WHERE rf.teacher_id = #{teacherId}
+              ORDER BY rf.index DESC
+              LIMIT #{offset}, #{num}
+       </select>
+       <select id="getTeacherResearchFindingsCountByTeacherId" resultType="int">
+           SELECT COUNT(*) AS totalFindings
+           FROM research_findings
+           WHERE teacher_id = #{teacherId}
+       </select>
+</mapper>

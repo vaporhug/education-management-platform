@@ -1,8 +1,13 @@
 package com.fjxgwzd.teacherresourcesharing.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fjxgwzd.teacherresourcesharing.vo.ChapterVO;
+import com.fjxgwzd.teacherresourcesharing.vo.CourseDetalVO;
+import com.fjxgwzd.teacherresourcesharing.vo.CourseInfoVO;
+
+import java.util.List;
 
 public interface CourseService {
-    String coursesInfo(String teacherId) throws JsonProcessingException;
-    String courseDetailsInfo(Integer chapter_id) throws JsonProcessingException;
+    List<CourseInfoVO> coursesInfo(String teacherId) throws JsonProcessingException;
+    List<ChapterVO> courseDetailsInfo(Integer chapter_id) throws JsonProcessingException;
 }

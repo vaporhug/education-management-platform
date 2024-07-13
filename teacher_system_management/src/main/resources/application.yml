@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: teacher-system-management
+  security:
+    user:
+      name: lyj
+      password: lyj
+  datasource:
+    url: jdbc:mysql://localhost:3307/fjxgwzd_eduma
+    username: root
+    password: secret
+    driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis:
+  type-aliases-package: com.fjxgwzd.teachersystemmanagement.entity
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  jackson:
+    default-property-inclusion: non_null  # 防止返回值为null的属性
+  debug: true
+
+server:
+  port: 8086
+

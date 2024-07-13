@@ -22,23 +22,24 @@ public class CourseServiceImpl implements CourseService {
     private ChapterMapper chapterMapper;
 
     @Override
-    public String coursesInfo(String teacherId) throws JsonProcessingException {
+    public List<CourseInfoVO> coursesInfo(String teacherId) throws JsonProcessingException {
         // 根据userId查询对应的课程号
         // 对检索到的所有课程号进行时间的鉴定
         // 鉴定是否为当学期所授课程
         List<CourseInfoVO> courseInstsInfo = chapterMapper.findCourseInstByTeacherId(teacherId, Year.now().getValue());
         // 将其转化为json格式的String文本
-        ObjectMapper objectMapper = new ObjectMapper();
-        String result = objectMapper.writeValueAsString(courseInstsInfo);
-        System.out.println(result);
-        return result;
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String result = objectMapper.writeValueAsString(courseInstsInfo);
+//        System.out.println(result);
+        return courseInstsInfo;
     }
 
     @Override
-    public String courseDetailsInfo(Integer courseInstId) throws JsonProcessingException {
+    public List<ChapterVO> courseDetailsInfo(Integer courseInstId) throws JsonProcessingException {
         //  通过courseId查询到所有对应的信息，存储在courseVO当中
         List<ChapterVO> courseDetalByCourseInstId = chapterMapper.findCourseDetalByCourseInstId(courseInstId);
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(courseDetalByCourseInstId);
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        return objectMapper.writeValueAsString(courseDetalByCourseInstId);
+        return courseDetalByCourseInstId;
     }
 }

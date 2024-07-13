@@ -10,5 +10,5 @@ import org.springframework.stereotype.Service;
 @Repository
 @Service
 public interface StudentIdMapper {
-    EducationPlanVO getEducationPlanByMajorId(@Param("majorId") Short major_id);
+    EducationPlanVO getEducationPlanByMajorId(@Param("majorId") Short major_id, @Param("cohortYear") Short cohort_year);
 }

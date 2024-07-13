@@ -16,13 +16,13 @@
             mdm.intro AS description,
             mdm.target,
             mdm.req,
-            GROUP_CONCAT(ccf.id) AS coreCourseIds,
-            GROUP_CONCAT(cs.course_name) AS courseNames,
-            GROUP_CONCAT(mcr.credit_type) AS creditReqNames,
-            GROUP_CONCAT(mcr.credit_total) AS creditReqTotals
+            GROUP_CONCAT(ccf.major_id SEPARATOR ',') AS coreCourseIds,
+            GROUP_CONCAT(cs.course_name SEPARATOR ',') AS courseNames,
+            GROUP_CONCAT(mcr.credit_type SEPARATOR ',') AS creditReqNames,
+            GROUP_CONCAT(mcr.credit_total SEPARATOR ',') AS creditReqTotals
         FROM
             major mj
-        JOIN 
+        JOIN
             major_dev_manage mdm ON mdm.major_id = mj.id
         JOIN
             aao_office af ON af.major_id = mj.id
@@ -35,7 +35,7 @@
         JOIN
             course_struct cs ON cs.id = ccf.course_struct_id
         WHERE
-            mj.id = #{majorId}
+            mj.id = #{majorId} AND ccf.cohort_year = #{cohortYear}
         GROUP BY
             mj.name,
             mj.duration,

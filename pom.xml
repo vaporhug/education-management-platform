@@ -21,6 +21,7 @@
 
         <module>undergraduate-academic-administration</module>
         <module>common</module>
+        <module>teacher_system_management</module>
     </modules>
     <url/>
     <licenses>

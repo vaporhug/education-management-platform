@@ -4,6 +4,7 @@ package com.fjxgwzd.undergraduateacademicadministration.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fjxgwzd.common.result.Result;
 import com.fjxgwzd.undergraduateacademicadministration.service.AdministrationService;
+import com.fjxgwzd.undergraduateacademicadministration.vo.EducationPlanVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,10 +30,10 @@ public class AdministrationController {
 
     }
 
-    @GetMapping("/educationPlan")
-    public Result<String> educationPlan(@RequestParam("major_id") Short majorId) {
+    @GetMapping("/educationPlanByMajor")
+    public Result<EducationPlanVO> educationPlan(@RequestParam("major_id") Short majorId, @RequestParam("cohort_year") Short cohortYear) {
         try {
-            String data = administrationService.getEducationPlanByMajorId(majorId);
+            EducationPlanVO data = administrationService.getEducationPlanByMajorId(majorId, cohortYear);
             return Result.ok(data);
         } catch (JsonProcessingException e) {
             return Result.fail();
