@@ -8,6 +8,5 @@ import com.fjxgwzd.teacherresourcesharing.vo.CourseInfoVO;
 import java.util.List;
 
 public interface CourseService {
-    List<CourseInfoVO> coursesInfo(String teacherId) throws JsonProcessingException;
-    List<ChapterVO> courseDetailsInfo(Integer chapter_id) throws JsonProcessingException;
+    List<CourseInfoVO> coursesInfo(String teacherId, Integer year, boolean termPart) throws JsonProcessingException;
 }

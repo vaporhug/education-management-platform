@@ -1,4 +1,4 @@
-package com.fjxgwd.teachersystemmanagement.configs;
+package com.fjxgwzd.teachersystemmanagement.configs;
 
 
 import io.swagger.v3.oas.models.OpenAPI;

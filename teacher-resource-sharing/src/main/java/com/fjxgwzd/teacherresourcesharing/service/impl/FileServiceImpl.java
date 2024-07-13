@@ -1,11 +1,14 @@
 package com.fjxgwzd.teacherresourcesharing.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fjxgwzd.teacherresourcesharing.entity.CourseInst;
 import com.fjxgwzd.teacherresourcesharing.entity.File;
 import com.fjxgwzd.teacherresourcesharing.entity.TeachingMaterial;
 import com.fjxgwzd.teacherresourcesharing.mapper.ChapterMapper;
 import com.fjxgwzd.teacherresourcesharing.minio.MinioProperties;
 import com.fjxgwzd.teacherresourcesharing.service.FileService;
+import com.fjxgwzd.teacherresourcesharing.vo.ChapterVO;
+import com.fjxgwzd.teacherresourcesharing.vo.CourseDetalVO;
 import io.minio.*;
 import io.minio.errors.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,5 +140,13 @@ public class FileServiceImpl implements FileService {
         }
         // 3.3、chapter_id暂时保留，不动
         return "成功删除！";
+    }
+
+
+    @Override
+    public CourseDetalVO courseDetailsInfo(Integer courseInstId) throws JsonProcessingException {
+        //  通过courseId查询到所有对应的信息，存储在courseVO当中
+        CourseDetalVO courseDetalByCourseInstId = chapterMapper.findCourseDetalByCourseInstId(courseInstId);
+        return courseDetalByCourseInstId;
     }
 }

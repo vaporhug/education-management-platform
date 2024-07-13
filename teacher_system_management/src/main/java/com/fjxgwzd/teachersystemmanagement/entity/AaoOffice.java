@@ -1,4 +1,4 @@
-package com.fjxgwd.teachersystemmanagement.entity;
+package com.fjxgwzd.teachersystemmanagement.entity;
 
 import lombok.Data;
 

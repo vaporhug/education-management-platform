@@ -2,9 +2,13 @@ package com.fjxgwzd.teacherresourcesharing.controller;
 
 import com.fjxgwzd.common.result.Result;
 import com.fjxgwzd.teacherresourcesharing.service.FileService;
+import com.fjxgwzd.teacherresourcesharing.vo.ChapterVO;
+import com.fjxgwzd.teacherresourcesharing.vo.CourseDetalVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/files")
@@ -34,4 +38,16 @@ public class FileController {
         }
     }
 
+    // 返回一门课程的所有信息，包括教材信息
+    @PostMapping("/courseDetalInfo")
+    public Result<CourseDetalVO> courseDetailsInfo(@RequestParam("course_inst_id") Integer courseInstId) {
+        // 需要一个信息，即用户传来的chapter_id，我将该课程的所有chapter的信息返回给用户
+        try {
+            CourseDetalVO result = fileService.courseDetailsInfo(courseInstId);
+            return Result.ok(result);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.fail();
+        }
+    }
 }

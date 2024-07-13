@@ -1,13 +1,13 @@
-package com.fjxgwd.teachersystemmanagement.service.impl;
+package com.fjxgwzd.teachersystemmanagement.service.impl;
 
 
-import com.fjxgwd.teachersystemmanagement.vo.EduExpVO;
-import com.fjxgwd.teachersystemmanagement.vo.TeacherResearchFinding;
-import com.fjxgwd.teachersystemmanagement.vo.TeacherResearchFindings;
+import com.fjxgwzd.teachersystemmanagement.vo.EduExpVO;
+import com.fjxgwzd.teachersystemmanagement.vo.TeacherResearchFinding;
+import com.fjxgwzd.teachersystemmanagement.vo.TeacherResearchFindings;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.fjxgwd.teachersystemmanagement.mapper.TeacherMapper;
-import com.fjxgwd.teachersystemmanagement.service.TeacherService;
-import com.fjxgwd.teachersystemmanagement.vo.TeacherDetailInfoVO;
+import com.fjxgwzd.teachersystemmanagement.mapper.TeacherMapper;
+import com.fjxgwzd.teachersystemmanagement.service.TeacherService;
+import com.fjxgwzd.teachersystemmanagement.vo.TeacherDetailInfoVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -27,6 +27,6 @@ public class Knife4Configuration {
 
     @Bean
     public GroupedOpenApi courseResourceSharingApi() {
-        return GroupedOpenApi.builder().group("课程资源共享").pathsToMatch("/courses/**").build();
+        return GroupedOpenApi.builder().group("教师查看课程信息").pathsToMatch("/teacherCourses/**").build();
     }
 }

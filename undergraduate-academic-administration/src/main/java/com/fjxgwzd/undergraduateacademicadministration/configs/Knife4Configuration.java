@@ -23,4 +23,9 @@ public class Knife4Configuration {
     public GroupedOpenApi teacherResourceSharingApi() {
         return GroupedOpenApi.builder().group("教务管理").pathsToMatch("/admin/**").build();
     }
+
+    @Bean
+    public GroupedOpenApi studentResourceSharingApi() {
+        return GroupedOpenApi.builder().group("学生课程信息查看").pathsToMatch("/studentCourses/**").build();
+    }
 }

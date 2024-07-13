@@ -40,13 +40,16 @@
             ci.id AS course_inst_id,
             c.name,
             c.course_type,
-            ci.instructor_msg,
-            ci.year,
-            ci.term_part,
-            c.grade_level,
             c.course_cate,
             c.course_for,
-            cis.name AS course_inst_name
+            c.credit,
+            c.grade_level,
+            c.school_id,
+            sc.name,
+            f.url AS course_pic,
+            ci.year,
+            ci.term_part,
+            ci.total_class_hour
         FROM
             course_inst ci
         JOIN
@@ -54,30 +57,48 @@
         JOIN
             teach t ON c.id = t.course_id
         JOIN
-            course_inst_section cis ON cis.course_inst_id = ci.id
+            school sc ON sc.id = c.school_id
+        JOIN
+            file f ON f.id = c.course_pic
         WHERE
-            t.teacher_id = #{teacherId} AND ci.year = #{value}
+            t.teacher_id = #{teacherId} AND ci.year = #{year} AND ci.term_part = #{termPart}
     </select>
     <select id="findCourseDetalByCourseInstId" resultType="com.fjxgwzd.teacherresourcesharing.vo.ChapterVO">
         SELECT
-            ch.id AS chapter_id,
-            ch.title,
-            ch.title_level,
-            f.id AS "file.id",
-            f.url AS "file.url",
-            f.size AS "file.size",
-            f.hash AS "file.hash",
-            tm.upload_time,
-            tm.uploader_id,
-            tm.name
+            ci.id AS course_inst_id,
+            c.name,
+            c.course_type,
+            c.course_cate,
+            c.course_for,
+            c.credit,
+            c.grade_level,
+            c.school_id,
+            sc.name,
+            f.url AS course_pic,
+            ci.year,
+            ci.term_part,
+            ci.total_class_hour,
+            ci.instructor_msg,
+            ci.overview,
+            ci.target,
+            ci.assess_method,
+            ci.method_detal,
+            ci.max_num,
+            ch.id AS "chapterList.chapterId",
+            ch.title AS "chapterList.chapterName",
+            tm.id AS "chapterList.matetials.materialId",
+            fl.id AS "chapterList.matetials.fileId",
+            tm.name AS "chapterList.matetials.fileName",
+            fl.url AS "chapterList.matetials.fileUrl"
         FROM
-            chapter ch
-        JOIN
-            teaching_material tm ON tm.for_chapter = ch.id
-        LEFT JOIN
-            file f ON tm.file_id = f.id
-        WHERE
-            ch.course_inst_id = #{courseInstId}
+            course_inst ci
+        JOIN course c ON c.id = ci.course_id
+        JOIN school sc ON sc.id = c.school_id
+        JOIN file f ON f.id = c.course_pic
+        JOIN chapter ch ON ch.course_inst_id = ci.id
+        JOIN teaching_material tm ON tm.for_chapter = ch.id
+        JOIN file fl ON fl.id = tm.file_id
+        WHERE ci.id = #{courseInstId}
     </select>
     
     <insert id="insertFileDetails" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">

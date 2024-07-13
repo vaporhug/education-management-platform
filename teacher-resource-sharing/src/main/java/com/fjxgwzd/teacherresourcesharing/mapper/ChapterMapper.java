@@ -25,8 +25,8 @@ public interface ChapterMapper {
     File getFileByChapterId(Integer chapterId);
     boolean removeTeachingMaterialByChapterId(Integer chapterId);
     boolean removeFileByFileId(Integer fileId);
-    List<CourseInfoVO> findCourseInstByTeacherId(String teacherId, Integer value);
-    List<ChapterVO> findCourseDetalByCourseInstId(Integer courseInstId);
+    List<CourseInfoVO> findCourseInstByTeacherId(String teacherId, Integer year, boolean termPart);
+    CourseDetalVO findCourseDetalByCourseInstId(Integer courseInstId);
     void insertFileDetails(Map<String, Object> params);
     Integer teacherMaterialId(Map<String, Object> params);
     void insertTeachingMaterial(Map<String, Object> params);

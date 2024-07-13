@@ -10,6 +10,7 @@ spring:
     username: root
     password: secret
     driver-class-name: com.mysql.cj.jdbc.Driver
+
 mybatis:
   type-aliases-package: com.fjxgwzd.teachersystemmanagement.entity
   mapper-locations: classpath:mapper/*.xml

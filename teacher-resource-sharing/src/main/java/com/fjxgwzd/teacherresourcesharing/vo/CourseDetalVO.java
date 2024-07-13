@@ -2,24 +2,28 @@ package com.fjxgwzd.teacherresourcesharing.vo;
 
 import com.fjxgwzd.teacherresourcesharing.entity.File;
 
+import java.util.List;
+
 public class CourseDetalVO {
     // 几几年
-    private Integer year;
-
-    private boolean termPart;
-    // 课程老师
-    private String instructorMsg;
-    // 课程概览
-    private String overview;
-    // 课程考核方式
-    private Short accessMethod;
-    private String methodDetal;
-    // 课程名
+    private String courseInstId;
     private String name;
-    // 课程类型
-    private Short courseType;
-    private Short courseCate;
-    private Short courseFor;
-    private Short credit;
-    private Short gradeLevel;
+    private String courseType;
+    private String courseCate;
+    private String courseFor;
+    private Integer credit;
+    private Integer gradeLevel;
+    private Integer schoolId;
+    private String schoolName;
+    private String coursePic;
+    private Integer year;
+    private boolean termPart;
+    private Integer totalClassTotal;
+    private String instructorMsg;
+    private String overview;
+    private String target;
+    private String assessMethod;
+    private String methodDetal;
+    private Integer maxNum;
+    private List<ChapterVO> chapterList;
 }
