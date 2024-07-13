@@ -1,3 +1,5 @@
+
+
 CREATE TABLE `school` (
 	`id` SMALLINT NOT NULL AUTO_INCREMENT UNIQUE,
 	`name` VARCHAR(255) NOT NULL,
@@ -510,6 +512,7 @@ CREATE TABLE `major_dev_manage` (
 	`id` INT NOT NULL AUTO_INCREMENT UNIQUE,
 	`major_id` SMALLINT NOT NULL,
 	`cohort_year` SMALLINT NOT NULL,
+    `date` date NOT NULL,
 	-- 专业简介
 	`intro` TEXT(65535) NOT NULL COMMENT '专业简介',
 	-- 培养目标
@@ -865,3 +868,348 @@ ON UPDATE NO ACTION ON DELETE NO ACTION;
 ALTER TABLE `inventory`
 ADD FOREIGN KEY(`isbn`) REFERENCES `book`(`isbn`)
 ON UPDATE NO ACTION ON DELETE NO ACTION;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- 插入第一条记录
+INSERT INTO `school` (`name`) VALUES ('计算机科学与技术学院');
+-- 插入第二条记录
+INSERT INTO `school` (`name`) VALUES ('电子信息工程学院');
+-- 插入第三条记录
+INSERT INTO `school` (`name`) VALUES ('机械工程学院');
+-- 插入第四条记录
+INSERT INTO `school` (`name`) VALUES ('经济管理学院');
+-- 插入第五条记录
+INSERT INTO `school` (`name`) VALUES ('外国语学院');
+-- 插入第六条记录
+INSERT INTO `school` (`name`) VALUES ('法学院');
+-- 插入第七条记录
+INSERT INTO `school` (`name`) VALUES ('建筑与土木工程学院');
+-- 插入第八条记录
+INSERT INTO `school` (`name`) VALUES ('生物医学工程学院');
+-- 插入第九条记录
+INSERT INTO `school` (`name`) VALUES ('艺术学院');
+-- 插入第十条记录
+INSERT INTO `school` (`name`) VALUES ('环境科学与工程学院');
+
+-- 插入2020年的学期数据
+INSERT INTO `semester` (`from_date`, `to_date`, `year`, `term_part`) VALUES
+                                                                         ('2020-02-19', '2020-06-30', 2020, TRUE),  -- 上学期
+                                                                         ('2020-09-01', '2020-12-31', 2020, FALSE); -- 下学期
+-- 插入2021年的学期数据
+INSERT INTO `semester` (`from_date`, `to_date`, `year`, `term_part`) VALUES
+                                                                         ('2021-02-19', '2021-06-30', 2021, TRUE),  -- 上学期
+                                                                         ('2021-09-01', '2021-12-31', 2021, FALSE); -- 下学期
+-- 插入2022年的学期数
+INSERT INTO `semester` (`from_date`, `to_date`, `year`, `term_part`) VALUES
+                                                                         ('2022-02-19', '2022-06-30', 2022, TRUE),  -- 上学期
+                                                                         ('2022-09-01', '2022-12-31', 2022, FALSE); -- 下学期
+-- 插入2023年的学期数据
+INSERT INTO `semester` (`from_date`, `to_date`, `year`, `term_part`) VALUES
+                                                                         ('2023-02-19', '2023-06-30', 2023, TRUE),  -- 上学期
+                                                                         ('2023-09-01', '2023-12-31', 2023, FALSE); -- 下学期
+-- 插入2024年的学期数据
+INSERT INTO `semester` (`from_date`, `to_date`, `year`, `term_part`) VALUES
+                                                                         ('2024-02-19', '2024-06-30', 2024, TRUE),  -- 上学期
+                                                                         ('2024-09-01', '2024-12-31', 2024, FALSE); -- 下学期
+
+-- 插入校本部
+INSERT INTO `campus` (`name`, `location`, `desc`) VALUES
+    ('校本部', '湖南长沙岳麓区', '这是校本部，拥有主要的教学楼和行政办公楼。');
+
+-- 插入铁道校区
+INSERT INTO `campus` (`name`, `location`, `desc`) VALUES
+    ('铁道校区', '湖南长沙天心区', '这是铁道校区，专注于铁道工程相关专业。');
+
+-- 插入新校区
+INSERT INTO `campus` (`name`, `location`, `desc`) VALUES
+    ('新校区', '湖南长沙岳麓区', '这是新校区，拥有最新的教学设施和宿舍楼。');
+
+-- 插入湘雅校区
+INSERT INTO `campus` (`name`, `location`, `desc`) VALUES
+    ('湘雅校区', '湖南长沙芙蓉区', '这是湘雅校区，主要提供医学相关专业的教学和研究。');
+
+-- 插入第一本书
+INSERT INTO `book` (`isbn`, `title`, `author`, `edition`, `publisher`, `pub_date`, `cover_url`) VALUES
+    ('1234567890', '数据结构与算法分析', 'Mark Allen Weiss', 3, '清华大学出版社', '2013-01-01', 'http://example.com/cover1.jpg');
+
+-- 插入第二本书
+INSERT INTO `book` (`isbn`, `title`, `author`, `edition`, `publisher`, `pub_date`, `cover_url`) VALUES
+    ('2345678901', '计算机网络', 'Andrew S. Tanenbaum', 5, '电子工业出版社', '2010-01-01', 'http://example.com/cover2.jpg');
+
+-- 插入第三本书
+INSERT INTO `book` (`isbn`, `title`, `author`, `edition`, `publisher`, `pub_date`, `cover_url`) VALUES
+    ('3456789012', '操作系统：设计与实现', 'Andrew S. Tanenbaum', 3, '清华大学出版社', '2006-01-01', 'http://example.com/cover3.jpg');
+
+-- 插入第四本书
+INSERT INTO `book` (`isbn`, `title`, `author`, `edition`, `publisher`, `pub_date`, `cover_url`) VALUES
+    ('4567890123', '数据库系统概念', 'Abraham Silberschatz', 6, '机械工业出版社', '2011-01-01', 'http://example.com/cover4.jpg');
+
+-- 插入第五本书
+INSERT INTO `book` (`isbn`, `title`, `author`, `edition`, `publisher`, `pub_date`, `cover_url`) VALUES
+    ('5678901234', '软件工程：实践者的研究方法', 'Roger S. Pressman', 7, '清华大学出版社', '2014-01-01', 'http://example.com/cover5.jpg');
+-- 插入会计学教材
+INSERT INTO `book` (`isbn`, `title`, `author`, `edition`, `publisher`, `pub_date`, `cover_url`) VALUES
+    ('6789012345', '财务会计', 'Robert Libby', 9, '中国人民大学出版社', '2016-01-01', 'http://example.com/cover6.jpg');
+
+-- 插入经济学教材
+INSERT INTO `book` (`isbn`, `title`, `author`, `edition`, `publisher`, `pub_date`, `cover_url`) VALUES
+    ('7890123456', '微观经济学', 'Robert S. Pindyck', 8, '机械工业出版社', '2018-01-01', 'http://example.com/cover7.jpg');
+
+-- 插入管理学教材
+INSERT INTO `book` (`isbn`, `title`, `author`, `edition`, `publisher`, `pub_date`, `cover_url`) VALUES
+    ('8901234567', '管理学：原理与实践', 'Stephen P. Robbins', 13, '清华大学出版社', '2015-01-01', 'http://example.com/cover8.jpg');
+
+-- 插入市场营销教材
+INSERT INTO `book` (`isbn`, `title`, `author`, `edition`, `publisher`, `pub_date`, `cover_url`) VALUES
+    ('9012345678', '市场营销原理', 'Philip Kotler', 15, '机械工业出版社', '2017-01-01', 'http://example.com/cover9.jpg');
+
+-- 插入心理学教材
+INSERT INTO `book` (`isbn`, `title`, `author`, `edition`, `publisher`, `pub_date`, `cover_url`) VALUES
+    ('0123456789', '心理学导论', 'John W. Santrock', 10, '北京大学出版社', '2013-01-01', 'http://example.com/cover10.jpg');
+
+-- 插入法律教材
+INSERT INTO `book` (`isbn`, `title`, `author`, `edition`, `publisher`, `pub_date`, `cover_url`) VALUES
+    ('1123456789', '民法总则', '崔建远', 2, '法律出版社', '2018-01-01', 'http://example.com/cover11.jpg');
+
+-- 插入医学教材
+INSERT INTO `book` (`isbn`, `title`, `author`, `edition`, `publisher`, `pub_date`, `cover_url`) VALUES
+    ('2123456789', '医学影像学', '金义成', 4, '人民卫生出版社', '2016-01-01', 'http://example.com/cover12.jpg');
+
+-- 插入教育学教材
+INSERT INTO `book` (`isbn`, `title`, `author`, `edition`, `publisher`, `pub_date`, `cover_url`) VALUES
+    ('3123456789', '教育心理学', 'Jeanne Ellis Ormrod', 9, '中国轻工业出版社', '2017-01-01', 'http://example.com/cover13.jpg');
+
+-- 插入历史学教材
+INSERT INTO `book` (`isbn`, `title`, `author`, `edition`, `publisher`, `pub_date`, `cover_url`) VALUES
+    ('4123456789', '世界历史', 'William J. Duiker', 7, '高等教育出版社', '2014-01-01', 'http://example.com/cover14.jpg');
+
+-- 插入哲学教材
+INSERT INTO `book` (`isbn`, `title`, `author`, `edition`, `publisher`, `pub_date`, `cover_url`) VALUES
+    ('5123456789', '西方哲学史', 'Bertrand Russell', 3, '商务印书馆', '2013-01-01', 'http://example.com/cover15.jpg');
+
+
+INSERT INTO `major` (`name`, `school_id`, `duration`) VALUES
+    ('计算机科学与技术', 1, 4);
+INSERT INTO `major` (`name`, `school_id`, `duration`) VALUES
+    ('电子信息工程', 2, 4);
+INSERT INTO `major` (`name`, `school_id`, `duration`) VALUES
+    ('机械工程', 3, 4);
+INSERT INTO `major` (`name`, `school_id`, `duration`) VALUES
+    ('经济学', 4, 4);
+INSERT INTO `major` (`name`, `school_id`, `duration`) VALUES
+    ('法学', 6, 4);
+INSERT INTO `major` (`name`, `school_id`, `duration`) VALUES
+    ('医学', 8, 5);
+INSERT INTO `major` (`name`, `school_id`, `duration`) VALUES
+    ('工商管理', 4, 4);
+INSERT INTO `major` (`name`, `school_id`, `duration`) VALUES
+    ('教育学', 9, 4);
+INSERT INTO `major` (`name`, `school_id`, `duration`) VALUES
+    ('建筑学', 7, 5);
+INSERT INTO `major` (`name`, `school_id`, `duration`) VALUES
+    ('环境工程', 10, 4);
+
+INSERT INTO `counselor` (`id`, `name`, `bir`) VALUES
+    ('C0000001', '张三', '1980-05-15');
+INSERT INTO `counselor` (`id`, `name`, `bir`) VALUES
+    ('C0000002', '李四', '1975-08-23');
+INSERT INTO `counselor` (`id`, `name`, `bir`) VALUES
+    ('C0000003', '王五', '1982-02-10');
+INSERT INTO `counselor` (`id`, `name`, `bir`) VALUES
+    ('C0000004', '赵六', '1978-11-30');
+INSERT INTO `counselor` (`id`, `name`, `bir`) VALUES
+    ('C0000005', '刘七', '1985-07-08');
+
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('主教学楼', '101', 1, 1, 50, 100);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('科技楼', '201', 2, 2, 40, 80);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('实验楼', '301', 3, 3, 30, 60);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('图书馆', '401', 4, 4, 80, 150);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('主教学楼', '102', 1, 2, 45, 95);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('科技楼', '202', 2, 3, 35, 70);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('实验楼', '302', 3, 4, 25, 50);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('图书馆', '402', 4, 1, 75, 140);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('行政楼', '502', 1, 3, 55, 105);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('主教学楼', '103', 1, 1, 50, 100);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('科技楼', '203', 2, 2, 40, 80);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('实验楼', '303', 3, 3, 30, 60);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('图书馆', '403', 4, 4, 80, 150);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('主教学楼', '104', 1, 2, 45, 95);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('科技楼', '204', 2, 3, 35, 70);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('实验楼', '304', 3, 4, 25, 50);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('图书馆', '404', 4, 1, 75, 140);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('行政楼', '503', 1, 3, 55, 105);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('主教学楼', '105', 1, 1, 50, 100);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('科技楼', '205', 2, 2, 40, 80);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('实验楼', '305', 3, 3, 30, 60);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('图书馆', '405', 4, 4, 80, 150);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('主教学楼', '106', 1, 2, 45, 95);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('科技楼', '206', 2, 3, 35, 70);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('实验楼', '306', 3, 4, 25, 50);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('图书馆', '406', 4, 1, 75, 140);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('行政楼', '504', 1, 3, 55, 105);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('主教学楼', '107', 1, 1, 50, 100);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('科技楼', '207', 2, 2, 40, 80);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('实验楼', '307', 3, 3, 30, 60);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('图书馆', '407', 4, 4, 80, 150);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('行政楼', '505', 1, 1, 60, 110);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('主教学楼', '108', 1, 2, 45, 95);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('科技楼', '208', 2, 3, 35, 70);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('实验楼', '308', 3, 4, 25, 50);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('图书馆', '408', 4, 1, 75, 140);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('行政楼', '506', 1, 3, 55, 105);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('主教学楼', '109', 1, 1, 50, 100);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('科技楼', '209', 2, 2, 40, 80);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('实验楼', '309', 3, 3, 30, 60);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('图书馆', '409', 4, 4, 80, 150);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('行政楼', '507', 1, 1, 60, 110);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('主教学楼', '110', 1, 2, 45, 95);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('科技楼', '210', 2, 3, 35, 70);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('实验楼', '310', 3, 4, 25, 50);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('图书馆', '410', 4, 1, 75, 140);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('行政楼', '508', 1, 3, 55, 105);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('主教学楼', '111', 1, 1, 50, 100);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('科技楼', '211', 2, 2, 40, 80);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('实验楼', '311', 3, 3, 30, 60);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('图书馆', '411', 4, 4, 80, 150);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('行政楼', '509', 1, 1, 60, 110);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('主教学楼', '112', 1, 2, 45, 95);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('科技楼', '212', 2, 3, 35, 70);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('实验楼', '312', 3, 4, 25, 50);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('图书馆', '412', 4, 1, 75, 140);
+INSERT INTO `classroom` (`building_name`, `room_number`, `campus_id`, `type`, `seat_num`, `area`) VALUES
+    ('行政楼', '510', 1, 3, 55, 105);
+
+
+-- 插入数据到 class 表中
+INSERT INTO `class` (`name`, `major_id`, `fe_stu_num`, `male_stu_num`, `counselor_id`, `campus_id`, `start_year`)
+VALUES
+    ('电信2201', 2, 30, 20, 'C0000001', 1, 2022),
+    ('电信2202', 2, 25, 25, 'C0000001', 2, 2022),
+    ('电信2203', 2, 20, 30, 'C0000001', 3, 2022),
+    ('电信2204', 2, 35, 15, 'C0000001', 4, 2022),
+    ('电信2205', 2, 28, 22, 'C0000001', 1, 2022),
+
+    ('机械2001', 3, 27, 23, 'C0000002', 2, 2020),
+    ('机械2002', 3, 24, 26, 'C0000002', 3, 2020),
+    ('机械2003', 3, 22, 28, 'C0000002', 4, 2020),
+    ('机械2004', 3, 33, 17, 'C0000002', 1, 2020),
+    ('机械2005', 3, 26, 24, 'C0000002', 2, 2020),
+
+    ('计科2101', 1, 31, 19, 'C0000003', 3, 2021),
+    ('计科2102', 1, 29, 21, 'C0000003', 4, 2021),
+    ('计科2103', 1, 23, 27, 'C0000003', 1, 2021),
+    ('计科2104', 1, 32, 18, 'C0000003', 2, 2021),
+    ('计科2105', 1, 30, 20, 'C0000003', 3, 2021),
+
+    ('经济管理2201', 4, 28, 22, 'C0000004', 4, 2022),
+    ('经济管理2202', 4, 27, 23, 'C0000004', 1, 2022),
+    ('经济管理2203', 4, 26, 24, 'C0000004', 2, 2022),
+    ('经济管理2204', 4, 29, 21, 'C0000004', 3, 2022),
+    ('经济管理2205', 4, 30, 20, 'C0000004', 4, 2022);
+
+INSERT INTO `class` (`name`, `major_id`, `fe_stu_num`, `male_stu_num`, `counselor_id`, `campus_id`, `start_year`)
+VALUES
+    ('法学2201', 5, 30, 20, 'C0000004', 2, 2022),
+    ('法学2202', 5, 25, 25, 'C0000004', 3, 2022),
+    ('法学2203', 5, 20, 30, 'C0000004', 4, 2022),
+    ('法学2204', 5, 35, 15, 'C0000004', 1, 2022),
+    ('法学2205', 5, 28, 22, 'C0000004', 2, 2022),
+    ('生物医学2201', 6, 30, 20, 'C0000005', 1, 2023),
+    ('生物医学2202', 6, 25, 25, 'C0000005', 2, 2023),
+    ('生物医学2203', 6, 20, 30, 'C0000005', 3, 2023),
+    ('生物医学2204', 6, 35, 15, 'C0000005', 4, 2023),
+    ('生物医学2205', 6, 28, 22, 'C0000005', 1, 2023);
+
+
+
+
