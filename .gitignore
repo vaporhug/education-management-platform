@@ -32,10 +32,15 @@ build/
 ### VS Code ###
 .vscode/
 
-### commit 助记文件 ###
+### docker生成 ###
+data/
+
+### commit 助记 ###
 commit_abstract.md
+
+### commit 助记文件 ###
+
 gateway/
 
-### docker data ###
-data/
+
 

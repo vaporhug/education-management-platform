@@ -9,7 +9,8 @@ services:
     ports:
       - '3307:3306'
     volumes:
-      - ./data:/var/lib/mysql
+      - ./data/mysql-data:/var/lib/mysql
+      - ./sql-init:/docker-entrypoint-initdb.d
       - ./sql-init:/docker-entrypoint-initdb.d
     command:
       --default-authentication-plugin=mysql_native_password
@@ -17,3 +18,20 @@ services:
       --collation-server=utf8mb4_general_ci
       --explicit_defaults_for_timestamp=true
       --lower_case_table_names=1
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6380:6379"
+    volumes:
+      - ./data/redis-data:/data
+    networks:
+      - backend
+
+volumes:
+  mysql-data:
+  redis-data:
+
+networks:
+  backend:

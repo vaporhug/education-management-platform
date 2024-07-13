@@ -1,6 +1,8 @@
-注释了父级项目中的spring security以及其test
-
-
-mysql -u root -pverysecret
-
-use fjxgwzd_eduma;
+数据库
+elseacher
+消息队列
+登录的注销
+登录的错误处理
+异常处理
+登录的超时等等
+缓存

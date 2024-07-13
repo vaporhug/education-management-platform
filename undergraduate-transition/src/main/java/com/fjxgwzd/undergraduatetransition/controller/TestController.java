@@ -1,12 +1,15 @@
-package com.fjxgwzd.undergraduatetransition;
+package com.fjxgwzd.undergraduatetransition.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TestController {
+    @Value("${test-property:ru}")
+    String testValue;
     @RequestMapping("/test")
     public String test() {
-        return "test";
+        return testValue;
     }
 }

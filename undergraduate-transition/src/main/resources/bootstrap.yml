@@ -1,9 +1,9 @@
 server:
-  port: 8081
+  port: 8083
 
 spring:
   application:
-    name: academic-management
+    name: undergraduate-transition
   cloud:
     nacos:
       config:
@@ -13,6 +13,3 @@ spring:
         file-extension: properties
       discovery:
         server-addr: 8.130.106.248:8848
-
-
-
