@@ -62,6 +62,7 @@ keytool -import -alias cas-server-cert -keystore /Users/shuoli/Library/Java/Java
 就可以了，不需要经过网关
 
 目前的登录做的很简单，注销和一些异常处理和错误处理包括超时等都没有做，之后会完善。
+有时候有可能访问不到，因为服务器上运行的cas server好想会随着我连接的shell的关闭而关闭，到时候让我重开就可以了
 
 ### 用户插入
 目前只有两个用户，账密分别是lishuo:lishuo,ru:ru，新增用户可以在数据库里插入，按照以下图示连接数据库
