@@ -17,7 +17,7 @@ public class CourseInfoVO {
     private Integer credit;
     private Integer gradeLevel;
     private Integer schoolId;
-    private String schoolName;
+    private String[] schoolName;
     private String coursePic;
     private Integer year;
     private boolean termPart;

@@ -1,9 +1,11 @@
 package com.fjxgwzd.teacherresourcesharing.vo;
 
 import com.fjxgwzd.teacherresourcesharing.entity.File;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class CourseDetalVO {
     // 几几年
     private String courseInstId;

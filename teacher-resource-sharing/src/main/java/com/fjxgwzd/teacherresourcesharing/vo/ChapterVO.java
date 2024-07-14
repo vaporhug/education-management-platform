@@ -10,5 +10,5 @@ import java.util.List;
 public class ChapterVO {
     private Integer chapterId;
     private String chapterName;
-    private List<MaterialVO> matetials;
+    private List<MaterialVO> materials;
 }

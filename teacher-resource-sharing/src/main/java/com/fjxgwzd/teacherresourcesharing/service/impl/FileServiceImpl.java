@@ -9,6 +9,7 @@ import com.fjxgwzd.teacherresourcesharing.minio.MinioProperties;
 import com.fjxgwzd.teacherresourcesharing.service.FileService;
 import com.fjxgwzd.teacherresourcesharing.vo.ChapterVO;
 import com.fjxgwzd.teacherresourcesharing.vo.CourseDetalVO;
+import com.fjxgwzd.teacherresourcesharing.vo.MaterialVO;
 import io.minio.*;
 import io.minio.errors.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,8 +125,8 @@ public class FileServiceImpl implements FileService {
         File file = chapterMapper.getFileByChapterId(chapterId);
         // 2、根据url访问minio，将minio中对应的内容删除掉
         URL url = new URL(file.getUrl());
-        String bucketName = url.getHost();
-        String objectName = url.getFile().substring(1);
+        String bucketName = url.getPath().split("/")[1];
+        String objectName = url.getPath().substring(url.getPath().indexOf("/", 1));
         minioClient.removeObject(RemoveObjectArgs.builder().bucket(bucketName).object(objectName).build());
         // 3、清空对应记录
         // 3.1、首先清除teaching_material
@@ -145,8 +146,20 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public CourseDetalVO courseDetailsInfo(Integer courseInstId) throws JsonProcessingException {
-        //  通过courseId查询到所有对应的信息，存储在courseVO当中
+//        //  通过courseId查询到所有对应的信息，存储在courseVO当中
         CourseDetalVO courseDetalByCourseInstId = chapterMapper.findCourseDetalByCourseInstId(courseInstId);
         return courseDetalByCourseInstId;
+//        CourseDetalVO courseDetalVO = chapterMapper.findCourseBasicDetailByChapterId(courseInstId);
+//        List<ChapterVO> chapterVOList = chapterMapper.findChapterByCourseId(courseInstId);
+//        List<MaterialVO> chapterMaterialList = chapterMapper.findMaterialByCourseId(courseInstId);
+//        for(ChapterVO chapterVO : chapterVOList){
+//            for(MaterialVO materialVO : chapterMaterialList){
+//                chapterVO.getMatetials().add(materialVO);
+//            }
+//        }
+//        courseDetalVO.
+//    }
+//        CourseDetalVO courseDetalVO = new CourseDetalVO();
+//        return courseDetalVO;
     }
 }

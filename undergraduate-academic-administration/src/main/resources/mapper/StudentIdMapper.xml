@@ -4,15 +4,15 @@
     <select id="getEducationPlanByMajorId" resultType="com.fjxgwzd.undergraduateacademicadministration.vo.EducationPlanVO">
         SELECT
             mj.name AS major_name,
-            mj.duration AS time,
+            mdm.cohort_year AS time,
             af.id AS aaoOfficeId,
             af.name AS aaoOfficeName,
             sc.id AS schoolId,
             sc.name AS schoolName,
             mdm.degree_awarded AS degreeName,
             mdm.standard_duration_year AS duration,
-            mdm.max_duration,
-            mdm.min_duration,
+            mdm.max_duration AS maxDuration,
+            mdm.min_duration AS minDuration,
             mdm.intro AS description,
             mdm.target,
             mdm.req,
@@ -35,10 +35,10 @@
         JOIN
             course_struct cs ON cs.id = ccf.course_struct_id
         WHERE
-            mj.id = #{majorId} AND ccf.cohort_year = #{cohortYear}
+            mj.id = #{majorId} AND ccf.cohort_year = #{cohortYear} AND cs.cohort_year = #{cohortYear}
         GROUP BY
             mj.name,
-            mj.duration,
+            mdm.cohort_year,
             af.id,
             af.name,
             sc.id,
@@ -53,21 +53,21 @@
     </select>
     <select id="findCourseInstByStudentId">
         SELECT
-            ci.id AS course_inst_id,
-            cis.id AS "course_inst_section.course_inst_section_id",
-            cis.name AS "course_inst_section.course_inst_section_name",
+            ci.id AS courseInstId,
+            cis.id AS "courseInstSection.courseInstSectionId",
+            cis.name AS "courseInstSection.courseInstSectionName",
             c.name,
-            c.course_type,
-            c.course_cate,
-            c.course_for,
+            c.course_type AS courseType,
+            c.course_cate AS courseCate,
+            c.course_for AS courseFor,
             c.credit,
-            c.grade_level,
-            c.school_id,
-            sc.name,
-            f.url AS course_pic,
+            c.grade_level AS gradeLevel,
+            c.school_id AS schoolId,
+            sc.name AS schoolName,
+            f.url AS coursePic,
             ci.year,
-            ci.term_part,
-            ci.total_class_hour
+            ci.term_part AS termPart,
+            ci.total_class_hour AS totalClassHour
         FROM course_inst ci
         JOIN course c ON c.id = ci.course_id
         JOIN course_inst_section cis ON cis.course_inst_id = ci.id
@@ -75,5 +75,59 @@
         JOIN school sc ON sc.id = c.school_id
         JOIN file f ON f.id = c.course_pic
         WHERE cs.stu_id = #{studentId} AND ci.year = #{year} AND ci.term_part = #{termPart}
+    </select>
+    <select id="getStudentDetailInfoByStudentId">
+        SELECT f.url AS picUrl,
+               st.name,
+               st.gender,
+               st.id AS stuId,
+               st.phone_number AS phoneNumber,
+               st.major_id AS majorId,
+               mj.name AS majorName,
+               st.birthday,
+               st.address,
+               sc.id AS schoolId,
+               sc.name AS schoolName,
+               st.now_level AS gradeLevel,
+               st.identity
+        FROM student st
+        JOIN major mj ON mj.id = st.major_id
+        JOIN school sc ON mj.school_id = sc.id
+        JOIN file f ON f.id = st.stu_pic
+        WHERE st.id = #{studentId}
+    </select>
+
+    <select id="getCourseTaskByStudentId">
+        SELECT cis.id AS courseInstSectionId,
+               ci.id AS courseInstId,
+               c.name AS courseName,
+               GROUP_CONCAT(ter.name SEPARATOR ',') AS courseTeacherName,
+               cr.room_number AS classroomName,
+               cs.day_of_week AS dayOfWeek,
+               cs.period_from AS periodFrom,
+               cs.period_to AS periodTo
+        FROM course_inst_section cis
+        JOIN course_inst ci ON cis.course_inst_id = ci.id
+        JOIN course c ON c.id = ci.course_id
+        JOIN teach t ON t.course_id = ci.course_id
+        JOIN teacher ter ON ter.id = t.teacher_id
+        JOIN course_sched cs ON cs.course_section_id = cis.id
+        JOIN classroom cr ON cr.id = cs.classroom_id
+        JOIN course_selection sc ON sc.course_sec_id = cis.id
+        WHERE sc.stu_id = #{studentId} AND cs.year = #{year} AND cs.term_part = #{termPart} AND cs.week = #{week}
+        GROUP BY
+            cis.id,
+            ci.id,
+            c.name,
+            cr.room_number,
+            cs.day_of_week,
+            cs.period_from,
+            cs.period_to
+    </select>
+
+    <select id="getAllSemester">
+        SELECT *
+        FROM semester
+        ORDER BY to_date DESC
     </select>
 </mapper>

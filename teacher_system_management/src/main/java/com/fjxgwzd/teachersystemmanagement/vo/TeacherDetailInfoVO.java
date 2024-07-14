@@ -10,7 +10,7 @@ public class TeacherDetailInfoVO {
     private String teacherId;
     private String teacherName;
     private String phone;
-    private LocalDateTime hire_date;
+    private LocalDateTime hireDate;
     private String type;
     private boolean gender;
     private Integer schoolId;

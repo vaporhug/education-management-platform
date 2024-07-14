@@ -28,12 +28,13 @@ public class FileController {
     }
 
     @DeleteMapping("/delete")
-    public Result<String> deleteFile(@RequestParam("chapter_id") int chapter_id) {
+    public Result<String> deleteFile(@RequestParam("chapter_id") Integer chapter_id) {
         // 在此处的API删除文件，所需上传的主要是该chapter_id，以及由网关传来的用户身份id，我由用户身份id进行课程权限查询
         try {
             String result = fileService.deleteFile(chapter_id);
             return Result.ok(result);
         } catch (Exception e) {
+            e.printStackTrace();
             return Result.fail();
         }
     }

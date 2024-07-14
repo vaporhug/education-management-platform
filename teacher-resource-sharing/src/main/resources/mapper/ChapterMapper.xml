@@ -1,6 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fjxgwzd.teacherresourcesharing.mapper.ChapterMapper">
+    <resultMap id="courseDetailResultMap" type="com.fjxgwzd.teacherresourcesharing.vo.CourseDetalVO">
+        <id property="courseInstId" column="course_inst_id"/>
+        <result property="name" column="name"/>
+        <result property="courseType" column="course_type"/>
+        <result property="courseCate" column="course_cate"/>
+        <result property="courseFor" column="course_for"/>
+        <result property="credit" column="credit"/>
+        <result property="gradeLevel" column="grade_level"/>
+        <result property="schoolId" column="school_id"/>
+        <result property="schoolName" column="school_name"/>
+        <result property="coursePic" column="course_pic"/>
+        <result property="year" column="year"/>
+        <result property="termPart" column="term_part"/>
+        <result property="totalClassHour" column="total_class_hour"/>
+        <result property="instructorMsg" column="instructor_msg"/>
+        <result property="overview" column="overview"/>
+        <result property="target" column="target"/>
+        <result property="assessMethod" column="assess_method"/>
+        <result property="methodDetal" column="method_detal"/>
+        <result property="maxNum" column="max_num"/>
+        <collection property="chapterList" ofType="com.fjxgwzd.teacherresourcesharing.vo.ChapterVO">
+            <id property="chapterId" column="chapter_id"/>
+            <result property="chapterName" column="chapter_name"/>
+            <collection property="materials" ofType="com.fjxgwzd.teacherresourcesharing.vo.MaterialVO">
+                <id property="materialId" column="material_id"/>
+                <result property="fileId" column="file_id"/>
+                <result property="fileName" column="file_name"/>
+                <result property="fileUrl" column="file_url"/>
+            </collection>
+        </collection>
+    </resultMap>
     <!--    根据hash值查看是否已有该文件   -->
     <select id="findByHash"  resultType="boolean" parameterType="java.lang.String">
         SELECT EXISTS(
@@ -21,8 +52,7 @@
         SELECT f.*
         FROM file f
         JOIN teaching_material tm ON f.id = tm.file_id
-        JOIN chapter ch ON tm.for_chapter = ch.id
-        WHERE ch.id = #{chapterId}
+        WHERE tm.for_chapter = #{chapterId}
     </select>
     
     <delete id="removeTeachingMaterialByChapterId">
@@ -37,19 +67,19 @@
 
     <select id="findCourseInstByTeacherId" resultType="com.fjxgwzd.teacherresourcesharing.vo.CourseInfoVO">
         SELECT
-            ci.id AS course_inst_id,
+            ci.id AS courseInstId,
             c.name,
-            c.course_type,
-            c.course_cate,
-            c.course_for,
+            c.course_type AS courseType,
+            c.course_cate AS courseCate,
+            c.course_for AS courseFor,
             c.credit,
-            c.grade_level,
-            c.school_id,
-            sc.name,
-            f.url AS course_pic,
+            c.grade_level AS gradeLevel,
+            c.school_id AS schoolId,
+            sc.name AS schoolName,
+            f.url AS coursePic,
             ci.year,
-            ci.term_part,
-            ci.total_class_hour
+            ci.term_part AS termPart,
+            ci.total_class_hour AS totalClassHour
         FROM
             course_inst ci
         JOIN
@@ -63,7 +93,80 @@
         WHERE
             t.teacher_id = #{teacherId} AND ci.year = #{year} AND ci.term_part = #{termPart}
     </select>
-    <select id="findCourseDetalByCourseInstId" resultType="com.fjxgwzd.teacherresourcesharing.vo.ChapterVO">
+    <select id="findCourseDetalByCourseInstId" resultMap="courseDetailResultMap">
+--         SELECT
+--             ci.id AS course_inst_id,
+--             c.name,
+--             c.course_type,
+--             c.course_cate,
+--             c.course_for,
+--             c.credit,
+--             c.grade_level,
+--             c.school_id,
+--             sc.name,
+--             f.url AS course_pic,
+--             ci.year,
+--             ci.term_part,
+--             ci.total_class_hour,
+--             ci.instructor_msg,
+--             ci.overview,
+--             ci.target,
+--             ci.assess_method,
+--             ci.method_detal,
+--             ci.max_num,
+-- --             GROUP_CONTACT(ch.id AS "chapterList.chapterId" FROM )
+--             ch.id AS "chapterList.chapterId",
+--             ch.title AS "chapterList.chapterName",
+--             tm.id AS "chapterList.matetials.materialId",
+--             fl.id AS "chapterList.matetials.fileId",
+--             tm.name AS "chapterList.matetials.fileName",
+--             fl.url AS "chapterList.matetials.fileUrl"
+--         FROM
+--             course_inst ci
+--         JOIN course c ON c.id = ci.course_id
+--         JOIN school sc ON sc.id = c.school_id
+--         JOIN file f ON f.id = c.course_pic
+--         JOIN chapter ch ON ch.course_inst_id = ci.id
+--         JOIN teaching_material tm ON tm.for_chapter = ch.id
+--         JOIN file fl ON fl.id = tm.file_id
+--         WHERE ci.id = #{courseInstId}
+    SELECT
+        ci.id AS course_inst_id,
+        c.name,
+        c.course_type,
+        c.course_cate,
+        c.course_for,
+        c.credit,
+        c.grade_level,
+        c.school_id,
+        sc.name AS school_name,
+        f.url AS course_pic,
+        ci.year,
+        ci.term_part,
+        ci.total_class_hour,
+        ci.instructor_msg,
+        ci.overview,
+        ci.target,
+        ci.assess_method,
+        ci.method_detal,
+        ci.max_num,
+        ch.id AS chapter_id,
+        ch.title AS chapter_name,
+        tm.id AS material_id,
+        fl.id AS file_id,
+        tm.name AS file_name,
+        fl.url AS file_url
+    FROM
+        course_inst ci
+    JOIN course c ON c.id = ci.course_id
+    JOIN school sc ON sc.id = c.school_id
+    JOIN file f ON f.id = c.course_pic
+    LEFT JOIN chapter ch ON ch.course_inst_id = ci.id
+    LEFT JOIN teaching_material tm ON tm.for_chapter = ch.id
+    LEFT JOIN file fl ON fl.id = tm.file_id
+    WHERE ci.id = #{courseInstId}
+    </select>
+    <select id="findCourseBasicDetailByChapterId">
         SELECT
             ci.id AS course_inst_id,
             c.name,
@@ -83,22 +186,31 @@
             ci.target,
             ci.assess_method,
             ci.method_detal,
-            ci.max_num,
-            ch.id AS "chapterList.chapterId",
-            ch.title AS "chapterList.chapterName",
-            tm.id AS "chapterList.matetials.materialId",
-            fl.id AS "chapterList.matetials.fileId",
-            tm.name AS "chapterList.matetials.fileName",
-            fl.url AS "chapterList.matetials.fileUrl"
-        FROM
-            course_inst ci
+            ci.max_num
+        FROM course_inst ci
         JOIN course c ON c.id = ci.course_id
         JOIN school sc ON sc.id = c.school_id
         JOIN file f ON f.id = c.course_pic
-        JOIN chapter ch ON ch.course_inst_id = ci.id
-        JOIN teaching_material tm ON tm.for_chapter = ch.id
-        JOIN file fl ON fl.id = tm.file_id
         WHERE ci.id = #{courseInstId}
+    </select>
+    <select id="findChapterByCourseId">
+        SELECT
+            ch.id AS chapterId,
+            ch.title AS chapterName
+        FROM chapter ch
+        WHERE ch.course_inst_id = #{courseInstId}
+    </select>
+    
+    <select id="findMaterialByCourseId">
+        SELECT
+            tm.id AS materialId,
+            fl.id AS fileId,
+            tm.name AS fileName,
+            fl.url AS fileUrl
+        FROM teaching_material tm
+        JOIN chapter ch ON ch.id = tm.for_chapter
+        JOIN file fl ON fl.id = tm.file_id
+        WHERE ch.course_inst_d = #{courseInstId}
     </select>
     
     <insert id="insertFileDetails" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">

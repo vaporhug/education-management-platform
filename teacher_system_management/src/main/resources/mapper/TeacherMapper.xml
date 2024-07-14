@@ -5,22 +5,22 @@
            SELECT t.id AS teacherId,
                   t.name AS teacherName,
                   t.phone,
-                  t.hire_date,
+                  t.hire_date AS hireDate,
                   t.type,
                   t.gender,
-                  t.school_id,
+                  t.school_id AS schoolId,
                   sc.name AS schoolName,
-                  t.major_id,
+                  t.major_id AS majorId,
                   mj.name AS majorName,
                   t.title,
                   t.bachelor,
                   t.email,
                   t.desc AS description,
-                  t.research_focus,
+                  t.research_focus AS researchFocus,
                   f.url AS picUrl,
                   t.address,
-                  af.id,
-                  af.name,
+                  af.id AS aaoOfficeId,
+                  af.name AS aaoOfficeName,
                   t.identity
            FROM teacher t
            JOIN school sc ON sc.id = t.school_id
@@ -31,10 +31,10 @@
        </select>
 
        <select id="getEduExpByTeacherId">
-              SELECT ee.from_date,
-                     ee.to_date,
-                     ee.uni_name,
-                     ee.major_name,
+              SELECT ee.from_date AS fromDate,
+                     ee.to_date AS toDate,
+                     ee.uni_name AS uniName,
+                     ee.major_name AS majorName,
                      ee.bachelor
               FROM edu_experience ee
               WHERE ee.teacher_id = #{teacherId}

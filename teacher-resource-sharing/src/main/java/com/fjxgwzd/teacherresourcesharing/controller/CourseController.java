@@ -22,9 +22,9 @@ public class CourseController {
     public Result<List<CourseInfoVO>> coursesInfo(@RequestParam("teacher_id") String teacherId, @RequestParam("year") Integer year, @RequestParam("termPart") boolean termPart) {
         // 需要网关将传来的token验证转化为对应的用户id，我将该用户所教授的所有课程信息返回
         try {
-            List<CourseInfoVO> result = courseService.coursesInfo(teacherId,year,termPart);
+            List<CourseInfoVO> result = courseService.coursesInfo(teacherId, year, termPart);
             return Result.ok(result);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return Result.fail();
         }

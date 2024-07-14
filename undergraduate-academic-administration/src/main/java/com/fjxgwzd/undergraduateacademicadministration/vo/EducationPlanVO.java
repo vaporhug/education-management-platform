@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class EducationPlanVO {
     // 课程名
-    private String major_name;
+    private String majorName;
     private String time;
     private Integer aaoOfficeId;
     private String aaoOfficeName;
