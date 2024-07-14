@@ -65,7 +65,7 @@ keytool -import -alias cas-server-cert -keystore /Users/shuoli/Library/Java/Java
 有时候有可能访问不到，因为服务器上运行的cas server好想会随着我连接的shell的关闭而关闭，到时候让我重开就可以了
 
 ### 用户插入
-目前只有两个用户，账密分别是lishuo:lishuo,ru:ru，新增用户可以在数据库里插入，按照以下图示连接数据库
+目前只有两个用户，账密分别是lishuo:lishuo,ru:ru，新增用户可以在数据库里插入，按照以下图示连接数据库,密码是123456.Li
 ![img.png](imgs/img3.png)
 
 然后在users表里插入数据即可，密码暂时还是明文的，后续会改成加密的，然后这里的字段是username和password，username就对应了id，后续字段名应该也不会改，原因是麻烦，使用
