@@ -4,10 +4,7 @@ package com.fjxgwzd.undergraduateacademicadministration.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fjxgwzd.common.result.Result;
 import com.fjxgwzd.undergraduateacademicadministration.service.AdministrationService;
-import com.fjxgwzd.undergraduateacademicadministration.vo.CourseTaskVO;
-import com.fjxgwzd.undergraduateacademicadministration.vo.DefaultCourseTableVO;
-import com.fjxgwzd.undergraduateacademicadministration.vo.EducationPlanVO;
-import com.fjxgwzd.undergraduateacademicadministration.vo.StudentDetailInfoVO;
+import com.fjxgwzd.undergraduateacademicadministration.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,6 +69,17 @@ public class AdministrationController {
             courseTaskVOList = administrationService.getCourseTaskByStudentId(studentId,year,termPart,week);
             return Result.ok(courseTaskVOList);
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return Result.fail();
+        }
+    }
+
+    @PostMapping("/studentInfo")
+    public Result<TotalStudentDetailVO> studentInfo(@RequestParam(required = false) Short schoolId, @RequestParam(required = false) Short majorId, @RequestParam(required = false) Integer startYear, @RequestParam(required = false) Integer classId, @RequestParam(required = false) boolean gender, @RequestParam(required = false) String name, @RequestParam(required = true) Integer offset, @RequestParam(required = true) Integer num) {
+        try {
+            TotalStudentDetailVO totalStudentDetailVO = administrationService.getTotalStudentDetail(schoolId,majorId,startYear,classId,gender,name,offset,num);
+            return Result.ok(totalStudentDetailVO);
+        }catch (Exception e){
             e.printStackTrace();
             return Result.fail();
         }

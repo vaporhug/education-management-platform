@@ -1,16 +1,15 @@
 package com.fjxgwzd.teachersystemmanagement.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fjxgwzd.teachersystemmanagement.vo.CourseTaskVO;
-import com.fjxgwzd.teachersystemmanagement.vo.DefaultCourseTableVO;
-import com.fjxgwzd.teachersystemmanagement.vo.TeacherDetailInfoVO;
-import com.fjxgwzd.teachersystemmanagement.vo.TeacherResearchFindings;
+import com.fjxgwzd.teachersystemmanagement.vo.*;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
 public interface TeacherService {
     TeacherDetailInfoVO getTeacherDetailInfo(String teacherId);
-    TeacherResearchFindings teacherResearchFindings(String teacherId, Integer offset, Integer num);
+    TeacherResearchFindings teacherResearchFindings(String teacherId,Integer type, Integer offset, Integer num);
     DefaultCourseTableVO getDefaultCourseTableByTeacherId(String teacherId) throws Exception;
     List<CourseTaskVO> getCourseTaskByTeacherId(String teacherId, Integer year, boolean termPart, Integer week) throws JsonProcessingException;
+    TotalTeacherDetailVO getTotalTeacherDetail(Short schoolId, Short majorId, String title, String name, boolean gender, Integer offset, Integer num);
 }

@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,14 +40,14 @@ public class TeacherInfoImpl implements TeacherService {
     }
 
     @Override
-    public TeacherResearchFindings teacherResearchFindings(String teacherId, Integer offset, Integer num) {
+    public TeacherResearchFindings teacherResearchFindings(String teacherId,Integer type, Integer offset, Integer num) {
         // 由offset为开始
         // num为获取总数
-        List<TeacherResearchFinding> teacherResearchFindingList = teacherMapper.getTeacherResearchFindingsByTeacherId(teacherId,offset,num);
+        List<TeacherResearchFinding> teacherResearchFindingList = teacherMapper.getTeacherResearchFindingsByTeacherId(teacherId,type,offset,num);
         TeacherResearchFindings teacherResearchFindings = new TeacherResearchFindings();
         teacherResearchFindings.setTeacherResearchFindings(teacherResearchFindingList);
         // 获取总数，此时暂时使用每次都计算
-        teacherResearchFindings.setSum(teacherMapper.getTeacherResearchFindingsCountByTeacherId(teacherId)/num);
+        teacherResearchFindings.setSum(teacherMapper.getTeacherResearchFindingsCountByTeacherId(teacherId, type)/num);
         return teacherResearchFindings;
     }
     public String changeBachelor(String bachelorId) {
@@ -143,5 +144,24 @@ public class TeacherInfoImpl implements TeacherService {
         int weekNumber = (int) (daysBetween / 7) + 1; // +1 是因为第1天就算第1周
 
         return weekNumber;
+    }
+
+    @Override
+    public TotalTeacherDetailVO getTotalTeacherDetail(Short schoolId, Short majorId, String title, String name, boolean gender, Integer offset, Integer num) {
+        TotalTeacherDetailVO totalTeacherDetailVO = new TotalTeacherDetailVO();
+        totalTeacherDetailVO.setSum(teacherMapper.getSum(schoolId,majorId,title,name,gender));
+        List<TeacherDetailInfoVO> teacherDetailInfoVOList = teacherMapper.getTotalTeacherDetailInfo(schoolId,majorId,title,name,gender,offset,num);
+        for (TeacherDetailInfoVO teacherDetailInfoVO : teacherDetailInfoVOList) {
+            teacherDetailInfoVO.setBachelor(changeBachelor(teacherDetailInfoVO.getBachelor()));
+            teacherDetailInfoVO.setType(changeTeacherType(teacherDetailInfoVO.getType()));
+            teacherDetailInfoVO.setTitle(changeTeacherTitle(teacherDetailInfoVO.getTitle()));
+            List<EduExpVO> eduExpVOS = teacherMapper.getEduExpByTeacherId(teacherDetailInfoVO.getTeacherId());
+            for (EduExpVO eduExpVO : eduExpVOS) {
+                eduExpVO.setBachelor(changeTeacherType(eduExpVO.getBachelor()));
+            }
+            teacherDetailInfoVO.setEduExpList(eduExpVOS);
+        }
+        totalTeacherDetailVO.setTeacherDetailVOList(teacherDetailInfoVOList);
+        return totalTeacherDetailVO;
     }
 }

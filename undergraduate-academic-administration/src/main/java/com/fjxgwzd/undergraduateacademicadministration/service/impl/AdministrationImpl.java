@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fjxgwzd.undergraduateacademicadministration.entity.Semester;
 import com.fjxgwzd.undergraduateacademicadministration.mapper.StudentIdMapper;
 import com.fjxgwzd.undergraduateacademicadministration.service.AdministrationService;
-import com.fjxgwzd.undergraduateacademicadministration.vo.CourseTaskVO;
-import com.fjxgwzd.undergraduateacademicadministration.vo.DefaultCourseTableVO;
-import com.fjxgwzd.undergraduateacademicadministration.vo.EducationPlanVO;
-import com.fjxgwzd.undergraduateacademicadministration.vo.StudentDetailInfoVO;
+import com.fjxgwzd.undergraduateacademicadministration.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -115,5 +112,14 @@ public class AdministrationImpl implements AdministrationService {
         int weekNumber = (int) (daysBetween / 7) + 1; // +1 是因为第1天就算第1周
 
         return weekNumber;
+    }
+
+    @Override
+    public TotalStudentDetailVO getTotalStudentDetail(Short schoolId, Short majorId, Integer startYear, Integer classId, boolean gender, String name, Integer offset, Integer num) throws JsonProcessingException {
+        TotalStudentDetailVO totalStudentDetailVO = new TotalStudentDetailVO();
+        totalStudentDetailVO.setSum(studentIdMapper.getSum(schoolId,majorId,startYear,classId,gender,name)/num);
+        List<StudentDetailInfoVO> studentDetailInfoVOList = studentIdMapper.getTotalStudentDetail(schoolId,majorId,startYear,classId,gender,name,offset,num);
+        totalStudentDetailVO.setStudentDetailInfoVOList(studentDetailInfoVOList);
+        return totalStudentDetailVO;
     }
 }

@@ -2,16 +2,14 @@ package com.fjxgwzd.teachersystemmanagement.contorller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fjxgwzd.teachersystemmanagement.service.TeacherService;
-import com.fjxgwzd.teachersystemmanagement.vo.CourseTaskVO;
-import com.fjxgwzd.teachersystemmanagement.vo.DefaultCourseTableVO;
-import com.fjxgwzd.teachersystemmanagement.vo.TeacherResearchFindings;
+import com.fjxgwzd.teachersystemmanagement.vo.*;
 import com.fjxgwzd.common.result.Result;
+import com.fjxgwzd.undergraduateacademicadministration.vo.TotalStudentDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.fjxgwzd.teachersystemmanagement.vo.TeacherDetailInfoVO;
 
 import java.util.List;
 
@@ -27,8 +25,8 @@ public class InfoConrtoller {
     }
 
     @PostMapping("/TeacherResearchFindings")
-    public Result<TeacherResearchFindings> teacherResearchFindings(@RequestParam("teacherId") String teacherId, @RequestParam("offset") Integer offset, @RequestParam("num") Integer num) {
-        TeacherResearchFindings teacherResearchFindingsList = teacherService.teacherResearchFindings(teacherId, offset, num);
+    public Result<TeacherResearchFindings> teacherResearchFindings(@RequestParam("teacherId") String teacherId,@RequestParam("type") Integer type, @RequestParam("offset") Integer offset, @RequestParam("num") Integer num) {
+        TeacherResearchFindings teacherResearchFindingsList = teacherService.teacherResearchFindings(teacherId, type, offset, num);
         return Result.ok(teacherResearchFindingsList);
     }
 
@@ -51,6 +49,17 @@ public class InfoConrtoller {
              List<CourseTaskVO> courseTaskVOList = teacherService.getCourseTaskByTeacherId(teacherId,year,termPart,week);
             return Result.ok(courseTaskVOList);
         } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return Result.fail();
+        }
+    }
+
+    @PostMapping("/teacherInfo")
+    public Result<TotalTeacherDetailVO> teacherInfo(@RequestParam(required = false) Short schoolId, @RequestParam(required = false) Short majorId, @RequestParam(required = false) String title, @RequestParam(required = false) String name, @RequestParam(required = false) boolean gender, @RequestParam(required = true) Integer offset, @RequestParam(required = true) Integer num) {
+        try {
+            TotalTeacherDetailVO totalStudentDetailVO = teacherService.getTotalTeacherDetail(schoolId, majorId, title, name,gender,offset,num);
+            return Result.ok(totalStudentDetailVO);
+        }catch (Exception e){
             e.printStackTrace();
             return Result.fail();
         }

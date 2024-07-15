@@ -130,4 +130,48 @@
         FROM semester
         ORDER BY to_date DESC
     </select>
+
+    <select id="getTotalStudentDetail">
+        SELECT f.url AS picUrl,
+               s.name,
+               s.gender,
+               s.id AS stuId,
+               s.phone_number AS phoneNumber,
+               s.major_id AS majorId,
+               mj.name AS majorName,
+               s.birthday,
+               s.address,
+               mj.school_id AS schoolId,
+               sc.name AS schoolName,
+               s.now_level AS gradeLevel,
+               s.identity
+            FROM student s
+            JOIN file f ON f.id = s.stu_pic
+            JOIN major mj ON mj.id = s.major_id
+            JOIN school sc ON sc.id = mj.school_id
+            JOIN class c ON c.id = s.class_id
+            WHERE (#{schoolId} IS NULL OR sc.id = #{schoolId})
+              AND (#{majorId} IS NULL OR s.major_id = #{majorId})
+              AND (#{startYear} IS NULL OR c.start_year = #{startYear})
+              AND (#{classId} IS NULL OR c.id = #{classId})
+              AND (#{gender} IS NULL OR s.gender = #{gender})
+              AND (#{name} IS NULL OR s.name = #{name})
+            ORDER BY s.id
+            LIMIT #{offset}, #{num}
+    </select>
+
+    <select id="getSum">
+        SELECT COUNT(*)
+            FROM student s
+            JOIN file f ON f.id = s.stu_pic
+            JOIN major mj ON mj.id = s.major_id
+            JOIN school sc ON sc.id = mj.school_id
+            JOIN class c ON c.id = s.class_id
+            WHERE (#{schoolId} IS NULL OR sc.id = #{schoolId})
+              AND (#{majorId} IS NULL OR s.major_id = #{majorId})
+              AND (#{startYear} IS NULL OR c.start_year = #{startYear})
+              AND (#{classId} IS NULL OR c.id = #{classId})
+              AND (#{gender} IS NULL OR s.gender = #{gender})
+              AND (#{name} IS NULL OR s.name = #{name})
+    </select>
 </mapper>
