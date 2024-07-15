@@ -28,11 +28,11 @@ public interface ChapterMapper {
     boolean removeTeachingMaterialByChapterId(Integer chapterId);
     boolean removeFileByFileId(Integer fileId);
     List<CourseInfoVO> findCourseInstByTeacherId(String teacherId, Integer year, boolean termPart);
-    // 修改为两部分内容，一部分为获取该课程的基础信息，另一部分为获取该课程的所有章节信息，以实现正确查询
-    CourseDetalVO findCourseDetalByCourseInstId(@Param("courseInstId") Integer courseInstId);
+//    // 修改为两部分内容，一部分为获取该课程的基础信息，另一部分为获取该课程的所有章节信息，以实现正确查询
+//    CourseDetalVO findCourseDetalByCourseInstId(@Param("courseInstId") Integer courseInstId);
     CourseDetalVO findCourseBasicDetailByChapterId(Integer chapterId);
-    List<ChapterVO> findChapterByCourseId(Integer courseId);
-    List<MaterialVO> findMaterialByCourseId(Integer courseId);
+    List<ChapterVO> findParentChapter(Integer courseId);
+    List<MaterialVO> findMaterialByCourseIdParent(Integer courseId, Integer parentId);
     // 将最后返回结果由本部分代码进行拼接合并返回
     void insertFileDetails(Map<String, Object> params);
     Integer teacherMaterialId(Map<String, Object> params);

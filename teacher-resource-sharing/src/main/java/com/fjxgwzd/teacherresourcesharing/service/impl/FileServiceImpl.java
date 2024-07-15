@@ -147,8 +147,8 @@ public class FileServiceImpl implements FileService {
     @Override
     public CourseDetalVO courseDetailsInfo(Integer courseInstId) throws JsonProcessingException {
 //        //  通过courseId查询到所有对应的信息，存储在courseVO当中
-        CourseDetalVO courseDetalByCourseInstId = chapterMapper.findCourseDetalByCourseInstId(courseInstId);
-        return courseDetalByCourseInstId;
+//        CourseDetalVO courseDetalByCourseInstId = chapterMapper.findCourseDetalByCourseInstId(courseInstId);
+//        return courseDetalByCourseInstId;
 //        CourseDetalVO courseDetalVO = chapterMapper.findCourseBasicDetailByChapterId(courseInstId);
 //        List<ChapterVO> chapterVOList = chapterMapper.findChapterByCourseId(courseInstId);
 //        List<MaterialVO> chapterMaterialList = chapterMapper.findMaterialByCourseId(courseInstId);
@@ -161,11 +161,66 @@ public class FileServiceImpl implements FileService {
 //    }
 //        CourseDetalVO courseDetalVO = new CourseDetalVO();
 //        return courseDetalVO;
+        // 1、正常获取课程其余信息
+        CourseDetalVO courseDetalVO = chapterMapper.findCourseBasicDetailByChapterId(courseInstId);
+        courseDetalVO.setCourseCate(changeCourseCate(courseDetalVO.getCourseCate()));
+        courseDetalVO.setCourseType(changeCourseType(courseDetalVO.getCourseType()));
+        courseDetalVO.setCourseFor(changeCourseFor(courseDetalVO.getCourseFor()));
+        // 2、调用以下方法，实现获取课程file信息
+        List<ChapterVO> chapterVOList = chapterMapper.findParentChapter(courseInstId);
+        for(ChapterVO chapterVO : chapterVOList){
+            // 通过其父节点获取对应的材料的List
+            List<MaterialVO> materialVOList = chapterMapper.findMaterialByCourseIdParent(courseInstId,chapterVO.getChapterId());
+            chapterVO.setMaterials(materialVOList);
+        }
+
+        courseDetalVO.setChapterList(chapterVOList);
+        return courseDetalVO;
     }
 
     @Override
     public List<ChapterVO> chapterList(Integer courseInstId) throws JsonProcessingException {
+        // 首先获取所有的chapter
+        // 1.1、获取所有一级父目录
+        List<ChapterVO> chapterVOList = chapterMapper.findParentChapter(courseInstId);
 
-        return List.of();
+        // 1.2、将chapter的对应的parent关系，获取对应所有的材料
+        for(ChapterVO chapterVO : chapterVOList){
+            // 通过其父节点获取对应的材料的List
+            List<MaterialVO> materialVOList = chapterMapper.findMaterialByCourseIdParent(courseInstId,chapterVO.getChapterId());
+            chapterVO.setMaterials(materialVOList);
+        }
+        return chapterVOList;
+    }
+
+    public String changeCourseType(String schoolId) {
+        Map<String, String> CourseTypeMap = new HashMap<>();
+        CourseTypeMap.put("1", "全校性选修课");
+        CourseTypeMap.put("2", "专业必修课");
+        CourseTypeMap.put("3", "专业选修课");
+        String CourseTypeDescription = CourseTypeMap.getOrDefault(schoolId, "未知课程类型");
+        return CourseTypeDescription;
+    }
+
+    public String changeCourseCate(String schoolId) {
+        Map<String, String> CourseCateMap = new HashMap<>();
+        CourseCateMap.put("1", "自然科学类");
+        CourseCateMap.put("2", "人文社科类");
+        CourseCateMap.put("3", "艺术类");
+        CourseCateMap.put("4", "体育类");
+        CourseCateMap.put("5", "科研实践类");
+        String CourseCateDescription = CourseCateMap.getOrDefault(schoolId, "未知课程类型");
+        return CourseCateDescription;
+    }
+
+    public String changeCourseFor(String schoolId) {
+        Map<String, String> CourseForMap = new HashMap<>();
+        CourseForMap.put("1", "软件工程");
+        CourseForMap.put("2", "计算机科学与技术");
+        CourseForMap.put("3", "信息安全");
+        CourseForMap.put("4", "人工智能");
+        CourseForMap.put("5", "物联网");
+        String CourseForDescription = CourseForMap.getOrDefault(schoolId, "未知专业类型");
+        return CourseForDescription;
     }
 }

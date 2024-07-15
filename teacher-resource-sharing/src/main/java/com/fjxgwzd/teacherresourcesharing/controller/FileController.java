@@ -54,6 +54,12 @@ public class FileController {
 
     @PostMapping("/chapterDetailInfo")
     public Result<List<ChapterVO>> chapterDetailInfo(@RequestParam("course_inst_id") Integer courseInstId) {
-        return Result.ok();
+        try {
+            List<ChapterVO> chapterVOList = fileService.chapterList(courseInstId);
+            return Result.ok(chapterVOList);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Result.fail();
+        }
     }
 }

@@ -168,25 +168,25 @@
     </select>
     <select id="findCourseBasicDetailByChapterId">
         SELECT
-            ci.id AS course_inst_id,
+            ci.id AS courseInstId,
             c.name,
-            c.course_type,
-            c.course_cate,
-            c.course_for,
+            c.course_type AS courseType,
+            c.course_cate AS courseCate,
+            c.course_for AS courseFor,
             c.credit,
-            c.grade_level,
-            c.school_id,
-            sc.name,
-            f.url AS course_pic,
+            c.grade_level AS gradeLevel,
+            c.school_id AS schoolId,
+            sc.name AS schoolName,
+            f.url AS coursePic,
             ci.year,
-            ci.term_part,
-            ci.total_class_hour,
-            ci.instructor_msg,
+            ci.term_part AS termPart,
+            ci.total_class_hour AS totalClassTotal,
+            ci.instructor_msg AS instructorMsg,
             ci.overview,
             ci.target,
-            ci.assess_method,
-            ci.method_detal,
-            ci.max_num
+            ci.assess_method AS assessMethod,
+            ci.method_detal AS methodDetal,
+            ci.max_num AS maxNum
         FROM course_inst ci
         JOIN course c ON c.id = ci.course_id
         JOIN school sc ON sc.id = c.school_id
@@ -226,4 +226,23 @@
         INSERT INTO teaching_material(for_chapter,upload_time,uploader_id,name,file_id)
         VALUES (#{forChapter}, #{uploadTime}, #{uploaderId}, #{name}, #{fileId})
     </insert>
+
+    <select id="findParentChapter">
+        SELECT chapter.id AS chapterId,
+               teaching_material.name AS chapterName
+        FROM chapter
+        JOIN teaching_material ON teaching_material.for_chapter = chapter.id
+        WHERE chapter.title_level = 1 AND chapter.course_inst_id = #{courseId}
+    </select>
+
+    <select id="findMaterialByCourseIdParent">
+        SELECT tm.id AS materialId,
+               f.id AS fileId,
+               tm.name AS fileName,
+               f.url AS fileUrl
+        FROM teaching_material tm
+        JOIN chapter ch ON ch.parent = #{parentId} AND ch.title_level = 2
+        JOIN file f ON f.id = tm.file_id
+        WHERE ch.course_inst_id = #{courseId}
+    </select>
 </mapper>

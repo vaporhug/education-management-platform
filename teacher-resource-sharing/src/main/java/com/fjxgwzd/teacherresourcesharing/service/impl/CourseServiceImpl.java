@@ -36,6 +36,7 @@ public class CourseServiceImpl implements CourseService {
         for (CourseInfoVO courseInfoVO : courseInstsInfo) {
             courseInfoVO.setCourseCate(changeCourseCate(courseInfoVO.getCourseCate()));
             courseInfoVO.setCourseType(changeCourseType(courseInfoVO.getCourseType()));
+            courseInfoVO.setCourseFor(changeCourseFor(courseInfoVO.getCourseFor()));
         }
         return courseInstsInfo;
     }
@@ -58,5 +59,16 @@ public class CourseServiceImpl implements CourseService {
         CourseCateMap.put("5", "科研实践类");
         String CourseCateDescription = CourseCateMap.getOrDefault(schoolId, "未知课程类型");
         return CourseCateDescription;
+    }
+
+    public String changeCourseFor(String schoolId) {
+        Map<String, String> CourseForMap = new HashMap<>();
+        CourseForMap.put("1", "软件工程");
+        CourseForMap.put("2", "计算机科学与技术");
+        CourseForMap.put("3", "信息安全");
+        CourseForMap.put("4", "人工智能");
+        CourseForMap.put("5", "物联网");
+        String CourseForDescription = CourseForMap.getOrDefault(schoolId, "未知专业类型");
+        return CourseForDescription;
     }
 }

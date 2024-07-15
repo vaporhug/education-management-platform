@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fjxgwzd.teachersystemmanagement.mapper.ClassroomMapper">
+    <select id="getCampusVO">
+        SELECT campus.id AS campusId,
+               campus.name AS campusName,
+               GROUP_CONCAT(classroom.building_name SEPARATOR ',') AS buildings
+        FROM campus
+        JOIN classroom ON classroom.campus_id = campus.id
+        GROUP BY campus.id,
+                 campus.name
+    </select>
+    <select id="getClassroomVO">
+        SELECT id AS classroomId,
+               room_number AS classroomName
+        FROM classroom
+        WHERE campus_id = #{campusId} AND building_name =#{building}
+    </select>
+    <insert id="reserveClassroom">
+        INSERT INTO classroom_reservation(teacher_id, result,   classroom_id, year, term_part, week, day_of_week, class_period_from, class_period_to, reason, reason_detail,canceled)
+        VALUES (#{teacherId}, 1,   #{classroomId}, #{year}, #{termPart}, #{week}, #{dayOfWeek}, #{periodFrom}, #{periodTo}, #{reason}, #{reasonDetail}, 0)
+    </insert>
+</mapper>
