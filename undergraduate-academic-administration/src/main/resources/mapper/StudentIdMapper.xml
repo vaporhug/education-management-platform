@@ -3,7 +3,7 @@
 <mapper namespace="com.fjxgwzd.undergraduateacademicadministration.mapper.StudentIdMapper">
     <select id="getEducationPlanByMajorId" resultType="com.fjxgwzd.undergraduateacademicadministration.vo.EducationPlanVO">
         SELECT
-            mj.name AS major_name,
+            mj.name AS majorName,
             mdm.cohort_year AS time,
             af.id AS aaoOfficeId,
             af.name AS aaoOfficeName,
@@ -16,10 +16,10 @@
             mdm.intro AS description,
             mdm.target,
             mdm.req,
-            GROUP_CONCAT(ccf.major_id SEPARATOR ',') AS coreCourseIds,
-            GROUP_CONCAT(cs.course_name SEPARATOR ',') AS courseNames,
-            GROUP_CONCAT(mcr.credit_type SEPARATOR ',') AS creditReqNames,
-            GROUP_CONCAT(mcr.credit_total SEPARATOR ',') AS creditReqTotals
+            GROUP_CONCAT(DISTINCT ccf.course_struct_id SEPARATOR ',') AS coreCourseIds,
+            GROUP_CONCAT(DISTINCT cs.course_name SEPARATOR ',') AS courseNames,
+            GROUP_CONCAT(DISTINCT mcr.credit_type SEPARATOR ',') AS creditReqNames,
+            GROUP_CONCAT(DISTINCT mcr.credit_total SEPARATOR ',') AS creditReqTotals
         FROM
             major mj
         JOIN
@@ -27,15 +27,15 @@
         JOIN
             aao_office af ON af.major_id = mj.id
         JOIN
-            core_course_for_major ccf ON mj.id = ccf.major_id
+            core_course_for_major ccf ON mj.id = ccf.major_id AND ccf.cohort_year = #{cohortYear}
         JOIN
             major_credit_req mcr ON mj.id = mcr.major_id
         JOIN
             school sc ON mj.school_id = sc.id
         JOIN
-            course_struct cs ON cs.id = ccf.course_struct_id
+            course_struct cs ON cs.id = ccf.course_struct_id AND cs.cohort_year = #{cohortYear} AND cs.for_major = #{majorId}
         WHERE
-            mj.id = #{majorId} AND ccf.cohort_year = #{cohortYear} AND cs.cohort_year = #{cohortYear}
+            mj.id = #{majorId}
         GROUP BY
             mj.name,
             mdm.cohort_year,

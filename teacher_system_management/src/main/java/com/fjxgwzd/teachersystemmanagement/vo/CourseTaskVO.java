@@ -1,4 +1,4 @@
-package com.fjxgwzd.undergraduateacademicadministration.vo;
+package com.fjxgwzd.teachersystemmanagement.vo;
 
 import lombok.Data;
 

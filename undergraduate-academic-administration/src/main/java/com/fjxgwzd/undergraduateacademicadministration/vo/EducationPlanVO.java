@@ -1,10 +1,6 @@
 package com.fjxgwzd.undergraduateacademicadministration.vo;
 
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.Data;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Data
 public class EducationPlanVO {
@@ -22,30 +18,46 @@ public class EducationPlanVO {
     private String description;
     private String target;
     private String req;
-//    private Integer[] coreCourseIds;
-//    private String[] courseNames;
-//    private String[] creditReqNames;
-//    private Integer[] creditReqTotals;
-    private String coreCourseIds; // Change to String
-    private String courseNames; // Change to String
-    private String creditReqNames; // Change to String
-    private String creditReqTotals; // Change to String
 
-    public Integer[] getCoreCourseIdsArray() {
-        return coreCourseIds != null ?
-            Arrays.stream(coreCourseIds.split(",")).map(Integer::parseInt).toArray(Integer[]::new) : new Integer[0];
+    private Integer[] coreCourseIds; // Change to String
+    private String[] courseNames; // Change to String
+    private String[] creditReqNames; // Change to String
+    private Integer[] creditReqTotals; // Change to String
+
+    public void setCoreCourseIds(String coreCourseIds) {
+        if (coreCourseIds != null && ! coreCourseIds.isEmpty()) {
+            String[] coreCourseIdArray = coreCourseIds.split(",");
+            this.coreCourseIds = new Integer[coreCourseIdArray.length];
+            for (int i = 0; i < coreCourseIdArray.length; i++)
+                this.coreCourseIds[i] = Integer.parseInt(coreCourseIdArray[i].trim());
+        }else {
+            this.coreCourseIds = null;
+        }
     }
 
-    public String[] getCourseNamesArray() {
-        return courseNames != null ? courseNames.split(",") : new String[0];
+    public void setCourseNames(String courseNames) {
+        if(courseNames != null && ! courseNames.isEmpty()){
+            this.courseNames = courseNames.split(",");
+        }else {
+            this.courseNames = new String[0];
+        }
+    }
+    public void setCreditReqNames(String creditReqNames) {
+        if(creditReqNames != null && !creditReqNames.isEmpty()) {
+            this.creditReqNames = creditReqNames.split(",");
+        }else {
+            this.creditReqNames = new String[0];
+        }
     }
 
-    public String[] getCreditReqNamesArray() {
-        return creditReqNames != null ? creditReqNames.split(",") : new String[0];
-    }
-
-    public Integer[] getCreditReqTotalsArray() {
-        return creditReqTotals != null ?
-            Arrays.stream(creditReqTotals.split(",")).map(Integer::parseInt).toArray(Integer[]::new) : new Integer[0];
+    public void setCreditReqTotals(String creditReqTotals) {
+        if (creditReqTotals != null && ! creditReqTotals.isEmpty()) {
+            String[] creditReqTotalArray = creditReqTotals.split(",");
+            this.creditReqTotals = new Integer[creditReqTotalArray.length];
+            for (int i = 0; i < creditReqTotalArray.length; i++)
+                this.creditReqTotals[i] = Integer.parseInt(creditReqTotalArray[i].trim());
+        }else {
+            this.creditReqTotals = null;
+        }
     }
 }

@@ -51,4 +51,9 @@ public class FileController {
             return Result.fail();
         }
     }
+
+    @PostMapping("/chapterDetailInfo")
+    public Result<List<ChapterVO>> chapterDetailInfo(@RequestParam("course_inst_id") Integer courseInstId) {
+        return Result.ok();
+    }
 }

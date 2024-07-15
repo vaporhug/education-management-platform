@@ -162,4 +162,10 @@ public class FileServiceImpl implements FileService {
 //        CourseDetalVO courseDetalVO = new CourseDetalVO();
 //        return courseDetalVO;
     }
+
+    @Override
+    public List<ChapterVO> chapterList(Integer courseInstId) throws JsonProcessingException {
+
+        return List.of();
+    }
 }

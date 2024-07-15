@@ -53,4 +53,37 @@
            FROM reseach_findings
            WHERE teacher_id = #{teacherId}
        </select>
+
+       <select id="getCourseTaskByTeacherId">
+            SELECT cis.id AS courseInstSectionId,
+                   ci.id AS courseInstId,
+                   c.name AS courseName,
+                   GROUP_CONCAT(ter.name SEPARATOR ',') AS courseTeacherName,
+                   cr.room_number AS classroomName,
+                   cs.day_of_week AS dayOfWeek,
+                   cs.period_from AS periodFrom,
+                   cs.period_to AS periodTo
+            FROM course_inst_section cis
+            JOIN course_inst ci ON ci.id = cis.course_inst_id
+            JOIN course c ON c.id = ci.course_id
+            JOIN teach t ON t.course_id = c.id
+            JOIN teacher ter ON t.teacher_id = ter.id
+            JOIN course_sched cs ON cs.course_section_id = cis.id
+            JOIN classroom cr ON cs.classroom_id = cr.id
+            WHERE cs.week = #{week} AND cs.term_part = #{termPart} AND cs.year = #{year} AND ter.id = #{teacherId}
+            GROUP BY
+                cis.id,
+                ci.id,
+                c.name,
+                cr.room_number,
+                cs.day_of_week,
+                cs.period_from,
+                cs.period_to
+       </select>
+
+       <select id="getAllSemester">
+               SELECT *
+               FROM semester
+               ORDER BY to_date DESC
+       </select>
 </mapper>
