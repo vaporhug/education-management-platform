@@ -19,7 +19,7 @@ public class CourseController {
 
     // 返回老师所教的所有课程
     @GetMapping("/coursesInfo")
-    public Result<List<CourseInfoVO>> coursesInfo(@RequestParam("teacher_id") String teacherId, @RequestParam("year") Integer year, @RequestParam("termPart") boolean termPart) {
+    public Result<List<CourseInfoVO>> coursesInfo(@RequestParam("teacherId") String teacherId, @RequestParam("year") Integer year, @RequestParam("termPart") boolean termPart) {
         // 需要网关将传来的token验证转化为对应的用户id，我将该用户所教授的所有课程信息返回
         try {
             List<CourseInfoVO> result = courseService.coursesInfo(teacherId, year, termPart);

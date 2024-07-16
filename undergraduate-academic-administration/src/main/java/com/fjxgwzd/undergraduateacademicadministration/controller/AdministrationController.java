@@ -18,21 +18,21 @@ public class AdministrationController {
     private AdministrationService administrationService;
 
     @PostMapping("/attendance")
-    public Result<String> attendancerate (@RequestParam("student_id") String studentId) {
+    public Result<String> attendancerate (@RequestParam("studentId") String studentId) {
         //返回值为每个月的出勤率以及对应月
 
         return Result.ok();
     }
 
     @PostMapping("/totalAttendance")
-    public Result<String> totalAttendance(@RequestParam("from_mon") LocalDateTime fromMon,@RequestParam("to_mon") LocalDateTime toMon) {
+    public Result<String> totalAttendance(@RequestParam("fromMon") LocalDateTime fromMon,@RequestParam("toMon") LocalDateTime toMon) {
         //返回值为全校学生在某个月的出勤率
         return Result.ok();
 
     }
 
     @PostMapping("/studentDetailInfo")
-    public Result<StudentDetailInfoVO> studentDetailInfo(@RequestParam("student_id") String studentId) {
+    public Result<StudentDetailInfoVO> studentDetailInfo(@RequestParam("studentId") String studentId) {
         try {
             return Result.ok(administrationService.getStudentDetailInfoByStudentId(studentId));
         } catch (JsonProcessingException e) {
@@ -42,7 +42,7 @@ public class AdministrationController {
     }
 
     @GetMapping("/educationPlanByMajor")
-    public Result<EducationPlanVO> educationPlan(@RequestParam("major_id") Short majorId, @RequestParam("cohort_year") Short cohortYear) {
+    public Result<EducationPlanVO> educationPlan(@RequestParam("majorId") Short majorId, @RequestParam("cohortYear") Short cohortYear) {
         try {
             EducationPlanVO data = administrationService.getEducationPlanByMajorId(majorId, cohortYear);
             return Result.ok(data);
@@ -52,7 +52,7 @@ public class AdministrationController {
     }
 
     @PostMapping("/defaultCourseTable")
-    public Result<DefaultCourseTableVO> courseTable(@RequestParam("student_id") String studentId) {
+    public Result<DefaultCourseTableVO> courseTable(@RequestParam("studentId") String studentId) {
         try {
             DefaultCourseTableVO defaultCourseTableVO = administrationService.getDefaultCourseTableByStudentId(studentId);
             return Result.ok(defaultCourseTableVO);
@@ -63,7 +63,7 @@ public class AdministrationController {
     }
 
     @PostMapping("/courseTable")
-    public Result<List<CourseTaskVO>> CourseTable(@RequestParam("student_id") String studentId,@RequestParam("year") Integer year, @RequestParam("term_part") boolean termPart, @RequestParam("week") Integer week) {
+    public Result<List<CourseTaskVO>> CourseTable(@RequestParam("studentId") String studentId,@RequestParam("year") Integer year, @RequestParam("termPart") boolean termPart, @RequestParam("week") Integer week) {
         List<CourseTaskVO> courseTaskVOList = null;
         try {
             courseTaskVOList = administrationService.getCourseTaskByStudentId(studentId,year,termPart,week);

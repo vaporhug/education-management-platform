@@ -21,7 +21,7 @@ mybatis:
   debug: true
 
 server:
-  port: 8085
+  port: 8082
 
 minio:
   endpoint: http://8.130.106.248:9000

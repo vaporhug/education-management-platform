@@ -28,7 +28,7 @@ public class InfoConrtoller {
     }
 
     @PostMapping("/defaultCourseTable")
-    public Result<DefaultCourseTableVO> courseTable(@RequestParam("teacher_id") String teacherId) {
+    public Result<DefaultCourseTableVO> courseTable(@RequestParam("teacherId") String teacherId) {
         try {
             DefaultCourseTableVO defaultCourseTableVO = teacherService.getDefaultCourseTableByTeacherId(teacherId);
             return Result.ok(defaultCourseTableVO);
@@ -40,7 +40,7 @@ public class InfoConrtoller {
     }
 
     @PostMapping("/courseTable")
-    public Result<List<CourseTaskVO>> CourseTable(@RequestParam("teacher_id") String teacherId, @RequestParam("year") Integer year, @RequestParam("term_part") boolean termPart, @RequestParam("week") Integer week) {
+    public Result<List<CourseTaskVO>> CourseTable(@RequestParam("teacherId") String teacherId, @RequestParam("year") Integer year, @RequestParam("termPart") boolean termPart, @RequestParam("week") Integer week) {
 //        List<CourseTaskVO> courseTaskVOList = null;
         try {
              List<CourseTaskVO> courseTaskVOList = teacherService.getCourseTaskByTeacherId(teacherId,year,termPart,week);

@@ -17,7 +17,7 @@ public class FileController {
     private FileService fileService;
 
     @PostMapping("uploadFile")
-    public Result<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("chapter_id") int chapterId, @RequestParam("teacher_id") String teacherId) {
+    public Result<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("chapterId") int chapterId, @RequestParam("teacherId") String teacherId) {
         try {
             String url = fileService.upload(file, chapterId,teacherId);
             return Result.ok(url);
@@ -28,7 +28,7 @@ public class FileController {
     }
 
     @DeleteMapping("/delete")
-    public Result<String> deleteFile(@RequestParam("chapter_id") Integer chapter_id) {
+    public Result<String> deleteFile(@RequestParam("chapterId") Integer chapter_id) {
         // 在此处的API删除文件，所需上传的主要是该chapter_id，以及由网关传来的用户身份id，我由用户身份id进行课程权限查询
         try {
             String result = fileService.deleteFile(chapter_id);
@@ -41,7 +41,7 @@ public class FileController {
 
     // 返回一门课程的所有信息，包括教材信息
     @PostMapping("/courseDetalInfo")
-    public Result<CourseDetalVO> courseDetailsInfo(@RequestParam("course_inst_id") Integer courseInstId) {
+    public Result<CourseDetalVO> courseDetailsInfo(@RequestParam("courseInstId") Integer courseInstId) {
         // 需要一个信息，即用户传来的chapter_id，我将该课程的所有chapter的信息返回给用户
         try {
             CourseDetalVO result = fileService.courseDetailsInfo(courseInstId);
@@ -53,7 +53,7 @@ public class FileController {
     }
 
     @PostMapping("/chapterDetailInfo")
-    public Result<List<ChapterVO>> chapterDetailInfo(@RequestParam("course_inst_id") Integer courseInstId) {
+    public Result<List<ChapterVO>> chapterDetailInfo(@RequestParam("courseInstId") Integer courseInstId) {
         try {
             List<ChapterVO> chapterVOList = fileService.chapterList(courseInstId);
             return Result.ok(chapterVOList);
