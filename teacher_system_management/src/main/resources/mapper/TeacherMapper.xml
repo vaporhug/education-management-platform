@@ -132,4 +132,13 @@
         ORDER BY t.id
         LIMIT #{offset}, #{num}
     </select>
+    <insert id="insertScores">
+        INSERT INTO course_selection(stu_id,course_sec_id,score,status)
+        VALUES (#{studentId},#{courseInstId},#{score},#{status})
+    </insert>
+    <select id="getCourseSecId">
+        SELECT DISTINCT id
+        FROM course_inst_section
+        WHERE course_inst_id =#{courseInstId}
+    </select>
 </mapper>

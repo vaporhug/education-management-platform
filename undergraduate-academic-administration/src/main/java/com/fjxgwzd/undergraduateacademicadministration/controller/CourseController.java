@@ -24,5 +24,4 @@ public class CourseController {
         return Result.ok(courseInfoVOList);
     }
 
-
 }

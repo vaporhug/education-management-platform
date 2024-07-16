@@ -20,4 +20,35 @@
         INSERT INTO classroom_reservation(teacher_id, result,   classroom_id, year, term_part, week, day_of_week, class_period_from, class_period_to, reason, reason_detail,canceled)
         VALUES (#{teacherId}, 1,   #{classroomId}, #{year}, #{termPart}, #{week}, #{dayOfWeek}, #{periodFrom}, #{periodTo}, #{reason}, #{reasonDetail}, 0)
     </insert>
+    <select id="getRecords">
+        SELECT cr.id AS recordId,
+               cr.year,
+               cr.term_part AS termPart,
+               cr.week,
+               cr.day_of_week AS dayOfWeek,
+               cr.class_period_from AS periodFrom,
+               cr.class_period_to AS periodTo,
+               cl.id AS "classroomInfo.classroomId",
+               cp.name AS "classroomInfo.campusName",
+               cl.building_name AS "classroomInfo.building",
+               cl.room_number AS "classroomInfo.classroomName",
+               cr.result,
+               cr.act_name AS actName,
+               cr.reason,
+               cr.reason_detail AS reasonDetail
+            FROM classroom_reservation cr
+            JOIN classroom cl ON cl.id = cr.classroom_id
+            JOIN campus cp ON cp.id = cl.campus_id
+            WHERE cr.teacher_id = #{teacherId}
+            ORDER BY cr.week, cr.day_of_week
+            LIMIT #{offset}, #{num}
+    </select>
+
+    <select id="getSum">
+        SELECT COUNT(*)
+         FROM classroom_reservation cr
+        JOIN classroom cl ON cl.id = cr.classroom_id
+        JOIN campus cp ON cp.id = cl.campus_id
+        WHERE cr.teacher_id = #{teacherId}
+    </select>
 </mapper>

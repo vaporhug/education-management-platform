@@ -18,4 +18,6 @@ public interface TeacherMapper {
     List<Semester> getAllSemester();
     List<TeacherDetailInfoVO> getTotalTeacherDetailInfo(Short schoolId, Short majorId, String title, String name, boolean gender, Integer offset, Integer num);
     Integer getSum(Short schoolId, Short majorId, String title, String name, boolean gender);
+    void insertScores(String studentId, Integer courseInstId, Integer score,Short status);
+//    Integer getCourseSecId(Integer courseInstId);
 }

@@ -6,10 +6,7 @@ import com.fjxgwzd.teachersystemmanagement.vo.*;
 import com.fjxgwzd.common.result.Result;
 import com.fjxgwzd.undergraduateacademicadministration.vo.TotalStudentDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -63,5 +60,9 @@ public class InfoConrtoller {
             e.printStackTrace();
             return Result.fail();
         }
+    }
+    @PostMapping("/uploadGrades")
+    public Result<String> uploadGrades(@RequestParam String courseInstId,@RequestBody GradeVO[] stuScores){
+        return Result.ok(teacherService.uploadGrades(courseInstId, stuScores));
     }
 }

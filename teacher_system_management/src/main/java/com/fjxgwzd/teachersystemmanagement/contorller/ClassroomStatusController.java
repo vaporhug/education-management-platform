@@ -5,6 +5,7 @@ import com.fjxgwzd.common.result.Result;
 import com.fjxgwzd.teachersystemmanagement.service.ClassroomService;
 import com.fjxgwzd.teachersystemmanagement.vo.CampusVO;
 import com.fjxgwzd.teachersystemmanagement.vo.ClassroomVO;
+import com.fjxgwzd.teachersystemmanagement.vo.ReservationRecordVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,5 +30,10 @@ public class ClassroomStatusController {
     @PostMapping("/reserveClassroom")
     public Result<String> reserveClassroom(String teacherId,String name,String phoneNumber,Integer campusId,String buildingName,Integer classroomId,Integer year,boolean termPart,Integer week,Integer dayOfWeek,Integer periodFrom,Integer periodTo,Short reason,String reasonDetail){
         return Result.ok(classroomService.reserveClassroom(teacherId,name,phoneNumber, campusId, buildingName, classroomId, year, termPart, week, dayOfWeek, periodFrom, periodTo, reason, reasonDetail));
+    }
+
+    @PostMapping("/getReservation")
+    public Result<ReservationRecordVO> getReservation(String teacherId,Integer offset,Integer num){
+        return Result.ok(classroomService.getReservation(teacherId,offset,num));
     }
 }

@@ -4,6 +4,8 @@ import com.fjxgwzd.teachersystemmanagement.mapper.ClassroomMapper;
 import com.fjxgwzd.teachersystemmanagement.service.ClassroomService;
 import com.fjxgwzd.teachersystemmanagement.vo.CampusVO;
 import com.fjxgwzd.teachersystemmanagement.vo.ClassroomVO;
+import com.fjxgwzd.teachersystemmanagement.vo.RecordVO;
+import com.fjxgwzd.teachersystemmanagement.vo.ReservationRecordVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +32,14 @@ public class ClassroomServiceImpl implements ClassroomService {
     public String reserveClassroom(String teacherId, String name, String phoneNumber, Integer campusId, String buildingName, Integer classroomId, Integer year, boolean termPart, Integer week, Integer dayOfWeek, Integer periodFrom, Integer periodTo, Short reason, String reasonDetail) {
         classroomMapper.reserveClassroom(teacherId,name,phoneNumber, campusId, buildingName, classroomId, year, termPart, week, dayOfWeek, periodFrom, periodTo, reason, reasonDetail);
         return "成功申请";
+    }
+
+    @Override
+    public ReservationRecordVO getReservation(String teacherId, Integer offset, Integer num) {
+        ReservationRecordVO reservationRecordVO = new ReservationRecordVO();
+        reservationRecordVO.setRecordSum(classroomMapper.getSum(teacherId)/num);
+        List<RecordVO> recordVOList = classroomMapper.getRecords(teacherId,offset,num);
+        reservationRecordVO.setRecordVOList(recordVOList);
+        return reservationRecordVO;
     }
 }

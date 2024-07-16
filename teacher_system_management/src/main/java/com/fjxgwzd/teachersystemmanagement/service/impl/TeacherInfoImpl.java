@@ -164,4 +164,19 @@ public class TeacherInfoImpl implements TeacherService {
         totalTeacherDetailVO.setTeacherDetailVOList(teacherDetailInfoVOList);
         return totalTeacherDetailVO;
     }
+
+    @Override
+    public String uploadGrades(String courseInstId, GradeVO[] stuScores) {
+//        Integer courseSecId = teacherMapper.getCourseSecId(Integer.valueOf(courseInstId));
+        for(int i = 0; i< stuScores.length;i++){
+            Short status = 1;
+            if(stuScores[i].getTotalScore()>60){
+                status = 2;
+            }else {
+                status = 3;
+            }
+            teacherMapper.insertScores(stuScores[i].getStuId(), Integer.valueOf(courseInstId),stuScores[i].getTotalScore(),status);
+        }
+        return "录入成功";
+    }
 }
