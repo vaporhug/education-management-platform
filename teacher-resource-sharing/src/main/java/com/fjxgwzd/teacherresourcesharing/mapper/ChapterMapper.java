@@ -1,10 +1,8 @@
 package com.fjxgwzd.teacherresourcesharing.mapper;
 
 import com.fjxgwzd.teacherresourcesharing.entity.File;
-import com.fjxgwzd.teacherresourcesharing.vo.ChapterVO;
-import com.fjxgwzd.teacherresourcesharing.vo.CourseDetalVO;
-import com.fjxgwzd.teacherresourcesharing.vo.CourseInfoVO;
-import com.fjxgwzd.teacherresourcesharing.vo.MaterialVO;
+import com.fjxgwzd.teacherresourcesharing.entity.Semester;
+import com.fjxgwzd.teacherresourcesharing.vo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -37,4 +35,8 @@ public interface ChapterMapper {
     void insertFileDetails(Map<String, Object> params);
     Integer teacherMaterialId(Map<String, Object> params);
     void insertTeachingMaterial(Map<String, Object> params);
+    List<schoolMajorList> getSchool();
+    List<MajorVO> getMajorList(Short schoolId);
+    List<Semester> getAllSemester();
+    List<CampusVO> getCampusVO();
 }

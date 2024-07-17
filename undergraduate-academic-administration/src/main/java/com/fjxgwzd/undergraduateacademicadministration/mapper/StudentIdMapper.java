@@ -19,5 +19,7 @@ public interface StudentIdMapper {
     List<CourseTaskVO> getCourseTaskByStudentId(String studentId, Integer year, boolean termPart, Integer week);
     List<Semester> getAllSemester();
     List<StudentDetailInfoVO> getTotalStudentDetail(Short schoolId, Short majorId, Integer startYear, Integer classId, boolean gender, String name, Integer offset, Integer num);
-    Integer getSum(Short schoolId, Short majorId, Integer startYear, Integer classId, boolean gender, String name);
+    Integer getSum(Short schoolId, Short majorId, Integer startYear, Integer classId, Boolean gender, String name);
+    Integer getStudentSum(Integer courseInstId);
+    List<StudentVO> getCourseStudent(Integer courseInstId, Integer offset, Integer num);
 }

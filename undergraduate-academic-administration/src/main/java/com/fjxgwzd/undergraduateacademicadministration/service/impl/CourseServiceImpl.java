@@ -3,6 +3,7 @@ package com.fjxgwzd.undergraduateacademicadministration.service.impl;
 import com.fjxgwzd.undergraduateacademicadministration.mapper.StudentIdMapper;
 import com.fjxgwzd.undergraduateacademicadministration.service.CourseService;
 import com.fjxgwzd.undergraduateacademicadministration.vo.CourseInfoVO;
+import com.fjxgwzd.undergraduateacademicadministration.vo.CourseStudentVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,5 +56,13 @@ public class CourseServiceImpl implements CourseService {
         CourseForMap.put("5", "物联网");
         String CourseForDescription = CourseForMap.getOrDefault(schoolId, "未知专业类型");
         return CourseForDescription;
+    }
+
+    @Override
+    public CourseStudentVO getCourseStudent(Integer courseInstId, Integer offset, Integer num) {
+        CourseStudentVO courseStudentVO = new CourseStudentVO();
+        courseStudentVO.setStudentSum(studentIdMapper.getStudentSum(courseInstId));
+        courseStudentVO.setStudentVOList(studentIdMapper.getCourseStudent(courseInstId,offset,num));
+        return courseStudentVO;
     }
 }

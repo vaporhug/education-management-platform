@@ -22,6 +22,7 @@ mybatis:
 
 server:
   port: 8082
+  address: 0.0.0.0
 
 minio:
   endpoint: http://8.130.106.248:9000

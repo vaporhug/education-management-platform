@@ -3,13 +3,12 @@ package com.fjxgwzd.teacherresourcesharing.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fjxgwzd.teacherresourcesharing.entity.CourseInst;
 import com.fjxgwzd.teacherresourcesharing.entity.File;
+import com.fjxgwzd.teacherresourcesharing.entity.Semester;
 import com.fjxgwzd.teacherresourcesharing.entity.TeachingMaterial;
 import com.fjxgwzd.teacherresourcesharing.mapper.ChapterMapper;
 import com.fjxgwzd.teacherresourcesharing.minio.MinioProperties;
 import com.fjxgwzd.teacherresourcesharing.service.FileService;
-import com.fjxgwzd.teacherresourcesharing.vo.ChapterVO;
-import com.fjxgwzd.teacherresourcesharing.vo.CourseDetalVO;
-import com.fjxgwzd.teacherresourcesharing.vo.MaterialVO;
+import com.fjxgwzd.teacherresourcesharing.vo.*;
 import io.minio.*;
 import io.minio.errors.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,10 @@ import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -222,5 +224,81 @@ public class FileServiceImpl implements FileService {
         CourseForMap.put("5", "物联网");
         String CourseForDescription = CourseForMap.getOrDefault(schoolId, "未知专业类型");
         return CourseForDescription;
+    }
+
+    @Override
+    public List<schoolMajorList> getSchoolMajorList() throws JsonProcessingException {
+        List<schoolMajorList> schoolMajorListList = chapterMapper.getSchool();
+        for(schoolMajorList school : schoolMajorListList){
+            school.setMajors(chapterMapper.getMajorList(school.getSchoolId()));
+        }
+        return schoolMajorListList;
+    }
+
+    @Override
+    public BasicInfoVO getBasicInfo() throws Exception {
+        // 1、根据LocalDateTime获取当前学期
+        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDate currentDate = currentTime.toLocalDate();
+        // 1.1、由年份先判断应该是哪个学期
+        Integer currentYear = currentDate.getYear();
+        List<Semester> semesters = List.of();
+        List<Semester> semesterList = chapterMapper.getAllSemester();
+        for (Semester semester : semesterList) {
+            if (semester.getYear() == currentYear) {
+                semesters.add(semester);
+            }
+        }
+        // 1.2、根据当前时间，获取学期
+        // 2、将当前学期的起始周获取，计算当前week
+        int week = 1;
+
+        Semester currentSemester = null;
+        if(currentDate.isBefore(ChronoLocalDate.from(semesterList.get(0).getFrom_date()))){
+            // 小于第一个
+            currentSemester = semesterList.get(0);
+            week = 1;
+        }
+        else if (currentDate.isBefore(ChronoLocalDate.from(semesterList.get(1).getTo_date()))){
+            currentSemester = semesterList.get(1);
+            if(currentDate.isBefore(ChronoLocalDate.from(semesterList.get(1).getTo_date()))){
+                week = 1;
+            }else {
+                week = getWeekNumber(LocalDate.from(currentSemester.getFrom_date()),currentDate);
+            }
+        }else {
+            for(int i =0; i < semesterList.size(); i++){
+                if(semesterList.get(i).equals(semesterList.get(1))){
+                    if(i+1 < semesterList.size()){
+                        currentSemester = semesterList.get(i+1);
+                        week = 1;
+                        break;
+                    }else {
+                        throw new Exception();
+                    }
+                }
+            }
+        }
+
+        BasicInfoVO basicInfoVO = new BasicInfoVO();
+        basicInfoVO.setNowWeek(week);
+        basicInfoVO.setNowTermPart(currentSemester.isTerm_part());
+        List<schoolMajorList> schoolMajorListList = getSchoolMajorList();
+        basicInfoVO.setSchoolMajorList(schoolMajorListList);
+        List<CampusVO> campusVOList = chapterMapper.getCampusVO();
+        basicInfoVO.setCampusVOList(campusVOList);
+        basicInfoVO.setEarliestTermYear(semesterList.get(0).getYear());
+        basicInfoVO.setEarliestTermPart(currentSemester.isTerm_part());
+
+        return basicInfoVO;
+    }
+
+    public int getWeekNumber(LocalDate startDate, LocalDate endDate) {
+        // 计算从起始日期到当前日期的天数
+        long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
+        // 计算周数
+        int weekNumber = (int) (daysBetween / 7) + 1; // +1 是因为第1天就算第1周
+
+        return weekNumber;
     }
 }

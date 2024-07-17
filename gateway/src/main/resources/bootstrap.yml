@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      config:
+        enabled: true
+        server-addr: 8.130.106.248:8848
+        group: DEFAULT_GROUP
+        file-extension: yaml
+      discovery:
+        server-addr: 8.130.106.248:8848
+

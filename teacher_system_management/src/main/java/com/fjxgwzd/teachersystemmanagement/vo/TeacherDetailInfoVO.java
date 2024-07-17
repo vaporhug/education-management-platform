@@ -26,5 +26,6 @@ public class TeacherDetailInfoVO {
     private String address;
     private Integer aaoOfficeId;
     private String aaoOfficeName;
+    private String identity;
     private List<EduExpVO> eduExpList;
 }

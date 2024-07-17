@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -147,9 +146,32 @@ public class TeacherInfoImpl implements TeacherService {
     }
 
     @Override
-    public TotalTeacherDetailVO getTotalTeacherDetail(Short schoolId, Short majorId, String title, String name, boolean gender, Integer offset, Integer num) {
+    public TotalTeacherDetailVO getTotalTeacherDetail(Short schoolId, Short majorId, String title, String name, Boolean gender, Integer offset, Integer num) {
+//        Integer sum = teacherMapper.getSum(schoolId,majorId,title,name,gender);
+//        double sum = teacherMapper.getTeacherCount();
+//        System.out.println(sum);
+//        double result = Math.ceil(sum / (double) num);
+//        totalTeacherDetailVO.setSum(sum);
+//
+//        List<Teacher> teacherList = teacherMapper.getAllTeacher(offset,num);
+//        List<TeacherDetailInfoVO> teacherDetailInfoVOList = new ArrayList<>();
+//        for(Teacher teacher : teacherList){
+//            TeacherDetailInfoVO teacherDetailInfoVO = teacherMapper.getTeacherDetailInfoByTeacherId(teacher.getId());
+//            teacherDetailInfoVO.setBachelor(changeBachelor(teacherDetailInfoVO.getBachelor()));
+//            teacherDetailInfoVO.setType(changeTeacherType(teacherDetailInfoVO.getType()));
+//            teacherDetailInfoVO.setTitle(changeTeacherTitle(teacherDetailInfoVO.getTitle()));
+//
+//            List<EduExpVO> eduExpVOS = teacherMapper.getEduExpByTeacherId(teacher.getId());
+//            for (EduExpVO eduExpVO : eduExpVOS) {
+//                eduExpVO.setBachelor(changeTeacherType(eduExpVO.getBachelor()));
+//            }
+//            teacherDetailInfoVO.setEduExpList(eduExpVOS);
+//            teacherDetailInfoVOList.add(teacherDetailInfoVO);
+//        }
+//        totalTeacherDetailVO.setTeacherDetailVOList(teacherDetailInfoVOList);
+
         TotalTeacherDetailVO totalTeacherDetailVO = new TotalTeacherDetailVO();
-        totalTeacherDetailVO.setSum(teacherMapper.getSum(schoolId,majorId,title,name,gender));
+        totalTeacherDetailVO.setSum(teacherMapper.getSum(schoolId, majorId, title, name, gender));
         List<TeacherDetailInfoVO> teacherDetailInfoVOList = teacherMapper.getTotalTeacherDetailInfo(schoolId,majorId,title,name,gender,offset,num);
         for (TeacherDetailInfoVO teacherDetailInfoVO : teacherDetailInfoVOList) {
             teacherDetailInfoVO.setBachelor(changeBachelor(teacherDetailInfoVO.getBachelor()));

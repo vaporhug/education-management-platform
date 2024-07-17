@@ -22,4 +22,4 @@ mybatis:
 
 server:
   port: 8083
-
+  address: 0.0.0.0

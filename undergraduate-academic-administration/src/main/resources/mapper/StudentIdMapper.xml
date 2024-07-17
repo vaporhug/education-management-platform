@@ -174,4 +174,25 @@
               AND (#{gender} IS NULL OR s.gender = #{gender})
               AND (#{name} IS NULL OR s.name = #{name})
     </select>
+
+    <select id="getCourseStudent">
+        SELECT cs.stu_id AS stuID,
+               sc.name AS stuName,
+               mj.name AS majorName
+        FROM course_selection cs
+        JOIN student sc ON sc.id = cs.stu_id
+        JOIN major mj ON mj.id = sc.major_id
+        JOIN course_inst_section cis ON cis.id = cs.course_sec_id
+        WHERE cis.course_inst_id = #{courseInstId}
+        ORDER BY sc.id DESC
+        LIMIT #{offset}, #{num}
+    </select>
+    <select id="getStudentSum">
+        SELECT COUNT(*)
+        FROM course_selection cs
+        JOIN student sc ON sc.id = cs.stu_id
+        JOIN major mj ON mj.id = sc.major_id
+        JOIN course_inst_section cis ON cis.id = cs.course_sec_id
+        WHERE cis.course_inst_id = #{courseInstId}
+    </select>
 </mapper>

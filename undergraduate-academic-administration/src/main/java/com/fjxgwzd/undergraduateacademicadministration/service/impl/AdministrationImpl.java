@@ -115,7 +115,7 @@ public class AdministrationImpl implements AdministrationService {
     }
 
     @Override
-    public TotalStudentDetailVO getTotalStudentDetail(Short schoolId, Short majorId, Integer startYear, Integer classId, boolean gender, String name, Integer offset, Integer num) throws JsonProcessingException {
+    public TotalStudentDetailVO getTotalStudentDetail(Short schoolId, Short majorId, Integer startYear, Integer classId, Boolean gender, String name, Integer offset, Integer num) throws JsonProcessingException {
         TotalStudentDetailVO totalStudentDetailVO = new TotalStudentDetailVO();
         totalStudentDetailVO.setSum(studentIdMapper.getSum(schoolId,majorId,startYear,classId,gender,name)/num);
         List<StudentDetailInfoVO> studentDetailInfoVOList = studentIdMapper.getTotalStudentDetail(schoolId,majorId,startYear,classId,gender,name,offset,num);

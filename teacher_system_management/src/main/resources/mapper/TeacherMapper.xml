@@ -98,40 +98,134 @@
           AND (#{gender} IS NULL OR t.gender = #{gender})
           AND (#{name} IS NULL OR t.name = #{name})
     </select>
-    <select id="getTotalTeacherDetailInfo">
-        SELECT t.id AS teacherId,
-              t.name AS teacherName,
-              t.phone,
-              t.hire_date AS hireDate,
-              t.type,
-              t.gender,
-              t.school_id AS schoolId,
-              sc.name AS schoolName,
-              t.major_id AS majorId,
-              mj.name AS majorName,
-              t.title,
-              t.bachelor,
-              t.email,
-              t.desc AS description,
-              t.research_focus AS researchFocus,
-              f.url AS picUrl,
-              t.address,
-              af.id AS aaoOfficeId,
-              af.name AS aaoOfficeName,
-              t.identity
-       FROM teacher t
-       JOIN school sc ON sc.id = t.school_id
-       JOIN major mj ON mj.id = t.major_id
-       JOIN file f ON f.id = t.teacher_pic
-       JOIN aao_office af ON af.major_id = mj.id
-        WHERE (#{schoolId} IS NULL OR sc.id = #{schoolId})
-          AND (#{majorId} IS NULL OR t.major_id = #{majorId})
-          AND (#{title} IS NULL OR t.title = #{title})
-          AND (#{gender} IS NULL OR t.gender = #{gender})
-          AND (#{name} IS NULL OR t.name = #{name})
-        ORDER BY t.id
-        LIMIT #{offset}, #{num}
-    </select>
+<!--    <select id="getTotalTeacherDetailInfo">-->
+<!--            SELECT t.id AS teacherId,-->
+<!--                  t.name AS teacherName,-->
+<!--                  t.phone,-->
+<!--                  t.hire_date AS hireDate,-->
+<!--                  t.type,-->
+<!--                  t.gender,-->
+<!--                  t.school_id AS schoolId,-->
+<!--                  sc.name AS schoolName,-->
+<!--                  t.major_id AS majorId,-->
+<!--                  mj.name AS majorName,-->
+<!--                  t.title,-->
+<!--                  t.bachelor,-->
+<!--                  t.email,-->
+<!--                  t.desc AS description,-->
+<!--                  t.research_focus AS researchFocus,-->
+<!--                  f.url AS picUrl,-->
+<!--                  t.address,-->
+<!--                  af.id AS aaoOfficeId,-->
+<!--                  af.name AS aaoOfficeName,-->
+<!--                  t.identity-->
+<!--           FROM teacher t-->
+<!--           JOIN school sc ON sc.id = t.school_id-->
+<!--           JOIN major mj ON mj.id = t.major_id-->
+<!--           JOIN file f ON f.id = t.teacher_pic-->
+<!--           JOIN aao_office af ON af.major_id = mj.id-->
+<!--&#45;&#45;             WHERE (#{schoolId} IS NULL OR sc.id = #{schoolId})-->
+<!--&#45;&#45;               AND (#{majorId} IS NULL OR t.major_id = #{majorId})-->
+<!--&#45;&#45;               AND (#{title} IS NULL OR t.title = #{title})-->
+<!--&#45;&#45;               AND (#{gender} IS NULL OR t.gender = #{gender})-->
+<!--&#45;&#45;               AND (#{name} IS NULL OR t.name = #{name})-->
+<!--            WHERE 1=1-->
+<!--              <if test="schoolId != null">-->
+<!--                    AND sc.id = #{schoolId}-->
+<!--              </if>-->
+<!--              <if test="majorId != null">-->
+<!--                  AND t.major_id = #{majorId}-->
+<!--              </if>-->
+<!--              <if test="title != null">-->
+<!--                  AND t.title = #{title}-->
+<!--              </if>-->
+<!--              <if test="gender != null">-->
+<!--                  AND t.gender = #{gender}-->
+<!--              </if>-->
+<!--              <if test="name != null">-->
+<!--                  AND t.name = #{name}-->
+<!--              </if>-->
+<!--            ORDER BY t.id-->
+<!--            LIMIT #{offset}, #{num}-->
+<!--    </select>-->
+
+        <select id="getTotalTeacherDetailInfo">
+            SELECT t.id AS teacherId,
+                   t.name AS teacherName,
+                   t.phone,
+                   t.hire_date AS hireDate,
+                   t.type,
+                   t.gender,
+                   t.school_id AS schoolId,
+                   sc.name AS schoolName,
+                   t.major_id AS majorId,
+                   mj.name AS majorName,
+                   t.title,
+                   t.bachelor,
+                   t.email,
+                   t.desc AS description,
+                   t.research_focus AS researchFocus,
+                   f.url AS picUrl,
+                   t.address,
+                   af.id AS aaoOfficeId,
+                   af.name AS aaoOfficeName,
+                   t.identity
+            FROM teacher t
+            JOIN school sc ON sc.id = t.school_id
+            JOIN major mj ON mj.id = t.major_id
+            JOIN file f ON f.id = t.teacher_pic
+            JOIN aao_office af ON af.major_id = mj.id
+            WHERE 1=1
+              <if test="schoolId != null">
+                  AND sc.id = #{schoolId}
+              </if>
+              <if test="majorId != null">
+                  AND t.major_id = #{majorId}
+              </if>
+              <if test="title != null">
+                  AND t.title = #{title}
+              </if>
+              <if test="gender != null">
+                  AND t.gender = #{gender}
+              </if>
+              <if test="name != null">
+                  AND t.name = #{name}
+              </if>
+            ORDER BY t.id
+            LIMIT #{offset}, #{num}
+        </select>
+<!--    <select id="getTotalTeacherDetailInfo">-->
+<!--        SELECT t.id AS teacherId,-->
+<!--              t.name AS teacherName,-->
+<!--              t.phone,-->
+<!--              t.hire_date AS hireDate,-->
+<!--              t.type,-->
+<!--              t.gender,-->
+<!--              t.school_id AS schoolId,-->
+<!--              sc.name AS schoolName,-->
+<!--              t.major_id AS majorId,-->
+<!--              mj.name AS majorName,-->
+<!--              t.title,-->
+<!--              t.bachelor,-->
+<!--              t.email,-->
+<!--              t.desc AS description,-->
+<!--              t.research_focus AS researchFocus,-->
+<!--              f.url AS picUrl,-->
+<!--              t.address,-->
+<!--              af.id AS aaoOfficeId,-->
+<!--              af.name AS aaoOfficeName,-->
+<!--              t.identity-->
+<!--       FROM teacher t-->
+<!--       JOIN school sc ON sc.id = t.school_id-->
+<!--       JOIN major mj ON mj.id = t.major_id-->
+<!--       JOIN file f ON f.id = t.teacher_pic-->
+<!--       JOIN aao_office af ON af.major_id = mj.id-->
+<!--        WHERE (#{schoolId} IS NULL OR sc.id = #{schoolId})-->
+<!--          AND (#{majorId} IS NULL OR t.major_id = #{majorId})-->
+<!--          AND (#{title} IS NULL OR t.title = #{title})-->
+<!--          AND (#{gender} IS NULL OR t.gender = #{gender})-->
+
+
     <insert id="insertScores">
         INSERT INTO course_selection(stu_id,course_sec_id,score,status)
         VALUES (#{studentId},#{courseInstId},#{score},#{status})
@@ -140,5 +234,15 @@
         SELECT DISTINCT id
         FROM course_inst_section
         WHERE course_inst_id =#{courseInstId}
+    </select>
+    <select id="getAllTeacher">
+        SELECT *
+        FROM teacher
+        ORDER BY id
+        LIMIT #{offset}, #{num}
+    </select>
+    <select id="getTeacherCount">
+        SELECT COUNT(*)
+        FROM teacher
     </select>
 </mapper>

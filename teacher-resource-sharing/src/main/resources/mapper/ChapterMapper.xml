@@ -245,4 +245,32 @@
         JOIN file f ON f.id = tm.file_id
         WHERE ch.course_inst_id = #{courseId}
     </select>
+    <select id="getSchool">
+        SELECT id AS schoolId,
+               name AS schoolName
+        FROM school
+    </select>
+
+    <select id="getMajorList">
+        SELECT id AS majorId,
+               name AS majorName
+            FROM major
+        WHERE major.school_id = #{schoolId}
+    </select>
+
+    <select id="getAllSemester">
+           SELECT *
+           FROM semester
+           ORDER BY to_date DESC
+    </select>
+
+    <select id="getCampusVO">
+        SELECT campus.id AS campusId,
+               campus.name AS campusName,
+               GROUP_CONCAT(classroom.building_name SEPARATOR ',') AS buildings
+        FROM campus
+        JOIN classroom ON classroom.campus_id = campus.id
+        GROUP BY campus.id,
+                 campus.name
+    </select>
 </mapper>
