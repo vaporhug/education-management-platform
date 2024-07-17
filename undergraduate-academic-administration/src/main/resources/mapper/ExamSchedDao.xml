@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fjxgwzd.undergraduateacademicadministration.dao.ExamSchedDao">
+
+    <resultMap type="com.fjxgwzd.undergraduateacademicadministration.entity.ExamSched" id="ExamSchedMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="courseInstId" column="course_inst_id" jdbcType="INTEGER"/>
+        <result property="duration" column="duration" jdbcType="INTEGER"/>
+        <result property="classroomId" column="classroom_id" jdbcType="INTEGER"/>
+        <result property="year" column="year" jdbcType="INTEGER"/>
+        <result property="termPart" column="term_part" jdbcType="INTEGER"/>
+        <result property="week" column="week" jdbcType="INTEGER"/>
+        <result property="dayOfWeek" column="day_of_week" jdbcType="INTEGER"/>
+        <result property="periodFrom" column="period_from" jdbcType="INTEGER"/>
+        <result property="periodTo" column="period_to" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="originalExamSched" column="original_exam_sched" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ExamSchedMap">
+        select
+          id, course_inst_id, duration, classroom_id, year, term_part, week, day_of_week, period_from, period_to, type, original_exam_sched
+        from exam_sched
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ExamSchedMap">
+        select
+          id, course_inst_id, duration, classroom_id, year, term_part, week, day_of_week, period_from, period_to, type, original_exam_sched
+        from exam_sched
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="courseInstId != null">
+                and course_inst_id = #{courseInstId}
+            </if>
+            <if test="duration != null">
+                and duration = #{duration}
+            </if>
+            <if test="classroomId != null">
+                and classroom_id = #{classroomId}
+            </if>
+            <if test="year != null">
+                and year = #{year}
+            </if>
+            <if test="termPart != null">
+                and term_part = #{termPart}
+            </if>
+            <if test="week != null">
+                and week = #{week}
+            </if>
+            <if test="dayOfWeek != null">
+                and day_of_week = #{dayOfWeek}
+            </if>
+            <if test="periodFrom != null">
+                and period_from = #{periodFrom}
+            </if>
+            <if test="periodTo != null">
+                and period_to = #{periodTo}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="originalExamSched != null">
+                and original_exam_sched = #{originalExamSched}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from exam_sched
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="courseInstId != null">
+                and course_inst_id = #{courseInstId}
+            </if>
+            <if test="duration != null">
+                and duration = #{duration}
+            </if>
+            <if test="classroomId != null">
+                and classroom_id = #{classroomId}
+            </if>
+            <if test="year != null">
+                and year = #{year}
+            </if>
+            <if test="termPart != null">
+                and term_part = #{termPart}
+            </if>
+            <if test="week != null">
+                and week = #{week}
+            </if>
+            <if test="dayOfWeek != null">
+                and day_of_week = #{dayOfWeek}
+            </if>
+            <if test="periodFrom != null">
+                and period_from = #{periodFrom}
+            </if>
+            <if test="periodTo != null">
+                and period_to = #{periodTo}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="originalExamSched != null">
+                and original_exam_sched = #{originalExamSched}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into exam_sched(course_inst_id, duration, classroom_id, year, term_part, week, day_of_week, period_from, period_to, type, original_exam_sched)
+        values (#{courseInstId}, #{duration}, #{classroomId}, #{year}, #{termPart}, #{week}, #{dayOfWeek}, #{periodFrom}, #{periodTo}, #{type}, #{originalExamSched})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into exam_sched(course_inst_id, duration, classroom_id, year, term_part, week, day_of_week, period_from, period_to, type, original_exam_sched)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.courseInstId}, #{entity.duration}, #{entity.classroomId}, #{entity.year}, #{entity.termPart}, #{entity.week}, #{entity.dayOfWeek}, #{entity.periodFrom}, #{entity.periodTo}, #{entity.type}, #{entity.originalExamSched})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into exam_sched(course_inst_id, duration, classroom_id, year, term_part, week, day_of_week, period_from, period_to, type, original_exam_sched)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.courseInstId}, #{entity.duration}, #{entity.classroomId}, #{entity.year}, #{entity.termPart}, #{entity.week}, #{entity.dayOfWeek}, #{entity.periodFrom}, #{entity.periodTo}, #{entity.type}, #{entity.originalExamSched})
+        </foreach>
+        on duplicate key update
+        course_inst_id = values(course_inst_id),
+        duration = values(duration),
+        classroom_id = values(classroom_id),
+        year = values(year),
+        term_part = values(term_part),
+        week = values(week),
+        day_of_week = values(day_of_week),
+        period_from = values(period_from),
+        period_to = values(period_to),
+        type = values(type),
+        original_exam_sched = values(original_exam_sched)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update exam_sched
+        <set>
+            <if test="courseInstId != null">
+                course_inst_id = #{courseInstId},
+            </if>
+            <if test="duration != null">
+                duration = #{duration},
+            </if>
+            <if test="classroomId != null">
+                classroom_id = #{classroomId},
+            </if>
+            <if test="year != null">
+                year = #{year},
+            </if>
+            <if test="termPart != null">
+                term_part = #{termPart},
+            </if>
+            <if test="week != null">
+                week = #{week},
+            </if>
+            <if test="dayOfWeek != null">
+                day_of_week = #{dayOfWeek},
+            </if>
+            <if test="periodFrom != null">
+                period_from = #{periodFrom},
+            </if>
+            <if test="periodTo != null">
+                period_to = #{periodTo},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="originalExamSched != null">
+                original_exam_sched = #{originalExamSched},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from exam_sched where id = #{id}
+    </delete>
+
+</mapper>
+

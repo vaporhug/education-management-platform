@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fjxgwzd.undergraduateacademicadministration.dao.ClassDao">
+
+    <resultMap type="com.fjxgwzd.undergraduateacademicadministration.entity.Class" id="ClassMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="majorId" column="major_id" jdbcType="INTEGER"/>
+        <result property="feStuNum" column="fe_stu_num" jdbcType="INTEGER"/>
+        <result property="maleStuNum" column="male_stu_num" jdbcType="INTEGER"/>
+        <result property="counselorId" column="counselor_id" jdbcType="VARCHAR"/>
+        <result property="campusId" column="campus_id" jdbcType="INTEGER"/>
+        <result property="startYear" column="start_year" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ClassMap">
+        select
+          id, name, major_id, fe_stu_num, male_stu_num, counselor_id, campus_id, start_year
+        from class
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ClassMap">
+        select
+          id, name, major_id, fe_stu_num, male_stu_num, counselor_id, campus_id, start_year
+        from class
+        <where>
+            <if test="class.id != null">
+                and id = #{class.id}
+            </if>
+            <if test="class.name != null and class.name != ''">
+                and name = #{class.name}
+            </if>
+            <if test="class.majorId != null">
+                and major_id = #{class.majorId}
+            </if>
+            <if test="class.feStuNum != null">
+                and fe_stu_num = #{class.feStuNum}
+            </if>
+            <if test="class.maleStuNum != null">
+                and male_stu_num = #{class.maleStuNum}
+            </if>
+            <if test="class.counselorId != null and class.counselorId != ''">
+                and counselor_id = #{class.counselorId}
+            </if>
+            <if test="class.campusId != null">
+                and campus_id = #{class.campusId}
+            </if>
+            <if test="class.startYear != null">
+                and start_year = #{class.startYear}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from class
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="majorId != null">
+                and major_id = #{majorId}
+            </if>
+            <if test="feStuNum != null">
+                and fe_stu_num = #{feStuNum}
+            </if>
+            <if test="maleStuNum != null">
+                and male_stu_num = #{maleStuNum}
+            </if>
+            <if test="counselorId != null and counselorId != ''">
+                and counselor_id = #{counselorId}
+            </if>
+            <if test="campusId != null">
+                and campus_id = #{campusId}
+            </if>
+            <if test="startYear != null">
+                and start_year = #{startYear}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into class(name, major_id, fe_stu_num, male_stu_num, counselor_id, campus_id, start_year)
+        values (#{name}, #{majorId}, #{feStuNum}, #{maleStuNum}, #{counselorId}, #{campusId}, #{startYear})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into class(name, major_id, fe_stu_num, male_stu_num, counselor_id, campus_id, start_year)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.name}, #{entity.majorId}, #{entity.feStuNum}, #{entity.maleStuNum}, #{entity.counselorId}, #{entity.campusId}, #{entity.startYear})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into class(name, major_id, fe_stu_num, male_stu_num, counselor_id, campus_id, start_year)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.name}, #{entity.majorId}, #{entity.feStuNum}, #{entity.maleStuNum}, #{entity.counselorId}, #{entity.campusId}, #{entity.startYear})
+        </foreach>
+        on duplicate key update
+        name = values(name),
+        major_id = values(major_id),
+        fe_stu_num = values(fe_stu_num),
+        male_stu_num = values(male_stu_num),
+        counselor_id = values(counselor_id),
+        campus_id = values(campus_id),
+        start_year = values(start_year)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update class
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="majorId != null">
+                major_id = #{majorId},
+            </if>
+            <if test="feStuNum != null">
+                fe_stu_num = #{feStuNum},
+            </if>
+            <if test="maleStuNum != null">
+                male_stu_num = #{maleStuNum},
+            </if>
+            <if test="counselorId != null and counselorId != ''">
+                counselor_id = #{counselorId},
+            </if>
+            <if test="campusId != null">
+                campus_id = #{campusId},
+            </if>
+            <if test="startYear != null">
+                start_year = #{startYear},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from class where id = #{id}
+    </delete>
+
+
+
+    <select id="getSum" resultType="java.lang.Integer">
+        select count(*) from class c
+            join major m on c.major_id = m.id
+            join school s on m.school_id = s.id
+            join campus c2 on c.campus_id = c2.id
+            join counselor c3 on c.counselor_id = c3.id
+        where (#{schoolId} is NULL OR #{schoolId}=s.id)
+            AND (#{majorId} is NULL OR #{majorId}=c.major_id)
+            AND (#{startYear} is NULL OR #{startYear}=c.start_year)
+    </select>
+
+    <select id="getTotalClassDetailDao" resultType="com.fjxgwzd.undergraduateacademicadministration.vo.ClassDetailVo">
+        select c.id as classId,c.name as className,s.name as schoolName,m.name as majorName,c2.name as campusName,c.start_year as startYear,c.counselor_id as counselorId,c.male_stu_num as maleNum,c.fe_stu_num as femaleNum
+        from class c
+                        join major m on c.major_id = m.id
+                        join school s on m.school_id = s.id
+                        join campus c2 on c.campus_id = c2.id
+                        join counselor c3 on c.counselor_id = c3.id
+        where (#{schoolId} is NULL OR #{schoolId}=s.id)
+          AND (#{majorId} is NULL OR #{majorId}=c.major_id)
+          AND (#{startYear} is NULL OR #{startYear}=c.start_year)
+        order by c.id
+        LIMIT #{offset}, #{num}
+    </select>
+</mapper>
+

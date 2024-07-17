@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fjxgwzd.undergraduateacademicadministration.dao.ExamStuDao">
+
+    <resultMap type="com.fjxgwzd.undergraduateacademicadministration.entity.ExamStu" id="ExamStuMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="examSchedId" column="exam_sched_id" jdbcType="INTEGER"/>
+        <result property="stuId" column="stu_id" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ExamStuMap">
+        select
+          id, exam_sched_id, stu_id, status
+        from exam_stu
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ExamStuMap">
+        select
+          id, exam_sched_id, stu_id, status
+        from exam_stu
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="examSchedId != null">
+                and exam_sched_id = #{examSchedId}
+            </if>
+            <if test="stuId != null and stuId != ''">
+                and stu_id = #{stuId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from exam_stu
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="examSchedId != null">
+                and exam_sched_id = #{examSchedId}
+            </if>
+            <if test="stuId != null and stuId != ''">
+                and stu_id = #{stuId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into exam_stu(exam_sched_id, stu_id, status)
+        values (#{examSchedId}, #{stuId}, #{status})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into exam_stu(exam_sched_id, stu_id, status)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.examSchedId}, #{entity.stuId}, #{entity.status})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into exam_stu(exam_sched_id, stu_id, status)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.examSchedId}, #{entity.stuId}, #{entity.status})
+        </foreach>
+        on duplicate key update
+        exam_sched_id = values(exam_sched_id),
+        stu_id = values(stu_id),
+        status = values(status)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update exam_stu
+        <set>
+            <if test="examSchedId != null">
+                exam_sched_id = #{examSchedId},
+            </if>
+            <if test="stuId != null and stuId != ''">
+                stu_id = #{stuId},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from exam_stu where id = #{id}
+    </delete>
+
+    <select id="getYear" resultType="java.lang.Integer">
+        select es.year
+        from exam_stu p
+                 join exam_sched es on p.exam_sched_id = es.id
+        where stu_id=#{studentId}
+    </select>
+
+    <select id="getTermPart" resultType="java.lang.Boolean">
+        select es.term_part
+        from exam_stu p
+                 join exam_sched es on p.exam_sched_id = es.id
+        where stu_id=#{studentId}
+    </select>
+
+    <select id="getExams" resultType="com.fjxgwzd.undergraduateacademicadministration.vo.ExamTask">
+        select ci.id as courseInstId, co.name as courseName, es.week as week, es.day_of_week as dayOfWeek,
+               es.period_from as periodFrom,c.room_number as classRoomName,c.seat_num as seatNumber,p.stu_id as stuId,
+               ci.assess_method as assessMethod,c.building_name as building
+        from exam_stu p
+                 join exam_sched es on p.exam_sched_id = es.id
+                 join course_inst ci on ci.id = es.course_inst_id
+                 join classroom c on c.id = es.classroom_id
+                 join course co on ci.course_id = co.id
+        where stu_id=#{studentId}
+    </select>
+</mapper>
+

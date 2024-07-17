@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fjxgwzd.undergraduateacademicadministration.dao.StuCourseSchedDao">
+
+    <resultMap type="com.fjxgwzd.undergraduateacademicadministration.entity.StuCourseSched" id="StuCourseSchedMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="semester" column="semester" jdbcType="INTEGER"/>
+        <result property="stuId" column="stu_id" jdbcType="VARCHAR"/>
+        <result property="courseSchedId" column="course_sched_id" jdbcType="INTEGER"/>
+        <result property="stuAttend" column="stu_attend" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="StuCourseSchedMap">
+        select
+          id, semester, stu_id, course_sched_id, stu_attend
+        from stu_course_sched
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="StuCourseSchedMap">
+        select
+          id, semester, stu_id, course_sched_id, stu_attend
+        from stu_course_sched
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="semester != null">
+                and semester = #{semester}
+            </if>
+            <if test="stuId != null and stuId != ''">
+                and stu_id = #{stuId}
+            </if>
+            <if test="courseSchedId != null">
+                and course_sched_id = #{courseSchedId}
+            </if>
+            <if test="stuAttend != null">
+                and stu_attend = #{stuAttend}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from stu_course_sched
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="semester != null">
+                and semester = #{semester}
+            </if>
+            <if test="stuId != null and stuId != ''">
+                and stu_id = #{stuId}
+            </if>
+            <if test="courseSchedId != null">
+                and course_sched_id = #{courseSchedId}
+            </if>
+            <if test="stuAttend != null">
+                and stu_attend = #{stuAttend}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into stu_course_sched(semester, stu_id, course_sched_id, stu_attend)
+        values (#{semester}, #{stuId}, #{courseSchedId}, #{stuAttend})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into stu_course_sched(semester, stu_id, course_sched_id, stu_attend)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.semester}, #{entity.stuId}, #{entity.courseSchedId}, #{entity.stuAttend})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into stu_course_sched(semester, stu_id, course_sched_id, stu_attend)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.semester}, #{entity.stuId}, #{entity.courseSchedId}, #{entity.stuAttend})
+        </foreach>
+        on duplicate key update
+        semester = values(semester),
+        stu_id = values(stu_id),
+        course_sched_id = values(course_sched_id),
+        stu_attend = values(stu_attend)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update stu_course_sched
+        <set>
+            <if test="semester != null">
+                semester = #{semester},
+            </if>
+            <if test="stuId != null and stuId != ''">
+                stu_id = #{stuId},
+            </if>
+            <if test="courseSchedId != null">
+                course_sched_id = #{courseSchedId},
+            </if>
+            <if test="stuAttend != null">
+                stu_attend = #{stuAttend},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from stu_course_sched where id = #{id}
+    </delete>
+
+    <select id="getCourseNumByWeek" resultType="com.fjxgwzd.undergraduateacademicadministration.vo.AttendanceStudentVO">
+        select cs.week,count(*) AS sum
+        from stu_course_sched scs
+        join course_sched cs on scs.course_sched_id = cs.id
+        where scs.stu_id=#{stuId} and
+            cs.year = #{year} and
+            cs.term_part = #{termPart}
+        group by cs.week
+    </select>
+
+    <select id="getAttendanceByStuId" resultType="com.fjxgwzd.undergraduateacademicadministration.vo.AttendanceStudentVO">
+        select cs.week, count(*) AS sum
+        from stu_course_sched scs
+                 join course_sched cs on scs.course_sched_id = cs.id
+        where scs.stu_id=#{stuId} and
+            cs.year = #{year} and
+            cs.term_part = #{termPart} and
+            scs.stu_attend = 1
+        group by cs.week
+    </select>
+
+    <select id="getCourseNumByWeekTea"
+            resultType="com.fjxgwzd.undergraduateacademicadministration.vo.AttendanceStudentVO">
+        select cs.week, count(*) AS sum
+        from teach t
+        join course c on t.course_id = c.id
+        join course_inst ci on c.id = ci.course_id
+        join course_inst_section cis on ci.id = cis.course_inst_id
+        join course_sched cs on cis.id = cs.course_section_id
+        where t.teacher_id=#{teacherId} and
+            cs.year = #{year} and
+            cs.term_part = #{termPart}
+        group by cs.week
+    </select>
+
+    <select id="getAttendanceByTeaId"
+            resultType="com.fjxgwzd.undergraduateacademicadministration.vo.AttendanceStudentVO">
+        select cs.week, count(*) AS sum
+        from teach t
+                 join course c on t.course_id = c.id
+                 join course_inst ci on c.id = ci.course_id
+                 join course_inst_section cis on ci.id = cis.course_inst_id
+                 join course_sched cs on cis.id = cs.course_section_id
+        where t.teacher_id=#{teacherId} and
+            cs.year = #{year} and
+            cs.term_part = #{termPart} and
+            cs.teacher_attend = 1
+        group by cs.week
+    </select>
+
+    <select id="getCourseNumByWeekStu"
+            resultType="com.fjxgwzd.undergraduateacademicadministration.vo.AttendanceStudentVO">
+        select cs.week, count(*) AS sum
+        from stu_course_sched scs
+        join course_sched cs on cs.id = scs.course_sched_id
+        where cs.term_part = #{termPart} and cs.year = #{year}
+        group by cs.week
+    </select>
+
+    <select id="getAttendanceByWeekStu"
+            resultType="com.fjxgwzd.undergraduateacademicadministration.vo.AttendanceStudentVO">
+        select cs.week, count(*) AS sum
+        from stu_course_sched scs
+                 join course_sched cs on cs.id = scs.course_sched_id
+        where cs.term_part = #{termPart} and cs.year = #{year} and scs.stu_attend=1
+        group by cs.week
+    </select>
+
+    <select id="getCourseNumByWeekTeacher"
+            resultType="com.fjxgwzd.undergraduateacademicadministration.vo.AttendanceStudentVO">
+        select cs.week, count(*) AS sum
+        from stu_course_sched scs
+                 join course_sched cs on cs.id = scs.course_sched_id
+        where cs.term_part = #{termPart} and cs.year = #{year}
+        group by cs.week
+    </select>
+
+    <select id="getAttendanceByWeekTeacher"
+            resultType="com.fjxgwzd.undergraduateacademicadministration.vo.AttendanceStudentVO">
+        select cs.week, count(*) AS sum
+        from stu_course_sched scs
+                 join course_sched cs on cs.id = scs.course_sched_id
+        where cs.term_part = #{termPart} and cs.year = #{year} and cs.teacher_attend=1
+        group by cs.week
+    </select>
+</mapper>
+

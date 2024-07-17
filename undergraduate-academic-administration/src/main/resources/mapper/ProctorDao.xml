@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fjxgwzd.undergraduateacademicadministration.dao.ProctorDao">
+
+    <resultMap type="com.fjxgwzd.undergraduateacademicadministration.entity.Proctor" id="ProctorMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="teacherId" column="teacher_id" jdbcType="VARCHAR"/>
+        <result property="examSchedId" column="exam_sched_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="ProctorMap">
+        select
+          id, teacher_id, exam_sched_id
+        from proctor
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="ProctorMap">
+        select
+          id, teacher_id, exam_sched_id
+        from proctor
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="teacherId != null and teacherId != ''">
+                and teacher_id = #{teacherId}
+            </if>
+            <if test="examSchedId != null">
+                and exam_sched_id = #{examSchedId}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from proctor
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="teacherId != null and teacherId != ''">
+                and teacher_id = #{teacherId}
+            </if>
+            <if test="examSchedId != null">
+                and exam_sched_id = #{examSchedId}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into proctor(teacher_id, exam_sched_id)
+        values (#{teacherId}, #{examSchedId})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into proctor(teacher_id, exam_sched_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.teacherId}, #{entity.examSchedId})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into proctor(teacher_id, exam_sched_id)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.teacherId}, #{entity.examSchedId})
+        </foreach>
+        on duplicate key update
+        teacher_id = values(teacher_id),
+        exam_sched_id = values(exam_sched_id)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update proctor
+        <set>
+            <if test="teacherId != null and teacherId != ''">
+                teacher_id = #{teacherId},
+            </if>
+            <if test="examSchedId != null">
+                exam_sched_id = #{examSchedId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from proctor where id = #{id}
+    </delete>
+
+    <select id="getYear" resultType="java.lang.Integer">
+        select es.year
+        from proctor p
+        join exam_sched es on p.exam_sched_id = es.id
+        where teacher_id=#{teacherId}
+    </select>
+
+    <select id="getTermPart" resultType="java.lang.Boolean">
+        select es.term_part
+        from proctor p
+                 join exam_sched es on p.exam_sched_id = es.id
+        where teacher_id=#{teacherId}
+    </select>
+
+    <select id="getExams" resultType="com.fjxgwzd.undergraduateacademicadministration.vo.ExamSchedVo">
+        select ci.id as courseInstId, co.name as courseName, es.week as week, es.day_of_week as dayOfWeek,es.period_from as periodFrom,c2.name as campusName,c.building_name as building, c.room_number as classRoomName,ci.assess_method as assessMethod
+        from proctor p
+            join exam_sched es on p.exam_sched_id = es.id
+            join course_inst ci on ci.id = es.course_inst_id
+            join classroom c on c.id = es.classroom_id
+            join campus c2 on c2.id = c.campus_id
+            join course co on ci.course_id = co.id
+        where teacher_id=#{teacherId} and es.year = #{year} and es.term_part = #{term_part}
+    </select>
+
+    <select id="getAllSemester" resultType="com.fjxgwzd.undergraduateacademicadministration.entity.Semester">
+        SELECT *
+        FROM semester
+        ORDER BY to_date DESC
+    </select>
+</mapper>
+
