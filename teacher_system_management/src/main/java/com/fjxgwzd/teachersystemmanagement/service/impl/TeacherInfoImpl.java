@@ -13,9 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class TeacherInfoImpl implements TeacherService {
@@ -88,10 +86,10 @@ public class TeacherInfoImpl implements TeacherService {
         LocalDate currentDate = currentTime.toLocalDate();
         // 1.1、由年份先判断应该是哪个学期
         Integer currentYear = currentDate.getYear();
-        List<Semester> semesters = List.of();
+        List<Semester> semesters = new ArrayList<>();
         List<Semester> semesterList = teacherMapper.getAllSemester();
         for (Semester semester : semesterList) {
-            if (semester.getYear() == currentYear) {
+            if (Objects.equals(semester.getYear(), currentYear)) {
                 semesters.add(semester);
             }
         }
@@ -146,7 +144,7 @@ public class TeacherInfoImpl implements TeacherService {
     }
 
     @Override
-    public TotalTeacherDetailVO getTotalTeacherDetail(Short schoolId, Short majorId, String title, String name, Boolean gender, Integer offset, Integer num) {
+    public TotalTeacherDetailVO getTotalTeacherDetail(Short schoolId, Short majorId, Integer title, String name, Boolean gender, Integer offset, Integer num) {
 //        Integer sum = teacherMapper.getSum(schoolId,majorId,title,name,gender);
 //        double sum = teacherMapper.getTeacherCount();
 //        System.out.println(sum);

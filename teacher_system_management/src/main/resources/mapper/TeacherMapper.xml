@@ -83,7 +83,7 @@
        <select id="getAllSemester">
                SELECT *
                FROM semester
-               ORDER BY to_date DESC
+               ORDER BY to_date
        </select>
     <select id="getSum">
         SELECT COUNT(*)

@@ -24,6 +24,13 @@ public class InfoConrtoller {
         return Result.ok(teacherService.getTeacherDetailInfo(primaryInfo));
     }
 
+    @PostMapping("/teacherHomeDetails")
+//    public Result<TeacherDetailInfoVO> teacherDetails(@RequestParam("teacherId") String teacherId) {
+    public Result<TeacherDetailInfoVO> teacherHomeDetails(@RequestBody Map<String, Object> condition) {
+        String teacherId = (String) condition.get("teacherId");
+        return Result.ok(teacherService.getTeacherDetailInfo(teacherId));
+    }
+
     @PostMapping("/TeacherResearchFindings")
     public Result<TeacherResearchFindings> teacherResearchFindings(@RequestHeader("PrimaryInfo") String primaryInfo,  @RequestBody Map<String, Object> condition) {
 //    public Result<TeacherResearchFindings> teacherResearchFindings(@RequestParam("teacherId") String teacherId,@RequestParam("type") Integer type, @RequestParam("offset") Integer offset, @RequestParam("num") Integer num) {
@@ -70,7 +77,7 @@ public class InfoConrtoller {
         try {
             Short schoolId = condition.containsKey("schoolId") ? ((Number) condition.get("schoolId")).shortValue() : null;
             Short majorId = condition.containsKey("majorId") ? ((Number) condition.get("majorId")).shortValue() : null;
-            String title = (String) condition.get("title");
+            Integer title = (Integer) condition.get("title");
             String name = (String) condition.get("name");
             Boolean gender = (Boolean) condition.get("gender");
             Integer offset = (Integer) condition.get("offset");
