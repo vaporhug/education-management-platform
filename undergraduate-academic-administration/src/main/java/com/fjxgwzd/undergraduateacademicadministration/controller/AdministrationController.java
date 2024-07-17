@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -68,15 +69,17 @@ public class AdministrationController {
     }
 
     @PostMapping("/courseTable")
-    public Result<List<CourseTaskVO>> CourseTable(@RequestHeader("PrimaryInfo") String primaryInfo, @RequestBody Map<String, Object> conditions) {
+    public Result<CourseInfo> CourseTable(@RequestHeader("PrimaryInfo") String primaryInfo, @RequestBody Map<String, Object> conditions) {
 //    public Result<List<CourseTaskVO>> CourseTable(@RequestParam("studentId") String studentId,@RequestParam("year") Integer year, @RequestParam("termPart") boolean termPart, @RequestParam("week") Integer week) {
-        List<CourseTaskVO> courseTaskVOList = null;
         try {
+            List<CourseTaskVO> courseTaskVOList = null;
             Integer year = Integer.valueOf(String.valueOf(conditions.get("year")));
             Boolean termPart = Boolean.valueOf(String.valueOf(conditions.get("termPart")));
             Integer week = Integer.valueOf(String.valueOf(conditions.get("week")));
             courseTaskVOList = administrationService.getCourseTaskByStudentId(primaryInfo,year,termPart,week);
-            return Result.ok(courseTaskVOList);
+            CourseInfo courseInfo = new CourseInfo();
+            courseInfo.setCourses(courseTaskVOList == null ? new ArrayList<>() : courseTaskVOList);
+            return Result.ok(courseInfo);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return Result.fail();

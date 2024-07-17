@@ -22,7 +22,7 @@ public class CorsConfig {
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedMethod("*");
-//        config.addAllowedOriginPattern("http://102.168.40.11:60500");
+//        config.addAllowedOriginPattern("http://192.168.51.203:60500");
         config.addAllowedOriginPattern("*");
         config.addAllowedHeader("*");
         // 暴露头部信息

@@ -1,13 +1,14 @@
 package com.fjxgwzd.teachersystemmanagement.contorller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fjxgwzd.common.result.Result;
 import com.fjxgwzd.teachersystemmanagement.service.TeacherService;
 import com.fjxgwzd.teachersystemmanagement.vo.*;
-import com.fjxgwzd.common.result.Result;
 import com.fjxgwzd.undergraduateacademicadministration.vo.TotalStudentDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -47,15 +48,16 @@ public class InfoConrtoller {
     }
 
     @PostMapping("/courseTable")
-    public Result<List<CourseTaskVO>> CourseTable(@RequestHeader("PrimaryInfo") String primaryInfo,  @RequestBody Map<String, Object> condition) {
+    public Result<CourseTaskResponse> CourseTable(@RequestHeader("PrimaryInfo") String primaryInfo,  @RequestBody Map<String, Object> condition) {
 //    public Result<List<CourseTaskVO>> CourseTable(@RequestParam("teacherId") String teacherId, @RequestParam("year") Integer year, @RequestParam("termPart") boolean termPart, @RequestParam("week") Integer week) {
 //        List<CourseTaskVO> courseTaskVOList = null;
         try {
             Integer year = (Integer) condition.get("year");
             Boolean termPart = (Boolean) condition.get("termPart");
             Integer week = (Integer) condition.get("week");
-             List<CourseTaskVO> courseTaskVOList = teacherService.getCourseTaskByTeacherId(primaryInfo,year,termPart,week);
-            return Result.ok(courseTaskVOList);
+            List<CourseTaskVO> courseTaskVOList = teacherService.getCourseTaskByTeacherId(primaryInfo,year,termPart,week);
+            CourseTaskResponse response = new CourseTaskResponse(courseTaskVOList == null ? new ArrayList<>() : courseTaskVOList);
+            return Result.ok(response);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return Result.fail();

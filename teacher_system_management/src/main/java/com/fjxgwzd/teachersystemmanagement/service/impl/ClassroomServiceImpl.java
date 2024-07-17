@@ -29,15 +29,15 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     @Override
-    public String reserveClassroom(String teacherId, String name, String phoneNumber, Integer campusId, String buildingName, Integer classroomId, Integer year, boolean termPart, Integer week, Integer dayOfWeek, Integer periodFrom, Integer periodTo, Short reason, String reasonDetail) {
-        classroomMapper.reserveClassroom(teacherId,name,phoneNumber, campusId, buildingName, classroomId, year, termPart, week, dayOfWeek, periodFrom, periodTo, reason, reasonDetail);
+    public String reserveClassroom(String teacherId, String name, String phoneNumber, Integer classroomId, Integer year, boolean termPart, Integer week, Integer dayOfWeek, Integer periodFrom, Integer periodTo, Short reason, String reasonDetail) {
+        classroomMapper.reserveClassroom(teacherId,name,phoneNumber,classroomId, year, termPart, week, dayOfWeek, periodFrom, periodTo, reason, reasonDetail);
         return "成功申请";
     }
 
     @Override
     public ReservationRecordVO getReservation(String teacherId, Integer offset, Integer num) {
         ReservationRecordVO reservationRecordVO = new ReservationRecordVO();
-        reservationRecordVO.setRecordSum(classroomMapper.getSum(teacherId)/num);
+        reservationRecordVO.setRecordSum(classroomMapper.getSum(teacherId));
         List<RecordVO> recordVOList = classroomMapper.getRecords(teacherId,offset,num);
         reservationRecordVO.setRecordVOList(recordVOList);
         return reservationRecordVO;

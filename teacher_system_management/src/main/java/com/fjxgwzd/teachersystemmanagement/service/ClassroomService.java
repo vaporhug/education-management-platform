@@ -9,6 +9,6 @@ import java.util.List;
 public interface ClassroomService {
     List<CampusVO> getCampusVO();
     List<ClassroomVO> getClassroomVO(Integer campusId,String building);
-    String reserveClassroom(String teacherId,String name,String phoneNumber,Integer campusId,String buildingName,Integer classroomId,Integer year,boolean termPart,Integer week,Integer dayOfWeek,Integer periodFrom,Integer periodTo,Short reason,String reasonDetail);
+    String reserveClassroom(String teacherId,String name,String phoneNumber,Integer classroomId,Integer year,boolean termPart,Integer week,Integer dayOfWeek,Integer periodFrom,Integer periodTo,Short reason,String reasonDetail);
     ReservationRecordVO getReservation(String teacherId, Integer offset, Integer num);
 }

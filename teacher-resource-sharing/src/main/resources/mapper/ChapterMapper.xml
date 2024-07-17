@@ -80,19 +80,15 @@
             ci.year,
             ci.term_part AS termPart,
             ci.total_class_hour AS totalClassHour
-        FROM
-            course_inst ci
-        JOIN
-            course c ON ci.course_id = c.id
-        JOIN
-            teach t ON c.id = t.course_id
-        JOIN
-            school sc ON sc.id = c.school_id
-        JOIN
-            file f ON f.id = c.course_pic
+        FROM course_inst ci
+        JOIN course c ON ci.course_id = c.id
+        JOIN teach t ON c.id = t.course_id
+        JOIN school sc ON sc.id = c.school_id
+        JOIN file f ON f.id = c.course_pic
         WHERE
             t.teacher_id = #{teacherId} AND ci.year = #{year} AND ci.term_part = #{termPart}
     </select>
+
     <select id="findCourseDetalByCourseInstId" resultMap="courseDetailResultMap">
 --         SELECT
 --             ci.id AS course_inst_id,
@@ -261,7 +257,7 @@
     <select id="getAllSemester">
            SELECT *
            FROM semester
-           ORDER BY to_date DESC
+           ORDER BY to_date
     </select>
 
     <select id="getCampusVO">

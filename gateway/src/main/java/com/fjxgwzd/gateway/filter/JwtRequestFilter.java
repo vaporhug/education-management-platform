@@ -33,6 +33,9 @@ public class JwtRequestFilter  implements WebFilter {
         EXCLUDED_PATHS.add("/register");
         EXCLUDED_PATHS.add("/public");
         EXCLUDED_PATHS.add("/static");
+        EXCLUDED_PATHS.add("/ts/TeacherInfo/teacherInfo");
+        EXCLUDED_PATHS.add("/ts/TeacherInfo/teacherDetails");
+        EXCLUDED_PATHS.add("/tr/files/school_major");
         // 添加更多需要排除的路径
     }
 

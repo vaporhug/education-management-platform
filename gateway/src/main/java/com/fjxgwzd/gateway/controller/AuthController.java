@@ -31,6 +31,8 @@ public class AuthController {
         }
         // 生成JWT
         String jwt = jwtService.generateToken(tgt,null);
+        System.out.println(jwt.contains("\n"));
+        System.out.println(jwt.contains("\r\n"));
 
         Integer identity = username.length() == 10 ? 1 : username.startsWith("X") ? 2 : 3;
         Map<String,Object> data = new HashMap<>();

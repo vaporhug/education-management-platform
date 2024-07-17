@@ -1,14 +1,14 @@
 package com.fjxgwzd.teachersystemmanagement.contorller;
 
 
-import com.fjxgwzd.common.result.Result;
+
 import com.fjxgwzd.teachersystemmanagement.service.ClassroomService;
 import com.fjxgwzd.teachersystemmanagement.vo.CampusVO;
 import com.fjxgwzd.teachersystemmanagement.vo.ClassroomVO;
 import com.fjxgwzd.teachersystemmanagement.vo.ReservationRecordVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import com.fjxgwzd.common.result.Result;
 import java.util.List;
 import java.util.Map;
 
@@ -42,8 +42,8 @@ public class ClassroomStatusController {
         try {
             String name = (String) condition.get("name");
             String phoneNumber = (String) condition.get("phoneNumber");
-            Integer campusId = (Integer) condition.get("campusId");
-            String buildingName = (String) condition.get("buildingName");
+//            Integer campusId = (Integer) condition.get("campusId");
+//            String buildingName = (String) condition.get("buildingName");
             Integer classroomId = (Integer) condition.get("classroomId");
             Integer year =  (Integer) condition.get("year");
             boolean termPart = (Boolean) condition.get("termPart");
@@ -53,7 +53,7 @@ public class ClassroomStatusController {
             Integer periodTo = (Integer) condition.get("periodTo");
             Short reason = (Short) condition.get("reason");
             String reasonDetail = (String) condition.get("reasonDetail");
-            return Result.ok(classroomService.reserveClassroom(primaryInfo,name,phoneNumber, campusId, buildingName, classroomId, year, termPart, week, dayOfWeek, periodFrom, periodTo, reason, reasonDetail));
+            return Result.ok(classroomService.reserveClassroom(primaryInfo,name,phoneNumber, classroomId, year, termPart, week, dayOfWeek, periodFrom, periodTo, reason, reasonDetail));
         }catch (Exception e){
             e.printStackTrace();
             return Result.fail();

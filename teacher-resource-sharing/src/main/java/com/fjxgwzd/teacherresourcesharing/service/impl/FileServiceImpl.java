@@ -287,6 +287,7 @@ public class FileServiceImpl implements FileService {
         basicInfoVO.setSchoolMajorList(schoolMajorListList);
         List<CampusVO> campusVOList = chapterMapper.getCampusVO();
         basicInfoVO.setCampusVOList(campusVOList);
+        System.out.println(semesterList.get(0).getYear());
         basicInfoVO.setEarliestTermYear(semesterList.get(0).getYear());
         basicInfoVO.setEarliestTermPart(currentSemester.isTerm_part());
 
