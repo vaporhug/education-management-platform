@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   mysql:
     image: 'mysql:8.0.31'
@@ -10,7 +12,6 @@ services:
       - '3307:3306'
     volumes:
       - ./data/mysql-data:/var/lib/mysql
-      - ./sql-init:/docker-entrypoint-initdb.d
       - ./sql-init:/docker-entrypoint-initdb.d
     command:
       --default-authentication-plugin=mysql_native_password
@@ -28,6 +29,98 @@ services:
       - ./data/redis-data:/data
     networks:
       - backend
+#
+#  zookeeper:
+#    image: 'confluentinc/cp-zookeeper:latest'
+#    environment:
+#      - 'ZOOKEEPER_CLIENT_PORT=2181'
+#      - 'ZOOKEEPER_4LW_COMMANDS_WHITELIST="ruok,stat,envi"'
+#
+#  kafka:
+#    image: 'confluentinc/cp-kafka:latest'
+#    depends_on:
+#      - zookeeper
+#    environment:
+#      - 'KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181'
+#      - 'KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092'
+#      - 'KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1'
+##
+#  elasticsearch:
+#    image: 'docker.elastic.co/elasticsearch/elasticsearch:7.10.1'
+#    environment:
+#      - 'discovery.type=single-node'
+#    ports:
+#      - '9201:9200'
+
+#  debezium:
+#    image: 'debezium/connect:1.4'
+#    mem_limit: 2g
+#    depends_on:
+#      - kafka
+#      - mysql
+#    environment:
+#      - 'BOOTSTRAP_SERVERS=kafka:9092'
+#      - 'GROUP_ID=1'
+#      - 'CONFIG_STORAGE_TOPIC=my_connect_configs'
+#      - 'OFFSET_STORAGE_TOPIC=my_connect_offsets'
+#      - 'STATUS_STORAGE_TOPIC=my_connect_statuses'
+#      - 'JAVA_OPTS=-Xms512m -Xmx1g'
+#    ports:
+#      - '8084:8083'
+
+#  debezium:
+#    image: debezium/connect:1.4
+#    depends_on:
+#      - kafka
+#      - mysql
+#    environment:
+#      - BOOTSTRAP_SERVERS=kafka:9092
+#      - GROUP_ID=1
+#      - CONFIG_STORAGE_TOPIC=my_connect_configs
+#      - OFFSET_STORAGE_TOPIC=my_connect_offsets
+#      - STATUS_STORAGE_TOPIC=my_connect_statuses
+#      - JAVA_OPTS=-Xms512m -Xmx1g -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+UseStringDeduplication -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp
+#      - CONNECT_KEY_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+#      - CONNECT_VALUE_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+#      - CONNECT_INTERNAL_KEY_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+#      - CONNECT_INTERNAL_VALUE_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+#      - CONNECT_REST_ADVERTISED_HOST_NAME=debezium
+#      - CONNECT_PLUGIN_PATH=/kafka/connect
+#      - CONNECT_LOG4J_LOGGERS=org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
+#      - CONNECT_LOG4J_ROOT_LOGGER=ERROR,stdout
+#      - CONNECT_LOG4J_APPENDER_STDOUT=org.apache.log4j.ConsoleAppender
+#      - CONNECT_LOG4J_APPENDER_STDOUT_LAYOUT=org.apache.log4j.PatternLayout
+#      - CONNECT_LOG4J_APPENDER_STDOUT_LAYOUT_CONVERSIONPATTERN=%d{ISO8601} [%t] %-5p %c %x - %m%n
+#    ports:
+#      - "8084:8083"
+
+
+#  connect:
+#    mem_limit: 2g
+#    image: debezium/connect:latest
+#    depends_on:
+#      - kafka
+#      - mysql
+#    ports:
+#      - "8083:8083"
+#    environment:
+#      CONFIG_STORAGE_TOPIC: debezium_config
+#      OFFSET_STORAGE_TOPIC: debezium_offset
+#      STATUS_STORAGE_TOPIC: debezium_status
+#      BOOTSTRAP_SERVERS: kafka:9092
+#      GROUP_ID: 1
+#      KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+#      VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+#      CONFIG_STORAGE_REPLICATION_FACTOR: 1
+#      OFFSET_STORAGE_REPLICATION_FACTOR: 1
+#      STATUS_STORAGE_REPLICATION_FACTOR: 1
+#      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+#      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+#      CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+#      CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+#      CONNECT_REST_ADVERTISED_HOST_NAME: connect
+#      CONNECT_PLUGIN_PATH: /kafka/connect
+#      CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=ERROR,org.I0Itec.zkclient=ERROR,org.reflections=ERROR
 
 volumes:
   mysql-data:
@@ -35,3 +128,93 @@ volumes:
 
 networks:
   backend:
+
+
+#services:
+#  zookeeper:
+#    image: quay.io/debezium/zookeeper:2.7
+#    ports:
+#      - 2181:2181
+#      - 2888:2888
+#      - 3888:3888
+#  kafka:
+#    image: quay.io/debezium/kafka:2.7
+#    ports:
+#      - 9092:9092
+#    links:
+#      - zookeeper
+#    environment:
+#      - ZOOKEEPER_CONNECT=zookeeper:2181
+#  mysql:
+#    image: quay.io/debezium/example-mysql:2.7
+#    ports:
+#      - 3306:3306
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=debezium
+#      - MYSQL_USER=mysqluser
+#      - MYSQL_PASSWORD=mysqlpw
+#  elastic:
+#    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.0
+#    ports:
+#      - "9200:9200"
+#    environment:
+#      - http.host=0.0.0.0
+#      - transport.host=127.0.0.1
+#      - xpack.security.enabled=false
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#  connect:
+#    image: confluentinc/cp-kafka-connect:latest
+##    build:
+##      context: debezium-jdbc-es
+##      args:
+##        DEBEZIUM_VERSION: 2.7
+#    ports:
+#      - 8083:8083
+#      - 5005:5005
+#    links:
+#      - kafka
+#      - mysql
+#      - elastic
+#    environment:
+#      - CONNECT_BOOTSTRAP_SERVERS=kafka:9092
+#      - CONNECT_GROUP_ID=1
+#      - CONNECT_CONFIG_STORAGE_TOPIC=my_connect_configs
+#      - CONNECT_OFFSET_STORAGE_TOPIC=my_connect_offsets
+#      - CONNECT_STATUS_STORAGE_TOPIC=my_source_connect_statuses
+#      - CONNECT_PLUGIN_PATH=/usr/share/java
+#      - CONNECT_REST_PORT=8083
+#      - CONNECT_KEY_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+#      - CONNECT_VALUE_CONVERTER=org.apache.kafka.connect.json.JsonConverter
+#      - CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE=false
+#      - CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE=false
+#      - CONNECT_REST_ADVERTISED_HOST_NAME=connect
+#      - CONNECT_REST_ADVERTISED_PORT=8083
+#    volumes:
+#      - ./custom-plugins:/usr/share/java
+#  connect:
+#    image: confluentinc/cp-kafka-connect:7.0.1
+#    ports:
+#      - 8083:8083
+#    environment:
+#      CONNECT_BOOTSTRAP_SERVERS: kafka:9092
+#      CONNECT_REST_PORT: 8083
+#      CONNECT_GROUP_ID: "1"
+#      CONNECT_CONFIG_STORAGE_TOPIC: my_connect_configs
+#      CONNECT_OFFSET_STORAGE_TOPIC: my_connect_offsets
+#      CONNECT_STATUS_STORAGE_TOPIC: my_source_connect_statuses
+#      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+#      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+#      CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+#      CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+#      CONNECT_PLUGIN_PATH: /usr/share/java
+#      CONNECT_REST_ADVERTISED_HOST_NAME: connect
+#      CONNECT_REST_ADVERTISED_PORT: 8083
+#    volumes:
+#      - ./custom-plugins:/usr/share/java
+#    command: >
+#      bash -c '
+#      curl -sL --retry 3 --retry-delay 10 https://cdn.confluent.io/confluent-hub-client-latest.tar.gz | tar -xz -C /usr/local/bin &&
+#      confluent-hub install --no-prompt confluentinc/kafka-connect-elasticsearch:latest &&
+#      /kafka/connect/run.sh
+#      '
+    

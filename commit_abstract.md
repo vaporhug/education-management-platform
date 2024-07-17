@@ -6,3 +6,4 @@ elseacher
 异常处理
 登录的超时等等
 缓存
+redis限流

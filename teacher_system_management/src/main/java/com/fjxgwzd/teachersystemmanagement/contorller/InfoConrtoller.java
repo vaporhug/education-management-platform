@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fjxgwzd.common.result.Result;
 import com.fjxgwzd.teachersystemmanagement.service.TeacherService;
 import com.fjxgwzd.teachersystemmanagement.vo.*;
-import com.fjxgwzd.undergraduateacademicadministration.vo.TotalStudentDetailVO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +19,6 @@ public class InfoConrtoller {
     TeacherService teacherService;
 
     @PostMapping("/teacherDetails")
-//    public Result<TeacherDetailInfoVO> teacherDetails(@RequestParam("teacherId") String teacherId) {
     public Result<TeacherDetailInfoVO> teacherDetails(@RequestHeader("PrimaryInfo") String primaryInfo) {
         return Result.ok(teacherService.getTeacherDetailInfo(primaryInfo));
     }
