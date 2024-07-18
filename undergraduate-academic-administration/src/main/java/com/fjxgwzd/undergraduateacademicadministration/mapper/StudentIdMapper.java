@@ -13,13 +13,14 @@ import java.util.List;
 @Repository
 @Service
 public interface StudentIdMapper {
-    EducationPlanVO getEducationPlanByMajorId(@Param("majorId") Short major_id, @Param("cohortYear") Short cohort_year);
+    EducationPlanVO getEducationPlanByMajorId( Short majorId, Short cohortYear);
     List<CourseInfoVO> findCourseInstByStudentId(String studentId, Integer year, boolean termPart);
     StudentDetailInfoVO getStudentDetailInfoByStudentId(String studentId);
     List<CourseTaskVO> getCourseTaskByStudentId(String studentId, Integer year, boolean termPart, Integer week);
     List<Semester> getAllSemester();
-    List<StudentDetailInfoVO> getTotalStudentDetail(Short schoolId, Short majorId, Integer startYear, Integer classId, boolean gender, String name, Integer offset, Integer num);
+    List<StudentDetailInfoVO> getTotalStudentDetail(Short schoolId, Short majorId, Integer startYear, Integer classId, Boolean gender, String name, Integer offset, Integer num);
     Integer getSum(Short schoolId, Short majorId, Integer startYear, Integer classId, Boolean gender, String name);
     Integer getStudentSum(Integer courseInstId);
     List<StudentVO> getCourseStudent(Integer courseInstId, Integer offset, Integer num);
+
 }

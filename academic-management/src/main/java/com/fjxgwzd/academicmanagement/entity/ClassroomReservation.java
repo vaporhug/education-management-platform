@@ -14,8 +14,8 @@ public class ClassroomReservation {
     @Id
     private Integer id;
 
-    @Field(name = "teacher_id", type = FieldType.Integer)
-    private Integer teacherId;
+    @Field(name = "teacher_id", type = FieldType.Text)
+    private String teacherId;
 
     @Field(name = "reason", type = FieldType.Integer)
     private Integer reason;

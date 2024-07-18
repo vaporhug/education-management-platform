@@ -19,4 +19,5 @@ public class StudentDetailInfoVO {
     private String schoolName;
     private Integer gradeLevel;
     private String identity;
+    private Integer startYear;
 }

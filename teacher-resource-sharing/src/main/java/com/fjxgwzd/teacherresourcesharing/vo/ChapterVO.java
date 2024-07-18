@@ -8,7 +8,7 @@ import java.util.List;
 
 @Data
 public class ChapterVO {
-    private Integer chapterId;
-    private String chapterName;
-    private List<MaterialVO> materials;
+    private Integer chapter2Id;
+    private String chapter2Name;
+    private MaterialVO material;
 }

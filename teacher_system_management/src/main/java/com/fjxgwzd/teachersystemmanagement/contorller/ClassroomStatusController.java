@@ -46,7 +46,7 @@ public class ClassroomStatusController {
 //            String buildingName = (String) condition.get("buildingName");
             Integer classroomId = (Integer) condition.get("classroomId");
             Integer year =  (Integer) condition.get("year");
-            boolean termPart = (Boolean) condition.get("termPart");
+            Boolean termPart = (Boolean) condition.get("termPart");
             Integer week =  (Integer) condition.get("week");
             Integer dayOfWeek =  (Integer) condition.get("dayOfWeek");
             Integer periodFrom = (Integer) condition.get("periodFrom");

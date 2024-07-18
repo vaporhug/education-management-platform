@@ -1,6 +1,5 @@
 package com.fjxgwzd.teacherresourcesharing.vo;
 
-import com.fjxgwzd.teacherresourcesharing.entity.File;
 import lombok.Data;
 
 import java.util.List;
@@ -27,5 +26,5 @@ public class CourseDetalVO {
     private String assessMethod;
     private String methodDetal;
     private Integer maxNum;
-    private List<ChapterVO> chapterList;
+    private List<Chapter1List> chapterList;
 }

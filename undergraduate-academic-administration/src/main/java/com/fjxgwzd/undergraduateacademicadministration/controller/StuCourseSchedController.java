@@ -30,17 +30,18 @@ public class StuCourseSchedController {
     private StuCourseSchedService stuCourseSchedService;
 
     @PostMapping("attendanceStu")
-    public Result<Rates> queryStuAttendanceByStuId(@RequestBody Map<String, Object> conditions){
+    public Result<Rates> queryStuAttendanceByStuId(@RequestHeader("PrimaryInfo") String primaryInfo,@RequestBody Map<String, Object> conditions){
         try {
-            String stuId = (String) conditions.get("stuId");
+//            String stuId = (String) conditions.get("stuId");
             Integer year = (Integer) conditions.get("year");
-            Boolean termPart;
-            if ( ( (Integer)conditions.get("termPart")).intValue() == 1 ){
-                termPart=true;
-            } else {
-                termPart=false;
-            }
-            int[] stuAttendance = this.stuCourseSchedService.getStuAttendanceByStuId(stuId,year,termPart);
+//            Boolean termPart;
+//            if ( ( (Integer)conditions.get("termPart")).intValue() == 1 ){
+//                termPart=true;
+//            } else {
+//                termPart=false;
+//            }
+            Boolean termPart = (Boolean) conditions.get("termPart");
+            int[] stuAttendance = this.stuCourseSchedService.getStuAttendanceByStuId(primaryInfo,year,termPart);
             Rates rates = new Rates();
             rates.setRates(stuAttendance);
             return Result.ok(rates);
@@ -51,17 +52,19 @@ public class StuCourseSchedController {
     }
 
     @PostMapping("attendanceTea")
-    public Result<Rates> queryTeaAttendanceByTeaId(@RequestBody Map<String, Object> conditions){
+    public Result<Rates> queryTeaAttendanceByTeaId(@RequestHeader("PrimaryInfo") String primaryInfo,@RequestBody Map<String, Object> conditions){
         try {
-            String teacherId = (String) conditions.get("teacherId");
+//            String teacherId = (String) conditions.get("teacherId");
+
             Integer year = (Integer) conditions.get("year");
-            Boolean termPart;
-            if ( ( (Integer)conditions.get("termPart")).intValue() == 1 ){
-                termPart=true;
-            } else {
-                termPart=false;
-            }
-            int[] stuAttendance = this.stuCourseSchedService.getTeaAttendanceByTeaId(teacherId,year,termPart);
+//            Boolean termPart;
+//            if ( ( (Integer)conditions.get("termPart")).intValue() == 1 ){
+//                termPart=true;
+//            } else {
+//                termPart=false;
+//            }
+            Boolean termPart = (Boolean) conditions.get("termPart");
+            int[] stuAttendance = this.stuCourseSchedService.getTeaAttendanceByTeaId(primaryInfo,year,termPart);
             Rates rates = new Rates();
             rates.setRates(stuAttendance);
             return Result.ok(rates);
@@ -75,12 +78,13 @@ public class StuCourseSchedController {
     public Result<TotalAttendanceVo> queryTeaAttendanceByTotalId(@RequestBody Map<String, Object> conditions){
         try {
             Integer year = (Integer) conditions.get("year");
-            Boolean termPart;
-            if ( ( (Integer)conditions.get("termPart")).intValue() == 1 ){
-                termPart=true;
-            } else {
-                termPart=false;
-            }
+//            Boolean termPart;
+//            if ( ( (Integer)conditions.get("termPart")).intValue() == 1 ){
+//                termPart=true;
+//            } else {
+//                termPart=false;
+//            }
+            Boolean termPart = (Boolean) conditions.get("termPart");
             TotalAttendanceVo stuAttendance = this.stuCourseSchedService.getToatalAttendance(year,termPart);
             return Result.ok(stuAttendance);
         }catch (Exception e){

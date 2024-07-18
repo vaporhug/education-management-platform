@@ -24,12 +24,23 @@
         <collection property="chapterList" ofType="com.fjxgwzd.teacherresourcesharing.vo.ChapterVO">
             <id property="chapterId" column="chapter_id"/>
             <result property="chapterName" column="chapter_name"/>
-            <collection property="materials" ofType="com.fjxgwzd.teacherresourcesharing.vo.MaterialVO">
+            <collection property="material" ofType="com.fjxgwzd.teacherresourcesharing.vo.MaterialVO">
                 <id property="materialId" column="material_id"/>
                 <result property="fileId" column="file_id"/>
                 <result property="fileName" column="file_name"/>
                 <result property="fileUrl" column="file_url"/>
             </collection>
+        </collection>
+    </resultMap>
+
+    <resultMap id="chapterVoMapper" type="com.fjxgwzd.teacherresourcesharing.vo.ChapterVO">
+        <id property="chapter2Id" column="chapter2Id"/>
+        <result property="chapter2Name" column="chapter2Name"/>
+        <collection property="material" ofType="com.fjxgwzd.teacherresourcesharing.vo.MaterialVO">
+            <id property="materialId" column="material.materialId"/>
+            <result property="fileId" column="material.fileId"/>
+            <result property="fileName" column="material.fileName"/>
+            <result property="fileUrl" column="material.fileUrl"/>
         </collection>
     </resultMap>
     <!--    根据hash值查看是否已有该文件   -->
@@ -57,7 +68,7 @@
     
     <delete id="removeTeachingMaterialByChapterId">
         DELETE FROM teaching_material
-        WHERE for_chapter = (SELECT id FROM chapter WHERE id = #{chapterId})
+        WHERE for_chapter =  #{chapterId}
     </delete>
     
     <delete id="removeFileByFileId">
@@ -192,22 +203,22 @@
     <select id="findChapterByCourseId">
         SELECT
             ch.id AS chapterId,
-            ch.title AS chapterName
+            ch.name AS chapterName
         FROM chapter ch
         WHERE ch.course_inst_id = #{courseInstId}
     </select>
     
-    <select id="findMaterialByCourseId">
-        SELECT
-            tm.id AS materialId,
-            fl.id AS fileId,
-            tm.name AS fileName,
-            fl.url AS fileUrl
-        FROM teaching_material tm
-        JOIN chapter ch ON ch.id = tm.for_chapter
-        JOIN file fl ON fl.id = tm.file_id
-        WHERE ch.course_inst_d = #{courseInstId}
-    </select>
+<!--    <select id="findMaterialByCourseId">-->
+<!--        SELECT-->
+<!--            tm.id AS materialId,-->
+<!--            fl.id AS fileId,-->
+<!--            ch.name AS fileName,-->
+<!--            fl.url AS fileUrl-->
+<!--        FROM teaching_material tm-->
+<!--        JOIN chapter ch ON ch.id = tm.for_chapter-->
+<!--        JOIN file fl ON fl.id = tm.file_id-->
+<!--        WHERE ch.course_inst_d = #{courseInstId}-->
+<!--    </select>-->
     
     <insert id="insertFileDetails" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO file(url, size, hash)
@@ -219,28 +230,31 @@
         WHERE file_id = #{fileId} AND for_chapter = #{chapterId}
     </select>
     <insert id="insertTeachingMaterial" parameterType="java.util.Map">
-        INSERT INTO teaching_material(for_chapter,upload_time,uploader_id,name,file_id)
-        VALUES (#{forChapter}, #{uploadTime}, #{uploaderId}, #{name}, #{fileId})
+        INSERT INTO teaching_material(for_chapter,upload_time,uploader_id,file_id)
+        VALUES (#{forChapter}, #{uploadTime}, #{uploaderId}, #{fileId})
     </insert>
 
     <select id="findParentChapter">
-        SELECT chapter.id AS chapterId,
-               teaching_material.name AS chapterName
+        SELECT chapter.id AS chapter2Id,
+               chapter.name AS chapter2Name
         FROM chapter
-        JOIN teaching_material ON teaching_material.for_chapter = chapter.id
+                 JOIN course_inst ON chapter.course_inst_id = course_inst.id join course on course.id = course_inst.course_id
         WHERE chapter.title_level = 1 AND chapter.course_inst_id = #{courseId}
     </select>
 
-    <select id="findMaterialByCourseIdParent">
-        SELECT tm.id AS materialId,
-               f.id AS fileId,
-               tm.name AS fileName,
-               f.url AS fileUrl
+    <select id="findMaterialByCourseIdParent" resultMap="chapterVoMapper">
+        SELECT ch.id AS chapter2Id,
+               ch.title AS chapter2Name,
+               tm.id AS "material.materialId",
+               f.id AS "material.fileId",
+               ch.name AS "material.fileName",
+               f.url AS "material.fileUrl"
         FROM teaching_material tm
         JOIN chapter ch ON ch.parent = #{parentId} AND ch.title_level = 2
         JOIN file f ON f.id = tm.file_id
         WHERE ch.course_inst_id = #{courseId}
     </select>
+
     <select id="getSchool">
         SELECT id AS schoolId,
                name AS schoolName

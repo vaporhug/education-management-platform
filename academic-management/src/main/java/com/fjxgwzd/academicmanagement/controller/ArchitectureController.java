@@ -111,13 +111,14 @@ public class ArchitectureController {
                 if(i>=classrooms.size()){
                     break;
                 }
+                dataValueNode = new HashMap<>();
                 dataValueNode.put("classroomId",classrooms.get(i).getId());
                 dataValueNode.put("classroomName",classrooms.get(i).getRoomNumber());
                 dataValueNode.put("campusName",campusId2Name.get(classrooms.get(i).getCampusId()));
                 dataValueNode.put("building",classrooms.get(i).getBuildingName());
                 dataValueNode.put("seatNum",classrooms.get(i).getSeatNum());
                 dataValueNode.put("area",classrooms.get(i).getArea());
-                dataValueNode.put("status",architectureService.getClassroomStatusById(classrooms.get(i).getCampusId()).getStatus() == 1 ? "正常" : "维修中");
+//                dataValueNode.put("status",architectureService.getClassroomStatusById(classrooms.get(i).getCampusId()).getStatus() == 1 ? "正常" : "维修中");
                 dataValue.add(dataValueNode);
             }
             Integer sum = classrooms.size()/num+1;
@@ -184,6 +185,9 @@ public class ArchitectureController {
             Map<String,Object> value = new HashMap<>();
             value.put("reservationId",classroomReservations.get(i).getId());
             value.put("teacherId",classroomReservations.get(i).getTeacherId());
+            Classroom classroom = architectureService.getClassroomById(classroomReservations.get(i).getClassroomId());
+            value.put("classroomId",classroom.getId());
+            value.put("classroomName",classroom.getRoomNumber());
             value.put("year",classroomReservations.get(i).getYear());
             value.put("week",classroomReservations.get(i).getWeek());
             value.put("dayOfWeek",classroomReservations.get(i).getDayOfWeek());

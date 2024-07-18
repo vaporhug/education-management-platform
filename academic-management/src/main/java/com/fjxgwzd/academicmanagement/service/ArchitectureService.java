@@ -93,7 +93,7 @@ public class ArchitectureService {
 //    }
     public List<Classroom> getClassroomByCampusIdAndBuildingName(Integer campusId,String buildingName) {
         if(campusId == null && buildingName == null){
-            return (List<Classroom>) classroomRepository.findAll();
+            return  ((Page<Classroom>) classroomRepository.findAll()).getContent();
         }
         if(campusId != null && buildingName == null){
             return classroomRepository.findClassroomsByCampusId(campusId);

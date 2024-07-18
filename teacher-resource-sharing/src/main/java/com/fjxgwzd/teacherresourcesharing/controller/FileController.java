@@ -3,10 +3,7 @@ package com.fjxgwzd.teacherresourcesharing.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fjxgwzd.common.result.Result;
 import com.fjxgwzd.teacherresourcesharing.service.FileService;
-import com.fjxgwzd.teacherresourcesharing.vo.BasicInfoVO;
-import com.fjxgwzd.teacherresourcesharing.vo.ChapterVO;
-import com.fjxgwzd.teacherresourcesharing.vo.CourseDetalVO;
-import com.fjxgwzd.teacherresourcesharing.vo.schoolMajorList;
+import com.fjxgwzd.teacherresourcesharing.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,7 +46,7 @@ public class FileController {
     }
 
     // 返回一门课程的所有信息，包括教材信息
-    @PostMapping("/courseDetalInfo")
+    @PostMapping("/courseDetailInfo")
 //    public Result<CourseDetalVO> courseDetailsInfo(@RequestParam("courseInstId") Integer courseInstId) {
     public Result<CourseDetalVO> courseDetailsInfo(@RequestBody Map<String, Object> conditions) {
         // 需要一个信息，即用户传来的chapter_id，我将该课程的所有chapter的信息返回给用户
@@ -65,10 +62,10 @@ public class FileController {
 
     @PostMapping("/chapterDetailInfo")
 //    public Result<List<ChapterVO>> chapterDetailInfo(@RequestParam("courseInstId") Integer courseInstId) {
-    public Result<List<ChapterVO>> chapterDetailInfo(@RequestBody Map<String, Object> conditions) {
+    public Result<List<Chapter1List>> chapterDetailInfo(@RequestBody Map<String, Object> conditions) {
         try {
             Integer courseInstId = (Integer) conditions.get("courseInstId");
-            List<ChapterVO> chapterVOList = fileService.chapterList(courseInstId);
+            List<Chapter1List> chapterVOList = fileService.chapterList(courseInstId);
             return Result.ok(chapterVOList);
         }catch (Exception e){
             e.printStackTrace();

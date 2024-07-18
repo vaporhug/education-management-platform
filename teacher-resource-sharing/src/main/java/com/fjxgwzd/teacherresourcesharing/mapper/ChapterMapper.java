@@ -30,7 +30,7 @@ public interface ChapterMapper {
 //    CourseDetalVO findCourseDetalByCourseInstId(@Param("courseInstId") Integer courseInstId);
     CourseDetalVO findCourseBasicDetailByChapterId(Integer chapterId);
     List<ChapterVO> findParentChapter(Integer courseId);
-    List<MaterialVO> findMaterialByCourseIdParent(Integer courseId, Integer parentId);
+    List<ChapterVO> findMaterialByCourseIdParent(Integer courseId, Integer parentId);
     // 将最后返回结果由本部分代码进行拼接合并返回
     void insertFileDetails(Map<String, Object> params);
     Integer teacherMaterialId(Map<String, Object> params);

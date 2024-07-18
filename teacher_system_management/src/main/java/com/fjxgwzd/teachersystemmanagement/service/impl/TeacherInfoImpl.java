@@ -186,7 +186,7 @@ public class TeacherInfoImpl implements TeacherService {
     }
 
     @Override
-    public String uploadGrades(String courseInstId, GradeVO[] stuScores) {
+    public String uploadGrades(Integer courseInstId, GradeVO[] stuScores) {
 //        Integer courseSecId = teacherMapper.getCourseSecId(Integer.valueOf(courseInstId));
         for(int i = 0; i< stuScores.length;i++){
             Short status = 1;
@@ -195,7 +195,7 @@ public class TeacherInfoImpl implements TeacherService {
             }else {
                 status = 3;
             }
-            teacherMapper.insertScores(stuScores[i].getStuId(), Integer.valueOf(courseInstId),stuScores[i].getTotalScore(),status);
+            teacherMapper.insertScores(stuScores[i].getStuId(), courseInstId,stuScores[i].getTotalScore(),status);
         }
         return "录入成功";
     }

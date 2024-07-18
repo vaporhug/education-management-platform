@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class CourseInfoVO {
     // 传这个课程实体的id号，而不是其他id号
-    private String courseInstId;
+    private Integer courseInstId;
     // 传课程名称
     private String name;
     // 课程类型，必修选修，全校性

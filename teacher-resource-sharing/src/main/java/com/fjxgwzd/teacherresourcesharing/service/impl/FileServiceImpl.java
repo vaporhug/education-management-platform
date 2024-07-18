@@ -1,16 +1,13 @@
 package com.fjxgwzd.teacherresourcesharing.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fjxgwzd.teacherresourcesharing.entity.CourseInst;
 import com.fjxgwzd.teacherresourcesharing.entity.File;
 import com.fjxgwzd.teacherresourcesharing.entity.Semester;
-import com.fjxgwzd.teacherresourcesharing.entity.TeachingMaterial;
 import com.fjxgwzd.teacherresourcesharing.mapper.ChapterMapper;
 import com.fjxgwzd.teacherresourcesharing.minio.MinioProperties;
 import com.fjxgwzd.teacherresourcesharing.service.FileService;
 import com.fjxgwzd.teacherresourcesharing.vo.*;
 import io.minio.*;
-import io.minio.errors.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
@@ -19,14 +16,13 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URL;
-import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -169,30 +165,55 @@ public class FileServiceImpl implements FileService {
         courseDetalVO.setCourseType(changeCourseType(courseDetalVO.getCourseType()));
         courseDetalVO.setCourseFor(changeCourseFor(courseDetalVO.getCourseFor()));
         // 2、调用以下方法，实现获取课程file信息
+        List<Chapter1List> chapter1Lists = new ArrayList<>();
+        // 此时返回的内容是所有的父节点
         List<ChapterVO> chapterVOList = chapterMapper.findParentChapter(courseInstId);
+
         for(ChapterVO chapterVO : chapterVOList){
-            // 通过其父节点获取对应的材料的List
-            List<MaterialVO> materialVOList = chapterMapper.findMaterialByCourseIdParent(courseInstId,chapterVO.getChapterId());
-            chapterVO.setMaterials(materialVOList);
+            // 通过其父节点获取对应的chapter
+            List<ChapterVO> materialVOList = chapterMapper.findMaterialByCourseIdParent(courseInstId,chapterVO.getChapter2Id());
+//            chapterVO.setMaterials(materialVOList);
+            // 有了chapter_2_list，向其中添加
+            Chapter1List chapter1List = new Chapter1List();
+            chapter1List.setChapter1Id(chapterVO.getChapter2Id());
+            chapter1List.setChapter1Name(chapterVO.getChapter2Name());
+            chapter1List.setChapter2List(materialVOList);
+            chapter1Lists.add(chapter1List);
         }
 
-        courseDetalVO.setChapterList(chapterVOList);
+        courseDetalVO.setChapterList(chapter1Lists);
         return courseDetalVO;
     }
 
     @Override
-    public List<ChapterVO> chapterList(Integer courseInstId) throws JsonProcessingException {
+    public List<Chapter1List> chapterList(Integer courseInstId) throws JsonProcessingException {
         // 首先获取所有的chapter
         // 1.1、获取所有一级父目录
+//        List<ChapterVO> chapterVOList = chapterMapper.findParentChapter(courseInstId);
+//
+//        // 1.2、将chapter的对应的parent关系，获取对应所有的材料
+//        for(ChapterVO chapterVO : chapterVOList){
+//            // 通过其父节点获取对应的材料的List
+//            List<MaterialVO> materialVOList = chapterMapper.findMaterialByCourseIdParent(courseInstId,chapterVO.getChapterId());
+//            chapterVO.setMaterials(materialVOList);
+//        }
+//        return chapterVOList;
+        List<Chapter1List> chapter1Lists = new ArrayList<>();
+        // 此时返回的内容是所有的父节点
         List<ChapterVO> chapterVOList = chapterMapper.findParentChapter(courseInstId);
 
-        // 1.2、将chapter的对应的parent关系，获取对应所有的材料
         for(ChapterVO chapterVO : chapterVOList){
-            // 通过其父节点获取对应的材料的List
-            List<MaterialVO> materialVOList = chapterMapper.findMaterialByCourseIdParent(courseInstId,chapterVO.getChapterId());
-            chapterVO.setMaterials(materialVOList);
+            // 通过其父节点获取对应的chapter
+            List<ChapterVO> materialVOList = chapterMapper.findMaterialByCourseIdParent(courseInstId,chapterVO.getChapter2Id());
+//            chapterVO.setMaterials(materialVOList);
+            // 有了chapter_2_list，向其中添加
+            Chapter1List chapter1List = new Chapter1List();
+            chapter1List.setChapter1Id(chapterVO.getChapter2Id());
+            chapter1List.setChapter1Name(chapterVO.getChapter2Name());
+            chapter1List.setChapter2List(materialVOList);
+            chapter1Lists.add(chapter1List);
         }
-        return chapterVOList;
+        return chapter1Lists;
     }
 
     public String changeCourseType(String schoolId) {

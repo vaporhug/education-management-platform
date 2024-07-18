@@ -29,7 +29,7 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     @Override
-    public String reserveClassroom(String teacherId, String name, String phoneNumber, Integer classroomId, Integer year, boolean termPart, Integer week, Integer dayOfWeek, Integer periodFrom, Integer periodTo, Short reason, String reasonDetail) {
+    public String reserveClassroom(String teacherId, String name, String phoneNumber, Integer classroomId, Integer year, Boolean termPart, Integer week, Integer dayOfWeek, Integer periodFrom, Integer periodTo, Short reason, String reasonDetail) {
         classroomMapper.reserveClassroom(teacherId,name,phoneNumber,classroomId, year, termPart, week, dayOfWeek, periodFrom, periodTo, reason, reasonDetail);
         return "成功申请";
     }

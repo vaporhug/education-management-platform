@@ -3,6 +3,7 @@ package com.fjxgwzd.gateway.filter;
 import com.fjxgwzd.gateway.service.CasService;
 import com.fjxgwzd.gateway.service.JwtService;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequestDecorator;
@@ -34,7 +35,7 @@ public class JwtRequestFilter  implements WebFilter {
         EXCLUDED_PATHS.add("/public");
         EXCLUDED_PATHS.add("/static");
         EXCLUDED_PATHS.add("/ts/TeacherInfo/teacherInfo");
-        EXCLUDED_PATHS.add("/ts/TeacherInfo/teacherDetails");
+//        EXCLUDED_PATHS.add("/ts/TeacherInfo/teacherDetails");
         EXCLUDED_PATHS.add("/ts/TeacherInfo/teacherHomeDetails");
         EXCLUDED_PATHS.add("/tr/files/school_major");
         // 添加更多需要排除的路径
@@ -44,6 +45,16 @@ public class JwtRequestFilter  implements WebFilter {
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         String path = request.getURI().getPath();
+
+//        if (exchange.getRequest().getMethod().equals(HttpMethod.OPTIONS)) {
+//            exchange.getResponse().getHeaders().add("Access-Control-Allow-Origin", "*");
+//            exchange.getResponse().getHeaders().add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+//            exchange.getResponse().getHeaders().add("Access-Control-Allow-Headers", "Authorization, Content-Type");
+//            exchange.getResponse().getHeaders().add("Access-Control-Max-Age", "3600");
+//            return exchange.getResponse().setComplete();
+//        }
+
+
         // 检查请求路径是否在排除列表中
         if (EXCLUDED_PATHS.stream().anyMatch(path::startsWith)) {
             return chain.filter(exchange);

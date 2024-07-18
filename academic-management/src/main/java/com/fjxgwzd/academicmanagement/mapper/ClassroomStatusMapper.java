@@ -10,6 +10,7 @@ public interface ClassroomStatusMapper extends ElasticsearchRepository<Classroom
     List<ClassroomStatus> findClassroomStatusesByYearAndClassroomIdAndWeekAndTermPartAndDayOfWeekAndPeriodFromGreaterThanEqualAndPeriodToLessThanEqual(Integer year, Integer classroomId, Integer week, Integer termPart, Integer dayOfWeek, Integer periodFrom, Integer periodTo);
     List<ClassroomStatus> findClassroomStatusesByYearAndClassroomIdAndWeekAndTermPartAndDayOfWeek(Integer year, Integer classroomId, Integer week, Integer termPart, Integer dayOfWeek);
     List<ClassroomStatus> findClassroomStatusById(Integer id);
+    List<ClassroomStatus> findClassroomStatusByClassroomId(Integer id);
 
 
 }

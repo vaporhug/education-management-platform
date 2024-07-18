@@ -13,7 +13,7 @@ public class ConfigController {
     @Value("${useLocalCache:false}")
     private boolean useLocalCache;
 
-    @Value("${project.name:dfafafda}")
+    @Value("${testp:dfafafda}")
     private String projectName;
 
     @RequestMapping("/get")

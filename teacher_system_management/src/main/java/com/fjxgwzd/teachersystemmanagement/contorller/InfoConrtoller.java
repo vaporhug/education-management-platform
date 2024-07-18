@@ -1,10 +1,13 @@
 package com.fjxgwzd.teachersystemmanagement.contorller;
 
+import com.alibaba.nacos.shaded.com.google.gson.JsonObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fjxgwzd.common.result.Result;
 import com.fjxgwzd.teachersystemmanagement.service.TeacherService;
 import com.fjxgwzd.teachersystemmanagement.vo.*;
 
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -92,8 +95,14 @@ public class InfoConrtoller {
     @PostMapping("/uploadGrades")
 //    public Result<String> uploadGrades(@RequestParam String courseInstId,@RequestBody GradeVO[] stuScores){
     public Result<String> uploadGrades(@RequestBody Map<String, Object> condition){
-        String courseInstId = (String) condition.get("courseInstId");
-        GradeVO[] stuScores = (GradeVO[]) condition.get("stuScores");
+        Integer courseInstId = (Integer) condition.get("courseInstId");
+
+//        GradeVO[] stuScores = (GradeVO[]) condition.get("stuScores");
+        ObjectMapper mapper = new ObjectMapper();
+        ArrayList<Map<String, Object>> stuScoresList = (ArrayList<Map<String, Object>>) condition.get("stuScores");
+        GradeVO[] stuScores = mapper.convertValue(stuScoresList, GradeVO[].class);
+
         return Result.ok(teacherService.uploadGrades(courseInstId, stuScores));
+
     }
 }

@@ -24,17 +24,17 @@ public class CourseController {
     private CourseService courseService;
     @Autowired
     private ArchitectureService architectureService;
-    @PostMapping("/courseSection")
-    public Result<Object> courseSection(@RequestHeader("PrimaryInfo") String primaryInfo, @RequestBody Map<String, Object> conditions) {
+    @PostMapping("/courseSelection")
+    public Result<Object> courseSection(@RequestHeader("PrimaryInfo") String primaryInfo) {
         try{
-            List<String> courseInstSectionIds = courseService.getCourseInstSectionsIdsByStudentId(primaryInfo);
+            List<Integer> courseInstSectionIds = courseService.getCourseInstSectionsIdsByStudentId(primaryInfo);
             Integer yearBegin = Integer.MAX_VALUE;
             Integer yearEnd = Integer.MIN_VALUE;
             Map<String,Object> data = new HashMap<>();
             Map<String,Object> dataValueItem  = null;
             List<Map<String,Object>> dataValue = new ArrayList<>();
-            for (String courseInstSectionId : courseInstSectionIds) {
-                CourseInstSection courseInstSection = courseService.getCourseInstSectionById(Integer.parseInt(courseInstSectionId));
+            for (Integer courseInstSectionId : courseInstSectionIds) {
+                CourseInstSection courseInstSection = courseService.getCourseInstSectionById(courseInstSectionId);
                 CourseInst courseInst = courseService.getCourseInstById(courseInstSection.getCourseInstId());
                 Course course = courseService.getCoursesByCourseId(courseInst.getCourseId());
                 dataValueItem = new HashMap<>();
@@ -75,7 +75,7 @@ public class CourseController {
             int monthValue = LocalDate.now().getMonthValue();
             data.put("nowTermPart",(monthValue >= 2 && monthValue <= 7) ? 0 : 1);
             data.put("courses",dataValue);
-            return Result.ok();
+            return Result.ok(data);
         }catch (Exception e){
             e.printStackTrace();
             return Result.fail();

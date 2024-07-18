@@ -2,11 +2,13 @@ package com.fjxgwzd.undergraduateacademicadministration.vo;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 public class EducationPlanVO {
     // 课程名
     private String majorName;
-    private String time;
+    private LocalDateTime time;
     private Integer aaoOfficeId;
     private String aaoOfficeName;
     private Integer schoolId;
@@ -19,17 +21,18 @@ public class EducationPlanVO {
     private String target;
     private String req;
 
-    private Integer[] coreCourseIds; // Change to String
+    private String[] coreCourseIds; // Change to String
     private String[] courseNames; // Change to String
     private String[] creditReqNames; // Change to String
     private Integer[] creditReqTotals; // Change to String
 
     public void setCoreCourseIds(String coreCourseIds) {
         if (coreCourseIds != null && ! coreCourseIds.isEmpty()) {
-            String[] coreCourseIdArray = coreCourseIds.split(",");
-            this.coreCourseIds = new Integer[coreCourseIdArray.length];
-            for (int i = 0; i < coreCourseIdArray.length; i++)
-                this.coreCourseIds[i] = Integer.parseInt(coreCourseIdArray[i].trim());
+//            String[] coreCourseIdArray = coreCourseIds.split(",");
+//            this.coreCourseIds = new Integer[coreCourseIdArray.length];
+//            for (int i = 0; i < coreCourseIdArray.length; i++)
+//                this.coreCourseIds[i] = Integer.parseInt(coreCourseIdArray[i].trim());
+            this.coreCourseIds = coreCourseIds.split(",");
         }else {
             this.coreCourseIds = null;
         }

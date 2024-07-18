@@ -1,0 +1,6 @@
+
+
+#spring.elasticsearch.uris=http://localhost:9200
+#logging.level.org.springframework.web=DEBUG
+
+

@@ -2,7 +2,9 @@ package com.fjxgwzd.undergraduateacademicadministration.controller;
 
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fjxgwzd.common.result.Result;
+import com.fjxgwzd.undergraduateacademicadministration.entity.Student;
 import com.fjxgwzd.undergraduateacademicadministration.service.AdministrationService;
 import com.fjxgwzd.undergraduateacademicadministration.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,7 @@ public class AdministrationController {
 
     @PostMapping("/studentDetailInfo")
     public Result<StudentDetailInfoVO> studentDetailInfo(@RequestHeader("PrimaryInfo") String primaryInfo) {
+
 //    public Result<StudentDetailInfoVO> studentDetailInfo(@RequestParam("studentId") String studentId) {
         try {
             return Result.ok(administrationService.getStudentDetailInfoByStudentId(primaryInfo));
@@ -44,7 +47,7 @@ public class AdministrationController {
         }
     }
 
-    @GetMapping("/educationPlanByMajor")
+    @PostMapping("/educationPlanByMajor")
     public Result<EducationPlanVO> educationPlan(@RequestBody Map<String, Object> conditions) {
 //    public Result<EducationPlanVO> educationPlan(@RequestParam("majorId") Short majorId, @RequestParam("cohortYear") Short cohortYear) {
         try {
@@ -92,9 +95,9 @@ public class AdministrationController {
         try {
             Short schoolId = conditions.containsKey("schoolId") ? ((Number) conditions.get("schoolId")).shortValue() : null;
             Short majorId = conditions.containsKey("majorId") ? ((Number) conditions.get("majorId")).shortValue() : null;
-            Integer startYear = (Integer) conditions.get("startYear");
+            Integer startYear =  (Integer) conditions.get("startYear");
             String name = (String) conditions.get("name");
-            Boolean gender = (Boolean) conditions.get("gender");
+            Boolean gender = conditions.containsKey ("gender") ? (Boolean) conditions.get("gender") : null;
             Integer offset = (Integer) conditions.get("offset");
             Integer num = (Integer) conditions.get("num");
             Integer classId = (Integer) conditions.get("classId");

@@ -9,7 +9,7 @@ import java.util.List;
 public interface ClassroomMapper {
     List<CampusVO> getCampusVO();
     List<ClassroomVO> getClassroomVO(Integer campusId,String building);
-    void reserveClassroom(String teacherId,String name,String phoneNumber,Integer classroomId,Integer year,boolean termPart,Integer week,Integer dayOfWeek,Integer periodFrom,Integer periodTo,Short reason,String reasonDetail);
+    void reserveClassroom(String teacherId,String name,String phoneNumber,Integer classroomId,Integer year,Boolean termPart,Integer week,Integer dayOfWeek,Integer periodFrom,Integer periodTo,Short reason,String reasonDetail);
     List<RecordVO> getRecords(String teacherId, Integer offset, Integer num);
     Integer getSum(String teacherId);
 }

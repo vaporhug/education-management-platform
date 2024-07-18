@@ -10,6 +10,7 @@ public class UserService {
     @Autowired
     private TeacherMapper teacherMapper;
 
+
     public Teacher getTeacherById(String id) {
         return teacherMapper.findTeacherById(id);
     }

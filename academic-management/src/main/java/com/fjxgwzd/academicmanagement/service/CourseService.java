@@ -52,16 +52,25 @@ public class CourseService {
         return courseInstSectionMapper.findCourseInstSectionsByCourseInstId(courseInstId);
     }
 
-    public List<String> getCourseInstSectionsIdsByStudentId(String studentId){
-        List<String> courseSecIds = new ArrayList<>();
+    public List<Integer> getCourseInstSectionsIdsByStudentId(String studentId){
+        List<Integer> courseSecIds = new ArrayList<>();
         for (CourseSelection courseSelection : courseSelectionMapper.findCourseSelectionsByStudentId(studentId)) {
             courseSecIds.add(courseSelection.getCourseSecId());
         }
         return courseSecIds;
     }
 
+
     public CourseInstSection getCourseInstSectionById(Integer id) {
         return courseInstSectionMapper.findCourseInstSectionById(id);
+    }
+
+    public List<CourseInstSection> getCourseInstSectionByIds(List<Integer> ids) {
+        List<CourseInstSection> courseInstSections = new ArrayList<>();
+        for (Integer id : ids) {
+            courseInstSections.add(courseInstSectionMapper.findCourseInstSectionById(id));
+        }
+        return courseInstSections;
     }
 
     public CourseInst getCourseInstById(Integer id) {

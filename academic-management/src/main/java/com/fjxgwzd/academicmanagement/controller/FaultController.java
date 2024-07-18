@@ -73,8 +73,8 @@ public class FaultController {
         return Result.ok(data);}
         Integer campusId = (Integer) conditions.get("campusId");
         String building = (String) conditions.get("building");
-        Integer offset = (Integer) conditions.get("building");
-        Integer num = (Integer) conditions.get("building");
+        Integer offset = (Integer) conditions.get("offset");
+        Integer num = (Integer) conditions.get("num");
         List<Classroom> classrooms = architectureService.getClassroomByCampusIdAndBuildingName(campusId,building);
         List<Integer> classroomsIds = new ArrayList<>();
         for (Classroom classroom : classrooms){
@@ -91,9 +91,9 @@ public class FaultController {
             value.put("faultDesc",faultReport.getFaultDesc());
             value.put("status",faultReport.getStatus());
             value.put("reportTime",faultReport.getReportTime());
-            value.put("campusName",campusId2Name.get(campusId));
+            value.put("campusName",campusId2Name.get(classroom.getCampusId()));
             value.put("building",classroom.getBuildingName());
-            value.put("campusId",campusId);
+            value.put("campusId",classroom.getCampusId());
             value.put("reportId",faultReport.getId());
             value.put("classroomId",classroom.getId());
             dataValue.add(value);

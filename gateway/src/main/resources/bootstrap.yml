@@ -8,6 +8,10 @@ spring:
         server-addr: 8.130.106.248:8848
         group: DEFAULT_GROUP
         file-extension: yaml
+        extension-configs:
+          - data-id: global-config.yaml
+            group: DEFAULT_GROUP
+            refresh: true
       discovery:
         server-addr: 8.130.106.248:8848
 

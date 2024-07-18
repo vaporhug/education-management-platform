@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fjxgwzd.undergraduateacademicadministration.mapper.StudentIdMapper">
+
     <select id="getEducationPlanByMajorId" resultType="com.fjxgwzd.undergraduateacademicadministration.vo.EducationPlanVO">
         SELECT
             mj.name AS majorName,
-            mdm.cohort_year AS time,
+            mdm.date AS time,
             af.id AS aaoOfficeId,
             af.name AS aaoOfficeName,
             sc.id AS schoolId,
@@ -16,29 +17,29 @@
             mdm.intro AS description,
             mdm.target,
             mdm.req,
-            GROUP_CONCAT(DISTINCT ccf.course_struct_id SEPARATOR ',') AS coreCourseIds,
-            GROUP_CONCAT(DISTINCT cs.course_name SEPARATOR ',') AS courseNames,
+            GROUP_CONCAT(DISTINCT ccf.course_id SEPARATOR ',') AS coreCourseIds,
+            GROUP_CONCAT(DISTINCT course.name SEPARATOR ',') AS courseNames,
             GROUP_CONCAT(DISTINCT mcr.credit_type SEPARATOR ',') AS creditReqNames,
             GROUP_CONCAT(DISTINCT mcr.credit_total SEPARATOR ',') AS creditReqTotals
         FROM
             major mj
-        JOIN
+            JOIN
             major_dev_manage mdm ON mdm.major_id = mj.id
-        JOIN
+            JOIN
             aao_office af ON af.major_id = mj.id
-        JOIN
+            JOIN
             core_course_for_major ccf ON mj.id = ccf.major_id AND ccf.cohort_year = #{cohortYear}
-        JOIN
+            JOIN
             major_credit_req mcr ON mj.id = mcr.major_id
-        JOIN
+            JOIN
             school sc ON mj.school_id = sc.id
-        JOIN
-            course_struct cs ON cs.id = ccf.course_struct_id AND cs.cohort_year = #{cohortYear} AND cs.for_major = #{majorId}
+            JOIN
+            course ON course.id = ccf.course_id
         WHERE
             mj.id = #{majorId}
         GROUP BY
             mj.name,
-            mdm.cohort_year,
+            mdm.date,
             af.id,
             af.name,
             sc.id,
@@ -89,11 +90,13 @@
                sc.id AS schoolId,
                sc.name AS schoolName,
                st.now_level AS gradeLevel,
-               st.identity
+               st.identity,
+               c.start_year AS startYear
         FROM student st
         JOIN major mj ON mj.id = st.major_id
         JOIN school sc ON mj.school_id = sc.id
         JOIN file f ON f.id = st.stu_pic
+        JOIN class c ON st.class_id = c.id
         WHERE st.id = #{studentId}
     </select>
 
@@ -187,12 +190,12 @@
         ORDER BY sc.id DESC
         LIMIT #{offset}, #{num}
     </select>
-    <select id="getStudentSum">
-        SELECT COUNT(*)
-        FROM course_selection cs
-        JOIN student sc ON sc.id = cs.stu_id
-        JOIN major mj ON mj.id = sc.major_id
-        JOIN course_inst_section cis ON cis.id = cs.course_sec_id
+    <select id="getStudentSum">SELECT COUNT(*)
+                               FROM course_selection cs
+                                        JOIN student sc ON sc.id = cs.stu_id
+                                        JOIN major mj ON mj.id = sc.major_id
+                                        JOIN course_inst_section cis ON cis.id = cs.course_sec_id
+
         WHERE cis.course_inst_id = #{courseInstId}
     </select>
 </mapper>
